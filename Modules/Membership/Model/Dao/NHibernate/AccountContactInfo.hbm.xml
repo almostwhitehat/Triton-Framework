@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+				   assembly="GFW.Membership" 
+				   namespace="GFW.Membership.model">
+	<class name="AccountContactInfo" table="account_contact_info" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32">
+			<generator class="identity" />
+		</id>
+		<version column="Version" name="version" />
+		
+		<property name="Info" column="info" length="100"/>
+	</class>
+</hibernate-mapping>

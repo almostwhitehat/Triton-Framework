@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping 
+	xmlns="urn:nhibernate-mapping-2.2" 
+	default-lazy="true" 
+	assembly="Triton.Modules.Membership" 
+	namespace="Triton.Membership.Model">
+	<class name="NameSuffix" table="`name_suffixes`" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<version name="Version" column="version"  type="Int32" unsaved-value="0" />
+
+		<property name="LongCode" column="long_code" type="String" length="255"/>
+		<property name="ShortCode" column="short_code" type="String" length="255"/>
+	</class>
+</hibernate-mapping>

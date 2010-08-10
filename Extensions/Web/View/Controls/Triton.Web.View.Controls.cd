@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Triton.Web.View.Controls.BaseControl" Collapsed="true">
+    <Position X="9.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\BaseControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.XmlBasedControl" Collapsed="true">
+    <Position X="7.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>View\Controls\XmlBasedControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.BaseSelect" Collapsed="true">
+    <Position X="14" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABACAAAAQBAAAAAAAAQQAAAAAAAAACAAAAAAgAA=</HashCode>
+      <FileName>View\Controls\BaseSelect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.ConditionalComment" Collapsed="true">
+    <Position X="16.25" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAACAAAAAABAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>View\Controls\ConditionalComment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.ConfigurableControl" Collapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\ConfigurableControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.Copy" Collapsed="true">
+    <Position X="2.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAQABAAAAQAAAAAAAAAAAIAAEAAAAA=</HashCode>
+      <FileName>View\Controls\Copy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.Css" Collapsed="true">
+    <Position X="9.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIgAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\Css.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.CssBase" Collapsed="true">
+    <Position X="9.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEEAAAAAAAAFAAAJQAAAACAAAAAAIIAAAAAEAAAAA=</HashCode>
+      <FileName>View\Controls\CssBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.Img" Collapsed="true">
+    <Position X="5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\Img.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.ImgBase" Collapsed="true">
+    <Position X="6.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAQAAAAAAAAIACAAAIAAAAA=</HashCode>
+      <FileName>View\Controls\ImgBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.ImgInput" Collapsed="true">
+    <Position X="7.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>View\Controls\ImgInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Web.View.Controls.Navigation" Collapsed="true">
+    <Position X="11.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAABIAAAAACAQCAAAAAAAIASAAAAAAAAE=</HashCode>
+      <FileName>View\Controls\Navigation.cs</FileName>
+      <NewMemberFileName>View\Controls\navigation.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

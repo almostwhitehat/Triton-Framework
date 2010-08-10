@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Triton.Location.Model.Address">
+    <Position X="7.5" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAACIAAAAAAIIAAAAIQAAAIACAAgAAAARAEAAAA=</HashCode>
+      <FileName>Model\Address.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="City" />
+      <Property Name="Country" />
+      <Property Name="PostalCode" />
+      <Property Name="State" />
+      <Property Name="GeoLocation" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Triton.Location.Model.State">
+    <Position X="5.5" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAgAEAAAAAAgAgAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\State.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Region" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Triton.Location.Model.City">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Model\City.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="PostalCodes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Triton.Location.Model.Country">
+    <Position X="8.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAAAIAAAAAgAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Country.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Location.Model.GeoLocation">
+    <Position X="1" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\GeoLocation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Location.Model.PersistedAddress">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\PersistedAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Location.Model.PostalCode">
+    <Position X="6" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAACAAAAAAAIAEAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Model\PostalCode.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="City" />
+      <Property Name="State" />
+      <Property Name="GeoLocation" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Triton.Location.Model.Region">
+    <Position X="2" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAASQBAAAAAAAAAAQAAAAAAAAAE=</HashCode>
+      <FileName>Model\Region.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{67405377-7460-401D-8697-C155F2F6A7B1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Triton.Membership</RootNamespace>
+    <AssemblyName>Triton.Modules.Membership</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Documents\Library\Xml\Triton.Modules.Membership.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\Bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Documents\Library\Xml\Triton.Modules.Membership.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common.Logging, Version=2.0.11.3384, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Assemblies\Common.Logging\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Assemblies\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Logic\AddAddressToAccountAction.cs" />
+    <Compile Include="Logic\AddRoleToAccountAction.cs" />
+    <Compile Include="Logic\AuthenticateAccountAction.cs" />
+    <Compile Include="Logic\CreateAttributeTypeAction.cs" />
+    <Compile Include="Logic\GetAttributeTypeAction.cs" />
+    <Compile Include="Logic\GetAuthenticatedAccountIdAction.cs" />
+    <Compile Include="Logic\IsUsernameAvailableAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Logic\CreateAccountAction.cs" />
+    <Compile Include="Logic\GetAccountAction.cs" />
+    <Compile Include="Logic\GetRoleAction.cs" />
+    <Compile Include="Logic\IsLoggedInAction.cs" />
+    <Compile Include="Logic\IsMemberOfAction.cs" />
+    <Compile Include="Logic\PopulateAccountFromRequestAction.cs" />
+    <Compile Include="Logic\PopulateAttributeTypeFromRequestAction.cs" />
+    <Compile Include="Logic\PopulateRoleFromRequestAction.cs" />
+    <Compile Include="Logic\RemoveRoleFromAccountAction.cs" />
+    <Compile Include="Logic\SaveAccountAction.cs" />
+    <Compile Include="Logic\SaveAccountAttributeValueAction.cs" />
+    <Compile Include="Logic\SaveAttributeTypeAction.cs" />
+    <Compile Include="Logic\SaveRoleAction.cs" />
+    <Compile Include="Logic\UnauthenticateAccountAction.cs" />
+    <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\AttributeType.cs" />
+    <Compile Include="Model\Dao\AttributeTypeFilter.cs" />
+    <Compile Include="Model\Dao\IAttributeTypeDao.cs" />
+    <Compile Include="Model\Dao\IMemberContextDao.cs" />
+    <Compile Include="Model\Dao\NhAttributeTypeDao.cs" />
+    <Compile Include="Model\Dao\NhMemberContextDao.cs" />
+    <Compile Include="Model\Dao\RoleFilter.cs" />
+    <Compile Include="Model\Dao\Support\FilterExtensions.cs" />
+    <Compile Include="Model\Username.cs" />
+    <Compile Include="Support\Request\ItemNames.cs" />
+    <Compile Include="Support\Request\ParameterNames.cs" />
+    <Compile Include="Model\AccountStatus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Dao\AccountFilter.cs" />
+    <Compile Include="Model\Dao\IAccountDao.cs" />
+    <Compile Include="Model\Dao\IAccountStatusDao.cs" />
+    <Compile Include="Model\Dao\INameSuffixDao.cs" />
+    <Compile Include="Model\Dao\IRoleDao.cs" />
+    <Compile Include="Model\Dao\NhAccountDao.cs" />
+    <Compile Include="Model\Dao\NhAccountStatusDao.cs" />
+    <Compile Include="Model\Dao\NhNameSuffixDao.cs" />
+    <Compile Include="Model\Dao\NhRoleDao.cs" />
+    <Compile Include="Model\MemberContext.cs" />
+    <Compile Include="Support\MembershipConstants.cs" />
+    <Compile Include="Model\Role.cs" />
+    <Compile Include="Model\Name.cs" />
+    <Compile Include="Model\NameSuffix.cs" />
+    <Compile Include="Model\Person.cs" />
+    <Compile Include="Support\Request\Deserialize.cs" />
+    <Compile Include="Support\EncryptionManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Web\Controls\AttributeTypeSelect.cs" />
+    <Compile Include="View\Web\WebPageExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Dao\NHibernate\Account.hbm.xml" />
+    <EmbeddedResource Include="Model\Dao\NHibernate\AccountStatus.hbm.xml" />
+    <EmbeddedResource Include="Model\Dao\NHibernate\MemberContext.hbm.xml" />
+    <EmbeddedResource Include="Model\Dao\NHibernate\NameSuffix.hbm.xml" />
+    <EmbeddedResource Include="Model\Dao\NHibernate\Person.hbm.xml" />
+    <EmbeddedResource Include="Model\Dao\NHibernate\Role.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Model\Membership.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{0B6862F8-503C-4BC6-91E5-B51E8DF5A18D}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\NHibernate\Extensions.NHibernate.csproj">
+      <Project>{BD329E03-0C13-4A35-8790-A593A693D8AE}</Project>
+      <Name>Extensions.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extensions\Web\Web.csproj">
+      <Project>{9E7D4CDF-CED0-4414-BFE8-FECB637FC1F0}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Location\Location.csproj">
+      <Project>{CDDF1942-BC2B-4607-9D61-FF3187323027}</Project>
+      <Name>Location</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Validator\Validator.csproj">
+      <Project>{4D2A808E-5096-4FAA-AC04-1A75287A572C}</Project>
+      <Name>Validator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Dao\NHibernate\AttributeType.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Dao\NHibernate\Username.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logic\Support\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

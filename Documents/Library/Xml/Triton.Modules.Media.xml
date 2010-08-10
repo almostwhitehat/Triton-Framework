@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Triton.Modules.Media</name>
+    </assembly>
+    <members>
+        <member name="M:Triton.Media.Logic.UploadMediaAction.GetFileName(System.String)">
+            <summary>
+            Strips any directory info and leaves only the file name.
+            </summary>
+            <param name="filePath">File path returned by the <code>WebPostedFile.Name</code></param>
+            <returns>File name of the file.</returns>
+        </member>
+        <member name="M:Triton.Media.Logic.UploadMediaAction.ProportionallyResizeBitmap(System.Drawing.Bitmap,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="src"></param>
+            <param name="maxWidth"></param>
+            <param name="maxHeight"></param>
+            <returns></returns>
+            <remarks>http://absolutecobblers.blogspot.com/2008/02/aspnet-image-upload-and-resize-in-c-net.html</remarks>
+        </member>
+        <member name="P:Triton.Media.Model.FileRecord.Path">
+            Pending further investigation this will be much too inefficient for regular use.
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="Triton.Modules.Location"
+				   namespace="Triton.Location.Model">
+	<class table="states" name="Triton.Location.Model.State, Triton.Modules.Location" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32">
+			<generator class="native" />
+		</id>
+		<version column="version" name="Version" type="int" unsaved-value="0" />
+
+		<property name="ShortName" column="short_name" type="string" length="100"/>
+		<property name="LongName" column="long_name" type="string" length="100"/>
+		<property name="Code" column="code" type="string" length="10" />
+		<property name="IsTerritory" column="isterritory" type="boolean"/>
+	</class>
+</hibernate-mapping>

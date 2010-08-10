@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+				   assembly="GFW.Membership" 
+				   namespace="GFW.Membership.Domain">
+	<class name="GFW.Membership.Domain.AddressType, GFW.Membership" table="address_types" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<version name="Version" column="version" type="int" unsaved-value="0"/>
+		
+		<property name="Description" column="description" type="string" length="500"/>
+		<property name="Name" column="name" type="string" length="255" unique="true"/>
+	</class>
+</hibernate-mapping>

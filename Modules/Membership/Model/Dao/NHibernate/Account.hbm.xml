@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="Triton.Modules.Membership" 
+				   namespace="Triton.Membership.Model">
+	<class name="Triton.Membership.Model.Account, Triton.Modules.Membership" lazy="false" table="accounts" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Guid">
+			<generator class="guid" />
+		</id>
+		<version name="Version" column="version" type="Int64" unsaved-value="0"/>
+		
+		<property name="password" column="password" type="string" length="255" access="field"/>
+		<property name="CreateDate" column="create_date" type="DateTime"/>
+		<property name="ModifiedDate" column="modified_date" type="DateTime"/>
+		
+		<bag name="Usernames" table="account_usernames" cascade="all" generic="true" lazy="false">
+			<key column="account_id" foreign-key="FK_Account_Username"/>
+			<one-to-many class="Triton.Membership.Model.Username, Triton.Modules.Membership"/>
+		</bag>
+		
+		<many-to-one name="Status" cascade="none" column="status_id" class="Triton.Membership.Model.AccountStatus, Triton.Modules.Membership" foreign-key="FK_Account_Status"/>
+		<many-to-one name="Person" cascade="all" column="person_id" class="Triton.Membership.Model.Person, Triton.Modules.Membership" foreign-key="FK_Account_Person"/>
+
+		<map name="Addresses" generic="true" table="account_addresses" cascade="all">
+			<key column="account_id" foreign-key="FK_Account_Address"/>
+			<index column="address_type" type="string" length="255"/>
+			<many-to-many class="Triton.Location.Model.PersistedAddress, Triton.Modules.Location" column="address_id" foreign-key="FK_Address_Account"/>	
+		</map>
+
+		<map name="Attributes" generic="true" table="account_attributes" cascade="all">
+			<key column="account_id" foreign-key="FK_Account_Attributes"/>
+			<index-many-to-many class="Triton.Membership.Model.AttributeType, Triton.Modules.Membership" column="attribute_type_id" foreign-key="FK_Account_Attribute_Type"/>
+			<element column="`value`" type="string" length="2000"/>
+		</map>
+
+		<bag name="Roles" table="account_roles" generic="true" cascade="none">
+			<key column="account_id" foreign-key="FK_Account_Account_Roles"/>
+			<many-to-many class="Triton.Membership.Model.Role, Triton.Modules.Membership" column="role_id" foreign-key="FK_Account_Roles_Role"/>
+		</bag>
+		
+	</class>
+</hibernate-mapping>

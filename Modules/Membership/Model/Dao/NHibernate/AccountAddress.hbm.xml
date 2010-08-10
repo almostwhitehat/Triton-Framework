@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="GFW.Membership" 
+				   namespace="GFW.Membership.model">
+	<class name="AccountAddress" table="account_addresses" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32">
+			<generator class="identity" />
+		</id>
+		<version column="Version" name="version" />
+		
+		<many-to-one name="AddressType" column="address_type_id" />
+		<many-to-one name="Address" column="address_id" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Triton.Modules.Location</name>
+    </assembly>
+    <members>
+        <member name="M:Triton.Location.Model.Address.ToString(System.String)">
+            <summary>
+            Formats the Name.
+            the default format is prefix{p} first{f} middle{m} last{l} suffix{s}.
+            </summary>
+            <param name="format">
+            the following formatting directives can be used to create a different result
+            example ToString("{l}, {f} {m}") ==&gt; Smith, Jim R.
+            <b>{l1}</b> the Address.Line1 value
+            <b>{l2}</b> the Address.Line2 value
+            <b>{l3}</b> the Address.Line3 value
+            <b>{c}</b> the Address.CityName value
+            <b>{s}</b> the Address.StateName value
+            <b>{p}</b> the Address.PostalCodeName value
+            <b>{la}</b> the Address.GeoLocation.Latitude value
+            <b>{lo}</b> the Address.GeoLocation.Longitude value
+            <b>{gps}</b> the Address.GeoLocation.ToString() value
+            </param>
+            <returns>
+            The formatted string of the name.
+            </returns>
+        </member>
+        <member name="M:Triton.Location.Model.Address.ToString">
+            <summary> Formats the Name in the default format (prefix first middle last suffix).
+            </summary>
+            <returns> The formatted string of the name.
+            </returns>
+        </member>
+        <member name="T:Triton.Location.Logic.GetCountriesAction">
+            <summary>
+            Returns a SearchResult of type Country into the request.
+            </summary>
+        </member>
+        <member name="M:Triton.Location.Logic.GetCountriesAction.#ctor">
+            <summary>
+            Default constructor for GetCountriesAction.
+            </summary>
+        </member>
+        <member name="P:Triton.Location.Logic.GetCountriesAction.CountryItemNameOut">
+            <summary>
+            Request item name for SearchResult Country output.
+            </summary>
+        </member>
+        <member name="T:Triton.Location.Logic.GetCountriesAction.Events">
+            <summary>
+            Event names to return to the controller.
+            </summary>
+        </member>
+        <member name="T:Triton.Location.Support.Request.Deserialize">
+            <summary>
+            Helper class to take parameters from the request and generate objects to save/update.
+            For use with Triton.Location module.
+            </summary>
+        </member>
+    </members>
+</doc>

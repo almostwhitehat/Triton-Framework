@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Triton.Media.Model.FileRecord">
+    <Position X="3.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FileRecord.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Media.Model.MediaType">
+    <Position X="7.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAgAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\MediaType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Media.Model.MediaCategory">
+    <Position X="2" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAAAgAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\MediaCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Media.Model.Media">
+    <Position X="4" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>YAACBAAAAAAAAAAAAAAAAAQQAAAEEAAAAwAAAEIAIAA=</HashCode>
+      <FileName>Model\Media.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

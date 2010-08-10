@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Triton.Validator.Model.Rules.AndRule">
+    <Position X="2.75" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\AndRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.BaseCompositeRule">
+    <Position X="4.25" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAQAAAAEBAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\BaseCompositeRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.BaseLeafRule">
+    <Position X="11.75" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\BaseLeafRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.BaseRule">
+    <Position X="8.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAEBgAAAAAAAAAAEAAAAAAAgAA=</HashCode>
+      <FileName>Model\Rules\BaseRule.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.FieldCompareRule">
+    <Position X="8.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AACAAAgAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAgAA=</HashCode>
+      <FileName>Model\Rules\FieldCompareRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.FileRule">
+    <Position X="14.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAEAAAABAAAAAAgAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\FileRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.OrRule">
+    <Position X="5.75" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\OrRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.RegexRule">
+    <Position X="11.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAgAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\RegexRule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.Rules.Validator">
+    <Position X="2.75" Y="9.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\Validator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.ValidatorManager" Collapsed="true">
+    <Position X="19.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAABAAQABAAAAAABABAQBAAAAAAAQAAAAA=</HashCode>
+      <FileName>Model\ValidatorManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.ValidationError" Collapsed="true">
+    <Position X="18" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAgAA=</HashCode>
+      <FileName>Model\ValidationError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Triton.Validator.Model.ValidationErrorCollection" BaseTypeListCollapsed="true">
+    <Position X="4" Y="13" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABAACEAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Model\ValidationErrorCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Triton.Validator.Model.ValidationErrorCollectionEnumerator" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="19.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAACACAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Model\ValidationErrorCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Triton.Validator.Model.ValidationResult">
+    <Position X="7.5" Y="12.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAggAA=</HashCode>
+      <FileName>Model\ValidationResult.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Errors" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Triton.Validator.Model.ValidationRuleFactory" Collapsed="true">
+    <Position X="18" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAABAAAAAEAAAAAAAIAAAA=</HashCode>
+      <FileName>Model\ValidationRuleFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Triton.Validator.Model.Rules.IValidationRule" Collapsed="true">
+    <Position X="18" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAEBgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Rules\IValidationRule.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="Triton.Modules.Membership"
+				   namespace="Triton.Membership.Model">
+	<class name="Triton.Membership.Model.Role, Triton.Modules.Membership" table="roles" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<version name="Version" column="version" type="Int32" unsaved-value="0"/>
+
+		<property name="Description" column="description" type="String" length="500"/>
+		<property name="Code" column="code" type="String" length="255" unique="true"/>
+		
+		<many-to-one name="Context" class="Triton.Membership.Model.MemberContext, Triton.Modules.Membership" foreign-key="FK_Role_Context" column="context_id"/>
+	</class>
+</hibernate-mapping>

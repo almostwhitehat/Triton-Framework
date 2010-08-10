@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+				   assembly="Triton.Modules.Location" 
+				   namespace="Triton.Location.Model">
+	<class name="Triton.Location.Model.Country, Triton.Modules.Location" table="countries" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32">
+			<generator class="hilo" />
+		</id>
+		<version name="Version" column="version"  type="int" unsaved-value="0"/>
+
+		<property name="ShortName" column="short_name" type="string" length="100"/>
+		<property name="FullName" column="full_name" type="string" length="100" />
+		<property name="Code" column="code" type="string" length="10"/>
+	</class>
+</hibernate-mapping>

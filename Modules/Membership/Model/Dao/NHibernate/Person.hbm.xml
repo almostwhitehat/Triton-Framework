@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping 
+	xmlns="urn:nhibernate-mapping-2.2" 
+	default-lazy="true" 
+	assembly="Triton.Modules.Membership" 
+	namespace="Triton.Membership.Model">
+	<class name="Person" table="`people`" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int64" unsaved-value="0">
+			<generator class="native" />
+		</id>
+		<version name="Version" column="version"  type="Int64" unsaved-value="0" />
+
+		<property name="Phone" column="phone" type="String" length="255"/>
+		<property name="Email" column="email" type="String" length="255"/>
+
+		<component name="Name" class="Triton.Membership.Model.Name, Triton.Modules.Membership">
+			<property name="First" column="first" type="String" length="255"/>
+			<property name="Last" column="last" type="String" length="255"/>
+			<property name="Middle" column="middle" type="String" length="255" />
+			<property name="PrefixCode" column="prefix_code" type="String" length="255"/>
+			<property name="SuffixCode" column="suffix_code" type="String" length="255"/>
+			<many-to-one name="Suffix" class="Triton.Membership.Model.NameSuffix, Triton.Modules.Membership" foreign-key="FK_Name_Name_Suffix" column="suffix_id"/>
+		</component>
+	</class>
+</hibernate-mapping>

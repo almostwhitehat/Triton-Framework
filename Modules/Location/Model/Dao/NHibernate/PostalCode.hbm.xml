@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+				   assembly="Triton.Modules.Location" 
+				   namespace="Triton.Location.Model">
+	<class name="Triton.Location.Model.PostalCode, Triton.Modules.Location" table="postal_codes" xmlns="urn:nhibernate-mapping-2.2">
+		<id name="Id" column="id" type="Int32">
+			<generator class="native" />
+		</id>
+		<version name="Version" column="version"  type="int" unsaved-value="0" />
+		
+		<property name="Number" column="`number`" type="String" length="50"/>
+		
+		<many-to-one name="City" class="Triton.Location.Model.City, Triton.Modules.Location" column="city_id" foreign-key="FK_Postal_Code_City" />
+		<many-to-one name="State" class="Triton.Location.Model.State, Triton.Modules.Location" column="state_id" foreign-key="FK_Postal_Code_State" />
+
+		<component class="Triton.Location.Model.GeoLocation, Triton.Modules.Location" name="GeoLocation">
+			<property column="longitude" name="Longitude" type="float"/>
+			<property column="latitude" name="Latitude" type="float"/>
+		</component>
+	</class>
+</hibernate-mapping>
