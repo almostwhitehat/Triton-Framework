@@ -32,6 +32,12 @@
             <returns> The formatted string of the name.
             </returns>
         </member>
+        <member name="T:Triton.Location.Support.Request.Deserialize">
+            <summary>
+            Helper class to take parameters from the request and generate objects to save/update.
+            For use with Triton.Location module.
+            </summary>
+        </member>
         <member name="T:Triton.Location.Logic.GetCountriesAction">
             <summary>
             Returns a SearchResult of type Country into the request.
@@ -50,12 +56,6 @@
         <member name="T:Triton.Location.Logic.GetCountriesAction.Events">
             <summary>
             Event names to return to the controller.
-            </summary>
-        </member>
-        <member name="T:Triton.Location.Support.Request.Deserialize">
-            <summary>
-            Helper class to take parameters from the request and generate objects to save/update.
-            For use with Triton.Location module.
             </summary>
         </member>
     </members>

@@ -4,8 +4,36 @@
         <name>Triton.Extensions.Web</name>
     </assembly>
     <members>
-        <member name="T:Triton.Web.View.Controls.Errors">
-            <summary> Creates markup for errors if they exists. wraps each error in a tag supplied by the control definition
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            You set the section name, but site is automaticaly set.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Specify the section name and site.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+            <param name="site"></param>
+        </member>
+        <member name="P:Triton.Web.View.WebMasterPage.MasterPageSection">
+            <summary>
+            Gets the masterpage section name, since the masterpage could be in a different section.
             </summary>
         </member>
         <member name="M:Triton.Web.View.Controls.BaseControl.GetPath(Triton.Web.View.Controls.BaseControl.PathType,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
@@ -23,6 +51,11 @@
         <member name="T:Triton.Web.View.Controls.BaseControl.PathType">
             <summary>
             Path Type of the control.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Copy">
+            <summary>
+            Renders a piece of Copy from a matched node in the ContentXml file.
             </summary>
         </member>
         <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor">
@@ -60,57 +93,73 @@
             The xml node that contains all the information about the control.
             </summary>
         </member>
-        <member name="F:Triton.Web.View.Controls.Errors.minLevel">
+        <member name="M:Triton.Web.View.Controls.Copy.RenderContents(System.Web.UI.HtmlTextWriter)">
             <summary>
-            The minimum error level to display.
+            Finds the Copy in the xml file and renders it to the page.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Copy.Name">
+            <summary>
+            The name of the Copy element from the xml the control is to process.
             </summary>
         </member>
-        <member name="F:Triton.Web.View.Controls.Errors.maxLevel">
+        <member name="T:Triton.Web.Support.WebInfo">
             <summary>
-            The maximum error level to display.
+            <c>WebInfo</c> is a convenience class for getting information about the environment.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Web.Support.WebInfo.applicationVariables">
+            <summary>
+            Represents application-level variables typically referenced by Application["key"].
+            This exists due to the need to reference HttpContext.Current in global.asax.cs' 
+            Application_Start method, which does not exist at that time if a page hasn't been
+            referenced yet.
             </summary>
         </member>
-        <member name="M:Triton.Web.View.Controls.Errors.#ctor">
+        <member name="P:Triton.Web.Support.WebInfo.BasePath">
             <summary>
-            Initializes a new instance of the <see cref="T:Triton.Web.View.Controls.Errors"/> class.  Creates a default error control with standard initializers
+            Gets the file system path to the application root directory.
             </summary>
         </member>
-        <member name="P:Triton.Web.View.Controls.Errors.ErrorList">
+        <member name="P:Triton.Web.Support.WebInfo.Controller">
             <summary>
-            Gets or sets ErrorList.
+            Gets the relative URL to the HTTP controller.
             </summary>
         </member>
-        <member name="P:Triton.Web.View.Controls.Errors.Class">
+        <member name="P:Triton.Web.Support.WebInfo.PagesPath">
             <summary>
-            Gets or sets the name of the CSS class used for rendering
-            the errors.
+            Gets the relative path from the application root to the directory
+            containing the pages.
             </summary>
         </member>
-        <member name="P:Triton.Web.View.Controls.Errors.ErrorTag">
+        <member name="P:Triton.Web.Support.WebInfo.ContentPath">
             <summary>
-            Gets or sets the delimiter to be used to separate error messages.
+            Gets the relative path from the application root to the directory
+            containing the page content files.
             </summary>
         </member>
-        <member name="P:Triton.Web.View.Controls.Errors.IncludeId">
+        <member name="P:Triton.Web.Support.WebInfo.DefaultLanguagePath">
             <summary>
-            Gets or sets the flag indicating whether or not the error ID is
-            to be included with the error message.
+            Gets the directory name of the default language.
             </summary>
         </member>
-        <member name="P:Triton.Web.View.Controls.Errors.IncludeFieldName">
+        <member name="P:Triton.Web.Support.WebInfo.ApplicationVariables">
             <summary>
-            Gets or sets the flag indicating whether or not the field name is
-            to be appended to the error message.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.MinLevel">
-            <summary>
-            Gets or sets the minimum error level to be displayed.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.MaxLevel">
-            <summary>
-            Gets or sets the maximum error level to be displayed.
+            Represents application-level variables, that would typically be stored in Application["key"].
             </summary>
         </member>
         <member name="T:Triton.Web.View.Controls.ImgBase">
@@ -144,41 +193,6 @@
             The name attribute of the Image node in the page's content xml file to use.
             </summary>
         </member>
-        <member name="T:Triton.Web.View.Controls.Img">
-            <summary>
-            Renders an image tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Img.#ctor">
-            <summary>
-            Calls the base constructor to render Img tag on the page.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.Css">
-            <summary>
-            Builds <c>link</c> tags for Css stylesheets.  Pulls all css from the page's 
-            ContentXml and renders them. 
-            </summary>
-        </member>
-        <member name="F:Triton.Web.View.Controls.CssBase.attributesToExclude">
-            <summary>
-            List of attribute names NOT to be copied from the 
-            definition in the XML file into the .net image control 
-            also contains the defaulted attributes
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.CssBase.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="M:Triton.Web.View.Controls.CssBase.RenderEndTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
-        </member>
         <member name="F:Triton.Web.View.Controls.Navigation.attributesToExclude">
             <summary>
             List of attribute names NOT to be copied from the 
@@ -209,6 +223,21 @@
         <member name="P:Triton.Web.View.Controls.Navigation.ActivePageTag">
             <summary>
             Use this property to overwrite the default SPAN html tag of the items for the page being viewed.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.ImgInput">
+            <summary>
+            Renders an input tag of type image drawing tag values from Content xml .
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.#ctor">
+            <summary>
+            Calls base to render the input tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Calls base to render the standard attributes then adds image input tag attributes.
             </summary>
         </member>
         <member name="T:Triton.Web.View.Controls.Pagination">
@@ -322,51 +351,24 @@
             Comma seperated list of request Parameters to be removed from the url
             </summary>
         </member>
-        <member name="T:Triton.Web.Support.WebInfo">
+        <member name="F:Triton.Web.View.Controls.CssBase.attributesToExclude">
             <summary>
-            <c>WebInfo</c> is a convenience class for getting information about the environment.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="F:Triton.Web.Support.WebInfo.applicationVariables">
-            <summary>
-            Represents application-level variables typically referenced by Application["key"].
-            This exists due to the need to reference HttpContext.Current in global.asax.cs' 
-            Application_Start method, which does not exist at that time if a page hasn't been
-            referenced yet.
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net image control 
+            also contains the defaulted attributes
             </summary>
         </member>
-        <member name="P:Triton.Web.Support.WebInfo.BasePath">
+        <member name="M:Triton.Web.View.Controls.CssBase.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
             <summary>
-            Gets the file system path to the application root directory.
+            Needed to override the span tag rendering of the web control, with nothing.
             </summary>
+            <param name="writer"></param>
         </member>
-        <member name="P:Triton.Web.Support.WebInfo.Controller">
+        <member name="M:Triton.Web.View.Controls.CssBase.RenderEndTag(System.Web.UI.HtmlTextWriter)">
             <summary>
-            Gets the relative URL to the HTTP controller.
+            Needed to override the span tag rendering of the web control, with nothing.
             </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.PagesPath">
-            <summary>
-            Gets the relative path from the application root to the directory
-            containing the pages.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.ContentPath">
-            <summary>
-            Gets the relative path from the application root to the directory
-            containing the page content files.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.DefaultLanguagePath">
-            <summary>
-            Gets the directory name of the default language.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.ApplicationVariables">
-            <summary>
-            Represents application-level variables, that would typically be stored in Application["key"].
-            </summary>
+            <param name="writer"></param>
         </member>
         <member name="T:Triton.Web.View.WebPage">
             <summary>
@@ -542,79 +544,77 @@
             
             </summary>
         </member>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String)">
+        <member name="T:Triton.Web.View.Controls.Img">
             <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-        </member>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            You set the section name, but site is automaticaly set.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-            <param name="section"></param>
-        </member>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String,System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            Specify the section name and site.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-            <param name="section"></param>
-            <param name="site"></param>
-        </member>
-        <member name="P:Triton.Web.View.WebMasterPage.MasterPageSection">
-            <summary>
-            Gets the masterpage section name, since the masterpage could be in a different section.
+            Renders an image tag.
             </summary>
         </member>
-        <member name="T:Triton.Web.View.Controls.ImgInput">
+        <member name="M:Triton.Web.View.Controls.Img.#ctor">
             <summary>
-            Renders an input tag of type image drawing tag values from Content xml .
+            Calls the base constructor to render Img tag on the page.
             </summary>
         </member>
-        <member name="M:Triton.Web.View.Controls.ImgInput.#ctor">
+        <member name="T:Triton.Web.View.Controls.Css">
             <summary>
-            Calls base to render the input tag.
+            Builds <c>link</c> tags for Css stylesheets.  Pulls all css from the page's 
+            ContentXml and renders them. 
             </summary>
         </member>
-        <member name="M:Triton.Web.View.Controls.ImgInput.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Calls base to render the standard attributes then adds image input tag attributes.
+        <member name="T:Triton.Web.View.Controls.Errors">
+            <summary> Creates markup for errors if they exists. wraps each error in a tag supplied by the control definition
             </summary>
         </member>
-        <member name="T:Triton.Web.View.Controls.Copy">
+        <member name="F:Triton.Web.View.Controls.Errors.minLevel">
             <summary>
-            Renders a piece of Copy from a matched node in the ContentXml file.
+            The minimum error level to display.
             </summary>
         </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderContents(System.Web.UI.HtmlTextWriter)">
+        <member name="F:Triton.Web.View.Controls.Errors.maxLevel">
             <summary>
-            Finds the Copy in the xml file and renders it to the page.
+            The maximum error level to display.
             </summary>
-            <param name="writer"></param>
         </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+        <member name="M:Triton.Web.View.Controls.Errors.#ctor">
             <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
+            Initializes a new instance of the <see cref="T:Triton.Web.View.Controls.Errors"/> class.  Creates a default error control with standard initializers
             </summary>
-            <param name="writer"></param>
         </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+        <member name="P:Triton.Web.View.Controls.Errors.ErrorList">
             <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
+            Gets or sets ErrorList.
             </summary>
-            <param name="writer"></param>
         </member>
-        <member name="P:Triton.Web.View.Controls.Copy.Name">
+        <member name="P:Triton.Web.View.Controls.Errors.Class">
             <summary>
-            The name of the Copy element from the xml the control is to process.
+            Gets or sets the name of the CSS class used for rendering
+            the errors.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.ErrorTag">
+            <summary>
+            Gets or sets the delimiter to be used to separate error messages.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.IncludeId">
+            <summary>
+            Gets or sets the flag indicating whether or not the error ID is
+            to be included with the error message.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.IncludeFieldName">
+            <summary>
+            Gets or sets the flag indicating whether or not the field name is
+            to be appended to the error message.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.MinLevel">
+            <summary>
+            Gets or sets the minimum error level to be displayed.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.MaxLevel">
+            <summary>
+            Gets or sets the maximum error level to be displayed.
             </summary>
         </member>
     </members>
