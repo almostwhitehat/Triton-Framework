@@ -36,6 +36,7 @@ namespace Triton.Controller.Command
 
 		private const string STATE_PARAM_NAME = "st";
 
+
 		#region Command Members
 
 		/// <summary>
@@ -48,50 +49,50 @@ namespace Triton.Controller.Command
 		{
 			string startEvent = request[EVENT_PARAM_NAME].ToLower();
 
-			//  get the starting start for the request
+					//  get the starting start for the request
 			IState startState = this.GetStartState(request);
 			ContentProvider contentProvider = null;
 
 			try {
 				string content = null;
-				//  make the context for the request
+						//  make the context for the request
 				TransitionContext context = new TransitionContext(startState, startEvent, ((PageState)startState).Site, request);
-				//  make a ContentProvider for the request
+						//  make a ContentProvider for the request
 				contentProvider = ContentProviderFactory.Make(context);
-				//  get a Publisher from the ContentProvider
+						//  get a Publisher from the ContentProvider
 				Publisher publisher = contentProvider.GetPublisher();
 
-				//  assume we need to perform the transition(s).  if published
-				//  content is sucessfully used, we'll set this to false.
+						//  assume we need to perform the transition(s).  if published
+						//  content is sucessfully used, we'll set this to false.
 				bool doTransitions = true;
 
-				//  make sure we got a publisher
+						//  make sure we got a publisher
 				if (publisher != null) {
-					//  generate a publish key and remember it in the context
+							//  generate a publish key and remember it in the context
 					context.PublishKey = publisher.MakeKey(context);
 
-					//  determine if we have publihsed content to fulfill this request
+							//  determine if we have publihsed content to fulfill this request
 					if (publisher.IsPublished(context.PublishKey)) {
-						//  if so, get it
+								//  if so, get it
 						content = contentProvider.GetPublishedContent(context);
 
-						//  if there is no published content, do the transitions
+								//  if there is no published content, do the transitions
 						if (content != null) {
 							doTransitions = false;
 						}
 					}
 				}
 
-				//  if we didn't use published content, we need to generate the content
-				//  by performing the transitions
+						//  if we didn't use published content, we need to generate the content
+						//  by performing the transitions
 				if (doTransitions) {
 					//  put the TransitionContext into the request context so Page can get it
 					request.Items["transitionContext"] = context;
 
-					//  perform the transition(s)
+							//  perform the transition(s)
 					StateTransitioner transitioner = new StateTransitioner();
 					IState targetState = transitioner.DoTransition(startState, startEvent, context);
-					//  target state should be an EndState
+							//  target state should be an EndState
 					if (targetState is EndState) {
 						context.EndState = targetState;
 						request.Items["targetStateId"] = targetState.Id;
@@ -104,7 +105,7 @@ namespace Triton.Controller.Command
 							             string.IsNullOrEmpty(targetState.Name) ? "" : " [" + targetState.Name + "]"));
 					}
 
-					//  save the ending state to the session and cookie
+							//  save the ending state to the session and cookie
 					try {
 						HttpSessionState session = HttpContext.Current.Session;
 						if (session != null) {
@@ -116,8 +117,8 @@ namespace Triton.Controller.Command
 						request.SetResponseCookie(new MvcCookie(CUR_STATE_NAME, targetState.Id.ToString()));
 					} catch {}
 
-					//  determine if the content generated to fulfill the request should
-					//  be published for use by future requests
+							//  determine if the content generated to fulfill the request should
+							//  be published for use by future requests
 					if ((publisher != null) && contentProvider.ShouldBePublished(context)) {
 						content = contentProvider.RenderPublishContent(context);
 // TODO: what if "content" is not string??
@@ -139,7 +140,7 @@ namespace Triton.Controller.Command
 			} catch (Exception e) {
 				LogManager.GetCurrentClassLogger().Error(
 					errorMessage => errorMessage("Could not execute the command. "), e);
-				//since we cant do anything about this here, rethrow.
+						//since we cant do anything about this here, rethrow.
 				throw;
 			} finally {
 				if (contentProvider != null) {
@@ -149,6 +150,7 @@ namespace Triton.Controller.Command
 		}
 
 		#endregion
+
 
 		/// <summary>
 		/// Determines whether or not the system should be forced to use dynamic content

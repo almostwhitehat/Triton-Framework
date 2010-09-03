@@ -4,242 +4,6 @@
         <name>Triton.Extensions.Web</name>
     </assembly>
     <members>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-        </member>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            You set the section name, but site is automaticaly set.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-            <param name="section"></param>
-        </member>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String,System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            Specify the section name and site.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-            <param name="section"></param>
-            <param name="site"></param>
-        </member>
-        <member name="P:Triton.Web.View.WebMasterPage.MasterPageSection">
-            <summary>
-            Gets the masterpage section name, since the masterpage could be in a different section.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.BaseControl.GetPath(Triton.Web.View.Controls.BaseControl.PathType,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
-            <summary>
-            Standard way of creating file paths in the Framework 
-            </summary>
-            <param name="type">Use ConfigurableControl.PathType enum</param>
-            <param name="filePath">path to process</param>
-            <param name="global">non-site specific path</param>
-            <param name="useSite">site specific path</param>
-            <param name="useDefault"></param>
-            <param name="useSection"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Triton.Web.View.Controls.BaseControl.PathType">
-            <summary>
-            Path Type of the control.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.Copy">
-            <summary>
-            Renders a piece of Copy from a matched node in the ContentXml file.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor">
-            <summary>
-            Calls the base constructor to render the specified string tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor(System.String)">
-            <summary>
-            Calls the base constructor to render the specified string tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor(System.Web.UI.HtmlTextWriterTag)">
-            <summary>
-            Calls the base constructor to render the specified HtmlTextWriterTag tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor">
-            <summary>
-            Calls the base constructor to render the specified string tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor(System.String)">
-            <summary>
-            Calls the base constructor to render the specified string tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor(System.Web.UI.HtmlTextWriterTag)">
-            <summary>
-            Calls the base constructor to render the specified HtmlTextWriterTag tag.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.XmlBasedControl.XmlNodeToRender">
-            <summary>
-            The xml node that contains all the information about the control.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderContents(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Finds the Copy in the xml file and renders it to the page.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderEndTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Copy.Name">
-            <summary>
-            The name of the Copy element from the xml the control is to process.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.Support.WebInfo">
-            <summary>
-            <c>WebInfo</c> is a convenience class for getting information about the environment.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="F:Triton.Web.Support.WebInfo.applicationVariables">
-            <summary>
-            Represents application-level variables typically referenced by Application["key"].
-            This exists due to the need to reference HttpContext.Current in global.asax.cs' 
-            Application_Start method, which does not exist at that time if a page hasn't been
-            referenced yet.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.BasePath">
-            <summary>
-            Gets the file system path to the application root directory.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.Controller">
-            <summary>
-            Gets the relative URL to the HTTP controller.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.PagesPath">
-            <summary>
-            Gets the relative path from the application root to the directory
-            containing the pages.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.ContentPath">
-            <summary>
-            Gets the relative path from the application root to the directory
-            containing the page content files.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.DefaultLanguagePath">
-            <summary>
-            Gets the directory name of the default language.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.Support.WebInfo.ApplicationVariables">
-            <summary>
-            Represents application-level variables, that would typically be stored in Application["key"].
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.ImgBase">
-            <summary>
-            Renders an image-based tag using a combination of the page's xml and tag properties from the page.
-            </summary>
-        </member>
-        <member name="F:Triton.Web.View.Controls.ImgBase.attributesToExclude">
-            <summary>
-            List of attribute names NOT to be copied from the 
-            definition in the XML file into the .net image control 
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ImgBase.#ctor(System.String)">
-            <summary>
-            Calls the base constructor to render the specified string tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ImgBase.#ctor(System.Web.UI.HtmlTextWriterTag)">
-            <summary>
-            Calls the base constructor to render the specified HtmlTextWriterTag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ImgBase.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Renders the controls attributes from the XmlNode.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.ImgBase.Name">
-            <summary>
-            The name attribute of the Image node in the page's content xml file to use.
-            </summary>
-        </member>
-        <member name="F:Triton.Web.View.Controls.Navigation.attributesToExclude">
-            <summary>
-            List of attribute names NOT to be copied from the 
-            definition in the XML file into the .net control 
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Navigation.#ctor">
-            <summary>
-            Public Default Constructor
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Navigation.OnLoad(System.EventArgs)">
-            <summary>
-            Using OnLoad because the XML file will not be availiable till this time.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Navigation.Name">
-            <summary>
-            If you have more then one Navigation node in your xml, use this to target it.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Navigation.NoLinkTag">
-            <summary>
-            Use this property to overwrite the default EM html tag of the items that have no link.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Navigation.ActivePageTag">
-            <summary>
-            Use this property to overwrite the default SPAN html tag of the items for the page being viewed.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.ImgInput">
-            <summary>
-            Renders an input tag of type image drawing tag values from Content xml .
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ImgInput.#ctor">
-            <summary>
-            Calls base to render the input tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ImgInput.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Calls base to render the standard attributes then adds image input tag attributes.
-            </summary>
-        </member>
         <member name="T:Triton.Web.View.Controls.Pagination">
             <summary>
             Paging control to use on search result thumbnails.
@@ -350,25 +114,6 @@
             <summary>
             Comma seperated list of request Parameters to be removed from the url
             </summary>
-        </member>
-        <member name="F:Triton.Web.View.Controls.CssBase.attributesToExclude">
-            <summary>
-            List of attribute names NOT to be copied from the 
-            definition in the XML file into the .net image control 
-            also contains the defaulted attributes
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.CssBase.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="M:Triton.Web.View.Controls.CssBase.RenderEndTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
         </member>
         <member name="T:Triton.Web.View.WebPage">
             <summary>
@@ -544,6 +289,169 @@
             
             </summary>
         </member>
+        <member name="T:Triton.Web.View.Controls.ImgBase">
+            <summary>
+            Renders an image-based tag using a combination of the page's xml and tag properties from the page.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.BaseControl.GetPath(Triton.Web.View.Controls.BaseControl.PathType,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Standard way of creating file paths in the Framework 
+            </summary>
+            <param name="type">Use ConfigurableControl.PathType enum</param>
+            <param name="filePath">path to process</param>
+            <param name="global">non-site specific path</param>
+            <param name="useSite">site specific path</param>
+            <param name="useDefault"></param>
+            <param name="useSection"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Triton.Web.View.Controls.BaseControl.PathType">
+            <summary>
+            Path Type of the control.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor(System.String)">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor(System.Web.UI.HtmlTextWriterTag)">
+            <summary>
+            Calls the base constructor to render the specified HtmlTextWriterTag tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor(System.String)">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor(System.Web.UI.HtmlTextWriterTag)">
+            <summary>
+            Calls the base constructor to render the specified HtmlTextWriterTag tag.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.XmlBasedControl.XmlNodeToRender">
+            <summary>
+            The xml node that contains all the information about the control.
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.ImgBase.attributesToExclude">
+            <summary>
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net image control 
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgBase.#ctor(System.String)">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgBase.#ctor(System.Web.UI.HtmlTextWriterTag)">
+            <summary>
+            Calls the base constructor to render the specified HtmlTextWriterTag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgBase.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the controls attributes from the XmlNode.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.ImgBase.Name">
+            <summary>
+            The name attribute of the Image node in the page's content xml file to use.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.ImgInput">
+            <summary>
+            Renders an input tag of type image drawing tag values from Content xml .
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.#ctor">
+            <summary>
+            Calls base to render the input tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Calls base to render the standard attributes then adds image input tag attributes.
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.CssBase.attributesToExclude">
+            <summary>
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net image control 
+            also contains the defaulted attributes
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.CssBase.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.CssBase.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="T:Triton.Web.Support.WebInfo">
+            <summary>
+            <c>WebInfo</c> is a convenience class for getting information about the environment.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Web.Support.WebInfo.applicationVariables">
+            <summary>
+            Represents application-level variables typically referenced by Application["key"].
+            This exists due to the need to reference HttpContext.Current in global.asax.cs' 
+            Application_Start method, which does not exist at that time if a page hasn't been
+            referenced yet.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.BasePath">
+            <summary>
+            Gets the file system path to the application root directory.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.Controller">
+            <summary>
+            Gets the relative URL to the HTTP controller.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.PagesPath">
+            <summary>
+            Gets the relative path from the application root to the directory
+            containing the pages.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.ContentPath">
+            <summary>
+            Gets the relative path from the application root to the directory
+            containing the page content files.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.DefaultLanguagePath">
+            <summary>
+            Gets the directory name of the default language.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.ApplicationVariables">
+            <summary>
+            Represents application-level variables, that would typically be stored in Application["key"].
+            </summary>
+        </member>
         <member name="T:Triton.Web.View.Controls.Img">
             <summary>
             Renders an image tag.
@@ -558,6 +466,38 @@
             <summary>
             Builds <c>link</c> tags for Css stylesheets.  Pulls all css from the page's 
             ContentXml and renders them. 
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            You set the section name, but site is automaticaly set.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Specify the section name and site.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+            <param name="site"></param>
+        </member>
+        <member name="P:Triton.Web.View.WebMasterPage.MasterPageSection">
+            <summary>
+            Gets the masterpage section name, since the masterpage could be in a different section.
             </summary>
         </member>
         <member name="T:Triton.Web.View.Controls.Errors">
@@ -615,6 +555,66 @@
         <member name="P:Triton.Web.View.Controls.Errors.MaxLevel">
             <summary>
             Gets or sets the maximum error level to be displayed.
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.Navigation.attributesToExclude">
+            <summary>
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net control 
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Navigation.#ctor">
+            <summary>
+            Public Default Constructor
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Navigation.OnLoad(System.EventArgs)">
+            <summary>
+            Using OnLoad because the XML file will not be availiable till this time.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.Name">
+            <summary>
+            If you have more then one Navigation node in your xml, use this to target it.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.NoLinkTag">
+            <summary>
+            Use this property to overwrite the default EM html tag of the items that have no link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.ActivePageTag">
+            <summary>
+            Use this property to overwrite the default SPAN html tag of the items for the page being viewed.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Copy">
+            <summary>
+            Renders a piece of Copy from a matched node in the ContentXml file.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Finds the Copy in the xml file and renders it to the page.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Copy.Name">
+            <summary>
+            The name of the Copy element from the xml the control is to process.
             </summary>
         </member>
     </members>
