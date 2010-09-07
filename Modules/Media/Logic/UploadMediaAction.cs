@@ -26,6 +26,7 @@ namespace Triton.Media.Logic
 	// 09/09/2009	GV	Changed the Action interface to inherit from IAction
 	// 11/09/2009	KP	Added logic to resize an image on upload if user supplies the parameter in the request
 	//					parameter syntax = "resizeimage=true".
+	// 9/7/2010		SD	Changed file/directory path concatinations to use Path.Combine rather than "+".
 
 	#endregion
 
@@ -120,7 +121,7 @@ namespace Triton.Media.Logic
 
 			string webPath = this.GetFilePathSuffix(this.SavePathSuffix);
 
-			string filePath = WebInfo.BasePath + webPath;
+			string filePath = Path.Combine(WebInfo.BasePath, webPath);
 
 			Directory.CreateDirectory(filePath);
 
@@ -138,10 +139,10 @@ namespace Triton.Media.Logic
 						filter.ResizeHeight.Value);
 
 				fileName = Path.GetFileNameWithoutExtension(file.Name) + ".jpeg";
-				image.Save(filePath + fileName, ImageFormat.Jpeg);
+				image.Save(Path.Combine(filePath, fileName), ImageFormat.Jpeg);
 				
 			} else { 
-				file.SaveAs(filePath + fileName);
+				file.SaveAs(Path.Combine(filePath, fileName));
 			}
 
 			retMedia.File = new FileRecord {
