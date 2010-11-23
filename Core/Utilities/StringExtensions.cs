@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace Triton.Utilities
 {
+	#region History
+
+	// History:
+	//  11/23/10 - SD -	Added ToCamel extension method.
+
+	#endregion
+
 	///<summary>
 	/// Helper string extensions.
 	///</summary>
@@ -157,6 +164,30 @@ namespace Triton.Utilities
 			}
 
 			return vals.ToArray();
+		}
+
+
+		/// <summary>
+		/// Extension method to format a string as camel case -- with the first letter
+		/// of each "word" upper case and the remaining letters lower case.
+		/// </summary>
+		/// <param name="inputStr">The string to convert to camel case.</param>
+		/// <param name="delimiter">The delimiter to define the words in the string.</param>
+		/// <returns>The given string converted to camel case.</returns>
+		public static string ToCamel(
+			this string inputStr,
+			char delimiter)
+		{
+					//  separate the string into "words" based on the given delimiter
+			string[] words = inputStr.ToLower().Split(delimiter);
+
+					//  capitalize each word
+			for (int k = words.Length - 1; k >= 0; k--) {
+				words[k] = StringUtilities.Capitalize(words[k]);
+			}
+
+					//  put the capitalized words back together into a single string
+			return string.Join(delimiter.ToString(), words);
 		}
 	}
 }

@@ -1722,6 +1722,15 @@
             <param name="treatAsEmpty">Character combination to ignore.</param>
             <returns>Array of <c>Guid</c></returns>
         </member>
+        <member name="M:Triton.Utilities.StringExtensions.ToCamel(System.String,System.Char)">
+            <summary>
+            Extension method to format a string as camel case -- with the first letter
+            of each "word" upper case and the remaining letters lower case.
+            </summary>
+            <param name="inputStr">The string to convert to camel case.</param>
+            <param name="delimiter">The delimiter to define the words in the string.</param>
+            <returns>The given string converted to camel case.</returns>
+        </member>
         <member name="T:Triton.Support.Mail.MissingParamException">
             <summary>
             The exception that is thrown when there is an attempt to send out email 
