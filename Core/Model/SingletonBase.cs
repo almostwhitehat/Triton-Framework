@@ -13,6 +13,12 @@ using Triton.Model.Dao;
 
 namespace Triton.Model {
 
+#region History
+
+// History:
+//  11/30/10 - SD -	Added Exists property.
+
+#endregion
 
 // TODO: timed automatic refresh, sorting?, background refresh
 /// <summary>
@@ -94,6 +100,17 @@ public class SingletonBase<TSingleton, TElement, TKey> : IEnumerable
 			}
 
 			return instance;
+		}
+	}
+
+
+	/// <summary>
+	/// Indicates whether or not the singleton instance exists.
+	/// </summary>
+	public static bool Exists
+	{
+		get {
+			return (instance != null);
 		}
 	}
 

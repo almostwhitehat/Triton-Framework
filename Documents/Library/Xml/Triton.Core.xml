@@ -3715,6 +3715,11 @@
             file is used.
             </summary>
         </member>
+        <member name="P:Triton.Model.SingletonBase`3.Exists">
+            <summary>
+            Indicates whether or not the singleton instance exists.
+            </summary>
+        </member>
         <member name="T:Triton.Model.SingletonBase`3.GetKeyDelegate">
             <summary>
             Defines the delegate to get the key for an element.
@@ -5380,6 +5385,306 @@
             </summary>
             <param name="message"><c>LogMessage</c> that is to be sent to the data source</param>
             <returns><c>bool</c> indicating if the <c>LogMessage</c> is to be sent to the data source</returns>
+        </member>
+        <member name="T:Triton.Logic.CompareAction">
+            <summary>
+            Action to compare the value of a request item to a given value.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>equal</c> - the object/property's value is equal to the given value.<br/>
+            <c>lessthan</c> - the object/property's value is less than the given value.<br/>
+            <c>greaterthan</c> - the object/property's value is greater than the given value.<br/>
+            <c>novalue</c> - a property value in the object's property path was null.<br/>
+            <c>error</c> - an error occurred while attempting to compare object's value.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>7/12/10</created>
+        </member>
+        <member name="M:Triton.Logic.CompareAction.#ctor">
+            <summary>
+            Default constructor to set the property defaults.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing the object
+            to use to compare against the given value. The object itself is used for
+            the comparison if no <c>ObjectPropertyNameIn</c> is provided, or a property
+            (or nested property) of the object if <c>ObjectPropertyNameIn</c> is provided.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property of the object identified by the
+            <c>ObjectItemNameIn</c> attribute to be compared. The property may be of a
+            nested object where <c>ObjectPropertyNameIn</c> would be the path of the
+            desired property, for example, PropertyA.PropertyB.PropertyC. If
+            <c>ObjectPropertyNameIn</c> is not provided, the object identified by
+            <c>ObjectItemNameIn</c> is used directly.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.CompareValueIn">
+            <summary>
+            Gets or sets the value to compare the object/property value against.
+            This may be the name of a request parameter specified by placing the
+            parameter name within [ ], for example, <c>[paramName]</c>.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.Unwrap">
+            <summary>
+            Gets or sets the flag to indicate whether or not to "unwrap" an object
+            from a <c>SearchResult</c> if encapsulated within one.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.RetrieveObjectFromSessionAction">
+            <summary>
+            Action to retrieve an object from session.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>ok</c> - successfully got the object from session.<br/>
+            <c>novalue</c> - no object was found in session for the given name.<br/>
+            <c>error</c> - an error occurred while attempting to get the object from session.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>3/11/10</created>
+        </member>
+        <member name="P:Triton.Logic.RetrieveObjectFromSessionAction.ObjectItemNameOut">
+            <summary>
+            Gets or sets the name in Request.Items to place the the object retrieved.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.RetrieveObjectFromSessionAction.SessionName">
+            <summary>
+            Gets or sets the name of the object in session to retrieve.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.EqualAction">
+            <summary>
+            Action to compare the values of two request parameters or items.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>yes</c> - the two objects given to compare are equal.<br/>
+            <c>no</c> - the two objects given to compare are not equal.<br/>
+            <c>error</c> - an error occurred while attempting to compare the objects.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>6/30/10</created>
+        </member>
+        <member name="P:Triton.Logic.EqualAction.ParamName1In">
+            <summary>
+            Gets or sets the name of the first request parameter to compare.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.EqualAction.ParamName2In">
+            <summary>
+            Gets or sets the name of the second request parameter to compare.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.EqualAction.ItemName1In">
+            <summary>
+            Gets or sets the name of the first request item to compare.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.EqualAction.ItemName2In">
+            <summary>
+            Gets or sets the name of the second request item to compare.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.EqualAction.CompareValueIn">
+            <summary>
+            Gets or sets the value to compare to.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.GetObjectPropertyAsItemAction">
+            <summary>
+            Gets a property of an object in Request.Items and stores the property
+            value back to Request.Items.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>ok</c> - the property value was successfully retrieved and stored in Request.Items.<br/>
+            <c>novalue</c> - there was no value for the property.<br/>
+            <c>error</c> - an error occurred while attempting to get the item's property.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>3/16/10</created>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items to get the
+            property from.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property to get.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ItemNameOut">
+            <summary>
+            Gets or sets the name in Request.Items into which the
+            property value is stored.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.GetObjectPropertyAsParameterAction">
+            <summary>
+            Gets a property of an object in Request.Items and sets a request parameter
+            to the property value.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>ok</c> - the property value was successfully retrieved and stored in a parameter.<br/>
+            <c>novalue</c> - there was no value for the property.<br/>
+            <c>error</c> - an error occurred while attempting to get the item's property.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>6/30/10</created>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items to get the
+            property from.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property to get.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ParameterNameOut">
+            <summary>
+            Gets or sets the name of the request parameter to store the
+            property value in.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.ResetSingletonAction">
+            <summary>
+            Resets a singleton, forcing it to re-initialize on its next usage.
+            </summary>
+            <remarks>
+            This action is designed for SingletonBase singletons but will also work
+            with other singletons that meet the following criteria:
+            <ol>
+            <li>Must have a static bool Exists property that indicates if the instance of
+            	the singleton has be instantiated.</li>
+            <li>Must have a reset method to force re-initialization of the singleton.</li>
+            </ol>
+            <para>Returned events:</para>
+            <c>ok</c> - the singleton was successfully reset.<br/>
+            <c>error</c> - an error occurred while attempting to reset the singleton.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>11/30/10</created>
+        </member>
+        <member name="P:Triton.Logic.ResetSingletonAction.SingletonNameIn">
+            <summary>
+            Gets or sets the fully qualified name(s) of the singleton(s) to reset.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.ResetSingletonAction.SingletonNameParamIn">
+            <summary>
+            Gets or sets the name of the request parameter containing the fully
+            qualified name(s) of the singleton(s) to reset.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.ResetSingletonAction.ResetMethodNameIn">
+            <summary>
+            Gets or sets the name of the singleton's reset method.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.SetObjectPropertyAction">
+            <summary>
+            Action to set the property of an object.
+            </summary>
+            <remarks>
+            The value to set the property to may be specified in one of 3 ways:
+            <ol>
+            <li>The value of a request parameter.</li>
+            <li>Another object from Request.Items.</li>
+            <li>A fixed value.</li>
+            </ol>
+            <para>Returned events:</para>
+            <c>ok</c> - the property of the object was successfully set.<br/>
+            <c>error</c> - an error occurred processing the action.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>6/28/10</created>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing the
+            object to set the property of.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property of the object to set.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueParamNameIn">
+            <summary>
+            Gets or set the name of the request parameter containing the
+            value to set the property to.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items to set
+            the property value to.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueIn">
+            <summary>
+            Gets or sets a fixed value to set the property to.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.CreateObjects">
+            <summary>
+            Gets or sets the flag indicating whether or not the action should
+            create intermediate objects in the path to the property to be set.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.Unwrap">
+            <summary>
+            Gets or sets the flag indicating whether a value coming from Request.Items should be
+            unwrapped from an enclosing <c>SearchResult</c> if it is in one. This is only valid
+            when using the <c>ValueItemNameIn</c> option.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.StoreObjectToSessionAction">
+            <summary>
+            Action to store an object to session.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>ok</c> - successfully stored the object in session.<br/>
+            <c>novalue</c> - no object was found in Request.Items for the given name.<br/>
+            <c>error</c> - an error occurred while attempting to store the object to session.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>3/11/10</created>
+        </member>
+        <member name="P:Triton.Logic.StoreObjectToSessionAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing the object
+            to place into session.  If wrapped in a SearchResult, the action unwraps the object.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.StoreObjectToSessionAction.SessionName">
+            <summary>
+            Gets or sets the name under which the object is stored in session.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.StoreObjectToSessionAction.ExtractFromSearchResult">
+            <summary>
+            Gets or sets the flag to indicate if the object stored in session
+            should be extracted from a SearchResult if embedded in such, or
+            store "as is" from Items (keeping the SearchResult if present).
+            Default is <c>false</c>, keeping the SearchResult if present.
+            </summary>
         </member>
     </members>
 </doc>

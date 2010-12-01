@@ -112,7 +112,7 @@ namespace Triton.Utilities.Reflection
 		{
 			if (obj != null) {
 				PropertyInfo propInfo =
-					propertyType == null
+						(propertyType == null)
 						? obj.GetType().GetProperty(propertyName)
 						: obj.GetType().GetProperty(propertyName, propertyType);
 
@@ -157,7 +157,9 @@ namespace Triton.Utilities.Reflection
 			string methodName,
 			params Type[] types)
 		{
-			MethodInfo meth = obj.GetType().GetMethod(methodName, types);
+			MethodInfo meth = (types == null)
+					? obj.GetType().GetMethod(methodName)
+					: obj.GetType().GetMethod(methodName, types);
 
 			return meth;
 		}
@@ -177,17 +179,21 @@ namespace Triton.Utilities.Reflection
 			params object[] parms)
 		{
 			object retObject = null;
-			Type[] types = new Type[parms.Length];
+			Type[] types = null;
+			
+			if (parms != null) {
+				types = new Type[parms.Length];
 
-			//  get the types of the given parameters
-			for (int k = 0; k < parms.Length; k++) {
-				types[k] = parms[k].GetType();
+						//  get the types of the given parameters
+				for (int k = 0; k < parms.Length; k++) {
+					types[k] = parms[k].GetType();
+				}
 			}
 
-			//  get the method
+					//  get the method
 			MethodInfo meth = GetMethod(obj, methodName, types);
 
-			//  invoke the method if it exists
+					//  invoke the method if it exists
 			if (meth != null) {
 				retObject = meth.Invoke(obj, parms);
 			}

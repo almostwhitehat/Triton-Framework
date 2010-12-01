@@ -166,6 +166,26 @@
             Overloaded AccountsItemNameOut so that the state's attribute can match the action "Account".
             </summary>
         </member>
+        <member name="T:Triton.Membership.Logic.GetAccountIdAction">
+            <summary>
+            Builds a string concatenated list of account id's from the account in the request.
+            </summary>
+        </member>
+        <member name="M:Triton.Membership.Logic.GetAccountIdAction.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetAccountIdAction.AccountItemNameIn">
+            <summary>
+            The account item name to retrieve from the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetAccountIdAction.AccountIdParamNameOut">
+            <summary>
+            String parameter name to place the account id in the request.
+            </summary>
+        </member>
         <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.ProcessValue(System.String,System.String)">
             <summary>
             Updates the value of the attribute. Toggles the value if attribute is of type CSV.

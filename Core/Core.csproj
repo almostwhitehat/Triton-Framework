@@ -68,6 +68,14 @@
     <Compile Include="Controller\Config\SitesConfig.cs" />
     <Compile Include="Controller\ControllerConfig.cs" />
     <Compile Include="Controller\StateMachine\StateInfo.cs" />
+    <Compile Include="Logic\CompareAction.cs" />
+    <Compile Include="Logic\EqualAction.cs" />
+    <Compile Include="Logic\GetObjectPropertyAsItemAction.cs" />
+    <Compile Include="Logic\GetObjectPropertyAsParameterAction.cs" />
+    <Compile Include="Logic\ResetSingletonAction.cs" />
+    <Compile Include="Logic\RetrieveObjectFromSessionAction.cs" />
+    <Compile Include="Logic\SetObjectPropertyAction.cs" />
+    <Compile Include="Logic\StoreObjectToSessionAction.cs" />
     <Compile Include="Support\Error\TritonErrorDictionary.cs" />
     <Compile Include="Support\Request\Extensions.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
