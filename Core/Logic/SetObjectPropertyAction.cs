@@ -118,6 +118,18 @@ public class SetObjectPropertyAction : IAction
 	}
 
 
+	/// <summary>
+	/// Gets or sets the flag indicating whether a value coming from Request.Items should be
+	/// unwrapped from an enclosing <c>SearchResult</c> as the <c>SearchResult.Items</c> array
+	/// if it is in one. This is only valid when using the <c>ValueItemNameIn</c> option.
+	/// </summary>
+	public bool UnwrapAsArray
+	{
+		get;
+		set;
+	}
+
+
 	#region Action Members
 
 	public string Execute(
@@ -184,13 +196,20 @@ public class SetObjectPropertyAction : IAction
 			} else if (!string.IsNullOrEmpty(ValueItemNameIn)) {
 				value = request.GetRequestItem<object>(ValueItemNameIn, true);
 
-				if (Unwrap && value.GetType().Name.StartsWith("SearchResult")) {
-					value = ReflectionUtilities.GetPropertyValue(value, "Items");
+						//  if the item from the request is wrapped in a "SearchResult"
+						//  and we're instructed to unwrap it, get the first item from 
+						//  SearchResult.Items, or the SearchResult.Items array
+				if (value.GetType().Name.StartsWith("SearchResult")) {
+					if (Unwrap) {
+						value = ((object[])ReflectionUtilities.GetPropertyValue(value, "Items")).GetValue(0);
+					} else if (UnwrapAsArray) {
+						value = ReflectionUtilities.GetPropertyValue(value, "Items");
+					}
 				}
 			}
 
 			PropertyInfo propertyInfo = ReflectionUtilities.GetProperty(obj, path[path.Length - 1]);
-			if ((value == null) || (propertyInfo.PropertyType == value.GetType())) {
+			if ((value == null) || (propertyInfo.PropertyType == value.GetType()) || propertyInfo.PropertyType.IsAssignableFrom(value.GetType())) {
 				ReflectionUtilities.SetPropertyValue(obj, path[path.Length - 1], value);
 			} else {
 				NameValueCollection nvc = new NameValueCollection();
