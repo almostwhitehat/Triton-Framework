@@ -15,8 +15,11 @@ namespace Triton.Controller {
 // 09/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
 // 11/16/2009	GV	Added a check for not executing if the target page is null, added throw in GetPublishedContent
 // 12/01/2009	GV	Changed the pageXmlFile string to come from CoreItemNames.
-// 9/3/2010		SD	Added catch for ThreadAbortException when transferring to a published page to
+//   9/3/2010	SD	Added catch for ThreadAbortException when transferring to a published page to
 //					ignore the ThreadAbortException caused by Transfer.
+//  1/31/2011	SD	Updated GetPublisher(TransitionContext) to get the name of the publisher from the
+//					"publisher" attribute of the ContentProvider registration in config file, rather
+//					than be hard-coded to "html".
 
 #endregion
 
@@ -31,6 +34,7 @@ public class HtmlContentProvider : ContentProvider
 	//  ?? Do we want to keep a publisher associated with the
 	//  Provider, or get one from the forthcoming pool each time?
 	protected Publisher publisher;
+
 
 	#region ContentProvider Members
 
@@ -103,7 +107,7 @@ public class HtmlContentProvider : ContentProvider
 		PublishConfigSection config = ConfigurationManager.GetSection(
 		                              	"controllerSettings/publishing") as PublishConfigSection;
 
-		//  is the EndState a PublishableState and is publish set to true
+				//  is the EndState a PublishableState and is publish set to true
 		return (config.Publish && (context.EndState is PublishableState) && ((PublishableState)context.EndState).Publish);
 	}
 
@@ -157,7 +161,7 @@ public class HtmlContentProvider : ContentProvider
 			LogManager.GetCurrentClassLogger().Error(
 				errorMessage => errorMessage("RenderContent: "), e);
 
-			//rethrow the error so that the application error handler can handle it
+					//rethrow the error so that the application error handler can handle it
 			throw;
 		}
 
@@ -190,6 +194,7 @@ public class HtmlContentProvider : ContentProvider
 
 	#endregion
 
+
 	/// <summary>
 	/// Gets a <b>Publisher</b> for the <b>HtmlContentProvider</b>.
 	/// </summary>
@@ -198,8 +203,29 @@ public class HtmlContentProvider : ContentProvider
 	private Publisher GetPublisher(
 		TransitionContext context)
 	{
+				// TODO: name shouldn't be hard coded here
+		string name = "html";
+
 		if (this.publisher == null) {
-			this.publisher = Publisher.GetPublisher("html");
+					//  get the settings from config file
+			ControllerConfigSection config = ConfigurationManager.GetSection(
+					"controllerSettings/content") as ControllerConfigSection;
+
+					//  make sure we have the proper config info
+			if (config == null) {
+				throw new ConfigurationErrorsException("Load of controllerSettings/content config section failed.");
+			}
+			if (config.ContentProviders[name] == null) {
+				throw new ConfigurationErrorsException(
+					string.Format("No contentProvider found in confg for '{0}'.", name));
+			}
+
+					//  get the name of the publisher
+			string publisherName = config.ContentProviders[name].Publisher;
+
+			if (!string.IsNullOrEmpty(publisherName)) {
+				this.publisher = Publisher.GetPublisher(publisherName);
+			}
 		}
 
 		return this.publisher;
