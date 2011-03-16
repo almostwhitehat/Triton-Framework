@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Common.Logging;
 using Triton.Controller;
 using Triton.Controller.Action;
+using Triton.Controller.Request;
 using Triton.Logic.Support;
 using Triton.Support.Error;
 using Triton.Support.Request;
@@ -12,8 +14,10 @@ namespace Triton.Logic
 	#region History
 
 	// History:
-	// 09/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
-	// 11/12/2009	GV	Added subclass of events, for use for returning events.
+	//  09/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
+	//  11/12/2009	GV	Added subclass of events, for use for returning events.
+	//   3/16/2011	SD	Added support for replacing of placeholders in the message
+	//					with the value of like-named request parameters.
 
 	#endregion
 
@@ -24,35 +28,50 @@ namespace Triton.Logic
 	/// <remarks>
 	/// Action Parameters: <br/>
 	/// <b>ErrorId</b> - the error id to be inserted itno the error collection. <br/>
+	/// <b>ErrorsItemNameOut</b> - the name in Request.Items to put the ErrorList into. <br/>
 	/// Returned events:<br/>
 	/// <b>ok</b> - The error was successfully added/set <br/>
 	/// <b>error</b> - an error occurred while setting the error message<br/>
 	/// </remarks>
-	/// <summary> Add an error object into the Errors collection on the Request.Items collection
-	/// </summary>
 	public class SetErrorAction : IAction
 	{
+
 		public SetErrorAction()
 		{
-			this.ErrorsItemNameIn = CoreItemNames.DEFAULT_ERRORS_LIST;
-			this.ErrorsItemNameOut = CoreItemNames.DEFAULT_ERRORS_LIST;
+			ErrorsItemNameIn = CoreItemNames.DEFAULT_ERRORS_LIST;
+			ErrorsItemNameOut = CoreItemNames.DEFAULT_ERRORS_LIST;
 		}
 
 
 		/// <summary>
 		/// Gets or sets ErrorId for the Error to be added.
 		/// </summary>
-		public string ErrorId { get; set; }
+		public string ErrorId
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Errors collection item name to retrieve.
 		/// </summary>
-		public string ErrorsItemNameIn { get; set; }
+		public string ErrorsItemNameIn
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Errors collection item name to append the errors.
 		/// </summary>
-		public string ErrorsItemNameOut { get; set; }
+		public string ErrorsItemNameOut
+		{
+			get;
+			set;
+		}
+
 
 		#region IAction Members
 
@@ -69,28 +88,43 @@ namespace Triton.Logic
 			TransitionContext context)
 		{
 			string retEvent = Events.Error;
+			MvcRequest request = context.Request;
 
 			try {
-				//if error id was not set use the current state id.
-				if (string.IsNullOrEmpty(this.ErrorId)) {
-					this.ErrorId = context.CurrentState.Id.ToString();
+						//  if error id was not set use the current state id.
+				if (string.IsNullOrEmpty(ErrorId)) {
+					ErrorId = context.CurrentState.Id.ToString();
 				}
 
 				ErrorList errors;
 
-				//if the request contains the error list, append to it, else create a new one
-				if (context.Request.Items[this.ErrorsItemNameIn] != null &&
-				    context.Request.Items[this.ErrorsItemNameIn] is ErrorList &&
-				    context.Request.GetItem<ErrorList>(this.ErrorsItemNameIn) != null) {
+						//  if the request contains the error list, append to it, else create a new one
+				if (request.Items[ErrorsItemNameIn] != null &&
+				    request.Items[ErrorsItemNameIn] is ErrorList &&
+				    request.GetItem<ErrorList>(ErrorsItemNameIn) != null) {
 
-					errors = context.Request.GetItem<ErrorList>(this.ErrorsItemNameIn);
+					errors = request.GetItem<ErrorList>(ErrorsItemNameIn);
 				} else {
 					errors = new ErrorList(DictionaryManager.GetDictionaryManager().GetDictionary(context.Site));
 				}
 
-				errors.Add(Convert.ToInt64(this.ErrorId));
+				Error err = errors.getError(Convert.ToInt64(ErrorId));
 
-				context.Request.Items[this.ErrorsItemNameOut] = errors;
+						//  check for parameter replacement placeholders in the message
+						//  placeholders are of the form: {[param_name]}
+				MatchCollection parameterMatches = Regex.Matches(err.Message, @"\{\[([\w-]+)\]\}");
+
+						//  if there are parameter placeholders, replace them with the
+						//  parameter values
+				if (parameterMatches.Count > 0) {
+					foreach (Match match in parameterMatches) {
+						err.Message = err.Message.Replace(match.Value, request[match.Groups[1].Value]);
+					}
+				}
+
+				errors.Add(err);
+
+				request.Items[ErrorsItemNameOut] = errors;
 
 				retEvent = Events.Ok;
 			} catch (Exception e) {
@@ -102,6 +136,7 @@ namespace Triton.Logic
 		}
 
 		#endregion
+
 
 		#region Nested type: Events
 
