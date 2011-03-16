@@ -13,6 +13,8 @@ namespace Triton.Controller
 	//					controlling logging of state transitions to a log file and the
 	//					TransitionSessionManager.  Requires "traceLog" and "traceManager"
 	//					settings in the app's config file controllerSettings/states section.
+	//   2/18/11 - SD - Added DefaultEventName property to StatesConfig for identifying a
+	//					default event if no transition is found for the "real" event.
 
 	#endregion
 
@@ -262,6 +264,12 @@ namespace Triton.Controller
 				config.DaoConnectionName = node.Attributes["value"].Value;
 			}
 
+					//  get the default event name
+			node = section.SelectSingleNode("add[@key=\"defaultEventName\"]");
+			if (node != null) {
+				config.DefaultEventName = node.Attributes["value"].Value;
+			}
+
 					//  get the setting for tracing transitions in TransitionSessionManager
 			node = section.SelectSingleNode("add[@key=\"traceManager\"]");
 			if (node != null) {
@@ -301,6 +309,7 @@ namespace Triton.Controller
 		{
 			protected string daoConnectionName;
 			protected string daoType;
+			protected string defaultEventName			= null;
 			protected Hashtable typeMappings;
 			protected bool traceTransitionsInManager	= false;
 			protected bool traceTransitionsInLog		= false;
@@ -324,6 +333,17 @@ namespace Triton.Controller
 				}
 				internal set {
 					this.daoConnectionName = value;
+				}
+			}
+
+
+			public string DefaultEventName
+			{
+				get {
+					return this.defaultEventName;
+				}
+				internal set {
+					this.defaultEventName = value;
 				}
 			}
 
