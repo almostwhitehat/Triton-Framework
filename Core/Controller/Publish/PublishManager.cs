@@ -211,7 +211,7 @@ namespace Triton.Controller.Publish
 		internal PublishRecord GetPublishRecord(
 			string key,
 			TransitionContext context,
-			ContentPublisher publisher,
+			IContentPublisher publisher,
 			bool addIfNotPresent)
 		{
 			PublishRecord pubRec = this.publishedPages[key];

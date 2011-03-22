@@ -76,8 +76,8 @@ public class StateTransitioner
 				if (trans == null) {
 					// TODO: this should be a custom Exception type
 					throw new ApplicationException(string.Format(
-                           	"No transition found: state= {0} event= {1} [{2}]",
-                           	startState.Id, evnt, TransitionSessionManager.GetTrace(transContext)));
+						   	"No transition found: state= {0} event= {1} [{2}]",
+						   	startState.Id, evnt, TransitionSessionManager.GetTrace(transContext)));
 				}
 
 						//  get the State that is the destination of the tranistion
@@ -86,19 +86,19 @@ public class StateTransitioner
 				if (targetState == null) {
 					// TODO: this should be a custom Exception type
 					throw new ApplicationException(string.Format(
-                           	"State not found: state= {0} [{1}]",
-                           	trans.ToState, TransitionSessionManager.GetTrace(transContext)));
+						   	"State not found: state= {0} [{1}]",
+						   	trans.ToState, TransitionSessionManager.GetTrace(transContext)));
 				}
 
 						//  log the transition if logging is on
 				if (statesConfig.LogTrace) {
 					LogManager.GetCurrentClassLogger().Debug(
 						traceMessage => traceMessage("Transition: {0} {1} -> {2} -> {3} {4}",
-	                             startState.Id,
-	                             string.IsNullOrEmpty(startState.Name) ? "" : "[" + startState.Name + "]",
-	                             evnt,
-	                             targetState.Id,
-	                             string.IsNullOrEmpty(targetState.Name) ? "" : "[" + targetState.Name + "]"));
+								 startState.Id,
+								 string.IsNullOrEmpty(startState.Name) ? "" : "[" + startState.Name + "]",
+								 evnt,
+								 targetState.Id,
+								 string.IsNullOrEmpty(targetState.Name) ? "" : "[" + targetState.Name + "]"));
 				}
 
 						//  set the current state that is being processed
@@ -109,8 +109,7 @@ public class StateTransitioner
 					evnt = targetState.Execute(transContext);
 				} catch (Exception ex) {
 					throw new ApplicationException(string.Format("Error executing state {0}.",
-					                                             targetState.Id),
-					                               ex);
+							targetState.Id), ex);
 				}
 
 						//  the destination state becomes the start state for the next iteration
@@ -119,13 +118,13 @@ public class StateTransitioner
 						//  to exit the loop if something goes wrong
 				evnt = null;
 				LogManager.GetCurrentClassLogger().Error(
-					errorMessage => errorMessage(e.Message), e);
+						errorMessage => errorMessage(e.Message), e);
 
 				throw;
 			}
 
-			//  if we got an event back from the execution of the state, it
-			//  means continue processing states
+				//  if we got an event back from the execution of the state, it
+				//  means continue processing states
 		} while (evnt != null);
 
 		return targetState;

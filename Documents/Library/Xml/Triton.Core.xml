@@ -358,13 +358,6 @@
             <param name="context">The <b>TransitionContext</b> to get the published content for.</param>
             <returns>A <b>string</b> containing the content to be returned to the client.</returns>
         </member>
-        <member name="M:Triton.Controller.ContentProvider.ShouldBePublished(Triton.Controller.TransitionContext)">
-            <summary>
-            Determines if the content fulfilling the given context's request should be published.
-            </summary>
-            <param name="context">The context of the request the content is for.</param>
-            <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
-        </member>
         <member name="M:Triton.Controller.ContentProvider.RenderContent(Triton.Controller.TransitionContext)">
             <summary>
             Renders the content to be returned to the client.
@@ -961,6 +954,57 @@
         <member name="P:Triton.Controller.Format.Formatter.Request">
             <summary>
             Gets the <b>MvcRequest</b> the Formatter is called for.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.CompareAction">
+            <summary>
+            Action to compare the value of a request item to a given value.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>equal</c> - the object/property's value is equal to the given value.<br/>
+            <c>lessthan</c> - the object/property's value is less than the given value.<br/>
+            <c>greaterthan</c> - the object/property's value is greater than the given value.<br/>
+            <c>novalue</c> - a property value in the object's property path was null.<br/>
+            <c>error</c> - an error occurred while attempting to compare object's value.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>7/12/10</created>
+        </member>
+        <member name="M:Triton.Logic.CompareAction.#ctor">
+            <summary>
+            Default constructor to set the property defaults.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing the object
+            to use to compare against the given value. The object itself is used for
+            the comparison if no <c>ObjectPropertyNameIn</c> is provided, or a property
+            (or nested property) of the object if <c>ObjectPropertyNameIn</c> is provided.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property of the object identified by the
+            <c>ObjectItemNameIn</c> attribute to be compared. The property may be of a
+            nested object where <c>ObjectPropertyNameIn</c> would be the path of the
+            desired property, for example, PropertyA.PropertyB.PropertyC. If
+            <c>ObjectPropertyNameIn</c> is not provided, the object identified by
+            <c>ObjectItemNameIn</c> is used directly.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.CompareValueIn">
+            <summary>
+            Gets or sets the value to compare the object/property value against.
+            This may be the name of a request parameter specified by placing the
+            parameter name within [ ], for example, <c>[paramName]</c>.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.CompareAction.Unwrap">
+            <summary>
+            Gets or sets the flag to indicate whether or not to "unwrap" an object
+            from a <c>SearchResult</c> if encapsulated within one.
             </summary>
         </member>
         <member name="T:Triton.Controller.ControllerConfigSection">
@@ -1854,7 +1898,7 @@
             </summary>
             <author>Scott Dyke</author>
         </member>
-        <member name="T:Triton.Controller.Publish.ContentPublisher">
+        <member name="T:Triton.Controller.Publish.IContentPublisher">
             <summary>
             Defines the contract that the framework implements to obtain content to return to
             the client in response to an incoming request.
@@ -1865,7 +1909,7 @@
             </remarks>
             <author>Scott Dyke</author>
         </member>
-        <member name="M:Triton.Controller.Publish.ContentPublisher.Publish(System.Object,Triton.Controller.TransitionContext,Triton.Controller.Publish.Publisher)">
+        <member name="M:Triton.Controller.Publish.IContentPublisher.Publish(System.Object,Triton.Controller.TransitionContext,Triton.Controller.Publish.Publisher)">
             <summary>
             Publishes the given content.
             </summary>
@@ -1875,14 +1919,21 @@
             <param name="publisher">The <b>Publisher</b> that is calling this <b>ContentPublisher</b>.</param>
             <returns>A string containing the content to return to the client in the response.</returns>
         </member>
-        <member name="M:Triton.Controller.Publish.ContentPublisher.GetPublishKey(Triton.Controller.TransitionContext)">
+        <member name="M:Triton.Controller.Publish.IContentPublisher.GetPublishKey(Triton.Controller.TransitionContext)">
             <summary>
             Gets the unique publish key for the given context.
             </summary>
             <param name="context">The context to get a publish key for.</param>
             <returns>A published key unique to the request in the given context.</returns>
         </member>
-        <member name="M:Triton.Controller.Publish.ContentPublisher.IsExpired(Triton.Controller.Publish.PublishRecord)">
+        <member name="M:Triton.Controller.Publish.IContentPublisher.ShouldBePublished(Triton.Controller.TransitionContext)">
+            <summary>
+            Determines if the content fulfilling the given context's request should be published.
+            </summary>
+            <param name="context">The context of the request the content is for.</param>
+            <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.IContentPublisher.IsExpired(Triton.Controller.Publish.PublishRecord)">
             <summary>
             Determines if the published content identified by the given <b>PublishRecord</b>
             is expired.
@@ -1890,9 +1941,20 @@
             <param name="publishRecord">The PublishRecord to determine the expiration status of.</param>
             <returns><b>True</b> if the referenced content is expired, <b>false</b> if not.</returns>
         </member>
-        <member name="P:Triton.Controller.Publish.ContentPublisher.Name">
+        <member name="P:Triton.Controller.Publish.IContentPublisher.Name">
             <summary>
             Gets the name of the <b>ContentPublisher</b>.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Publish.IContentPublisher.HasRules">
+            <summary>
+            Gets the flag indicating whether or not the content publisher has any rules
+            associated with it.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Publish.IContentPublisher.Rules">
+            <summary>
+            Gets or sets the list of <c>IPublisherRule</c> associated with the content publisher.
             </summary>
         </member>
         <member name="F:Triton.Controller.Publish.HtmlContentPublisher.EXPIRATION_SETTING">
@@ -1931,6 +1993,13 @@
             </summary>
             <param name="context">The context to get the publish key for.</param>
             <returns>The publish key for the given context.</returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.HtmlContentPublisher.ShouldBePublished(Triton.Controller.TransitionContext)">
+            <summary>
+            Determines if the content fulfilling the given context's request should be published.
+            </summary>
+            <param name="context">The context of the request the content is for.</param>
+            <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
         </member>
         <member name="M:Triton.Controller.Publish.HtmlContentPublisher.IsExpired(Triton.Controller.Publish.PublishRecord)">
             <summary>
@@ -2010,6 +2079,72 @@
             </summary>
             <param name="context">The context to make a <b>ContentProvider</b> for.</param>
             <returns>A <b>ContentProvider</b> to generate content for the given conext.</returns>
+        </member>
+        <member name="T:Triton.Logic.SetObjectPropertyAction">
+            <summary>
+            Action to set the property of an object.
+            </summary>
+            <remarks>
+            The value to set the property to may be specified in one of 3 ways:
+            <ol>
+            <li>The value of a request parameter.</li>
+            <li>Another object from Request.Items.</li>
+            <li>A fixed value.</li>
+            </ol>
+            <para>Returned events:</para>
+            <c>ok</c> - the property of the object was successfully set.<br/>
+            <c>error</c> - an error occurred processing the action.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>6/28/10</created>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing the
+            object to set the property of.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property of the object to set.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueParamNameIn">
+            <summary>
+            Gets or set the name of the request parameter containing the
+            value to set the property to.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items to set
+            the property value to.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueIn">
+            <summary>
+            Gets or sets a fixed value to set the property to.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.CreateObjects">
+            <summary>
+            Gets or sets the flag indicating whether or not the action should
+            create intermediate objects in the path to the property to be set.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.Unwrap">
+            <summary>
+            Gets or sets the flag indicating whether a value coming from Request.Items should be
+            unwrapped from an enclosing <c>SearchResult</c> if it is in one. This is only valid
+            when using the <c>ValueItemNameIn</c> option.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetObjectPropertyAction.UnwrapAsArray">
+            <summary>
+            Gets or sets the flag indicating whether a value coming from Request.Items should be
+            unwrapped from an enclosing <c>SearchResult</c> as the <c>SearchResult.Items</c> array
+            if it is in one. This is only valid when using the <c>ValueItemNameIn</c> option.
+            </summary>
         </member>
         <member name="T:Triton.Controller.Config.SitesConfig">
             <summary>
@@ -2403,6 +2538,30 @@
             		checking is performed to ensure that a value of the correct type is returned.</param>
             <returns>The item with the specified name from the given <c>MvcRequest</c>'s Items collection.</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Triton.Controller.Publish.IPublisherRule" -->
+        <member name="M:Triton.Controller.Publish.IPublisherRule.UsePublishedContent(Triton.Controller.TransitionContext)">
+            <summary>
+            Determines if published content should be used to fulfill the
+            request indicated by the given <c>TransitionContext</c>.
+            </summary>
+            <param name="context">The <c>TransitionContext</c> to determine if
+            	published content should be used for.</param>
+            <returns><c>True</c> if published content should be used, <c>false</c> if not.</returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.IPublisherRule.ShouldBePublished(Triton.Controller.TransitionContext)">
+            <summary>
+            Determines if the content generated to fulfill the given request
+            should be published for use in fulfilling future requests.
+            </summary>
+            <param name="context">The <c>TransitionContext</c> to determine if
+            	content should be published for.</param>
+            <returns><c>True</c> if the content should be published, <c>false</c> if not.</returns>
+        </member>
+        <member name="P:Triton.Controller.Publish.IPublisherRule.Name">
+            <summary>
+            Gets or sets the name of the <c>IPublisherRule</c>.
+            </summary>
+        </member>
         <member name="T:Triton.Support.Error.NoSuchErrorException">
             <summary>
             
@@ -2573,6 +2732,16 @@
             The collection of <b>PublisherElement</b>s.
             </summary>
         </member>
+        <member name="T:Triton.Controller.Publish.PublisherRule">
+            <summary>
+            A ConfigurationElement for the elements in controllerSettings/publishing/publishers.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.Publish.PublisherRuleCollection">
+            <summary>
+            The collection of <b>PublisherRule</b>s.
+            </summary>
+        </member>
         <member name="T:Triton.Controller.Publish.SettingsElementCollection">
             <summary>
             The collection of <b>SettingsElement</b>s.
@@ -2631,6 +2800,37 @@
             <summary>
             Gets or sets the <b>Formatter</b> to be used to format the results
             of executing the action.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.GetObjectPropertyAsItemAction">
+            <summary>
+            Gets a property of an object in Request.Items and stores the property
+            value back to Request.Items.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>ok</c> - the property value was successfully retrieved and stored in Request.Items.<br/>
+            <c>novalue</c> - there was no value for the property.<br/>
+            <c>error</c> - an error occurred while attempting to get the item's property.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>3/16/10</created>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items to get the
+            property from.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property to get.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ItemNameOut">
+            <summary>
+            Gets or sets the name in Request.Items into which the
+            property value is stored.
             </summary>
         </member>
         <member name="T:Triton.Utilities.Constants">
@@ -2748,12 +2948,11 @@
             <remarks>
             Action Parameters: <br/>
             <b>ErrorId</b> - the error id to be inserted itno the error collection. <br/>
+            <b>ErrorsItemNameOut</b> - the name in Request.Items to put the ErrorList into. <br/>
             Returned events:<br/>
             <b>ok</b> - The error was successfully added/set <br/>
             <b>error</b> - an error occurred while setting the error message<br/>
             </remarks>
-            <summary> Add an error object into the Errors collection on the Request.Items collection
-            </summary>
         </member>
         <member name="M:Triton.Logic.SetErrorAction.Execute(Triton.Controller.TransitionContext)">
             <summary>Adds and Error to the Errors Collection.
@@ -3193,7 +3392,7 @@
             </summary>
             <returns>The number of pages affected.</returns>
         </member>
-        <member name="M:Triton.Controller.Publish.PublishManager.GetPublishRecord(System.String,Triton.Controller.TransitionContext,Triton.Controller.Publish.ContentPublisher,System.Boolean)">
+        <member name="M:Triton.Controller.Publish.PublishManager.GetPublishRecord(System.String,Triton.Controller.TransitionContext,Triton.Controller.Publish.IContentPublisher,System.Boolean)">
             <summary>
             Gets the <c>PublishRecord</c> for the target page of the given
             context.
@@ -3410,6 +3609,41 @@
             </summary>
             <param name="count">The search result count.</param>
             <returns>Event name for the count.</returns>
+        </member>
+        <member name="T:Triton.Logic.ResetSingletonAction">
+            <summary>
+            Resets a singleton, forcing it to re-initialize on its next usage.
+            </summary>
+            <remarks>
+            This action is designed for SingletonBase singletons but will also work
+            with other singletons that meet the following criteria:
+            <ol>
+            <li>Must have a static bool Exists property that indicates if the instance of
+            	the singleton has be instantiated.</li>
+            <li>Must have a reset method to force re-initialization of the singleton.</li>
+            </ol>
+            <para>Returned events:</para>
+            <c>ok</c> - the singleton was successfully reset.<br/>
+            <c>error</c> - an error occurred while attempting to reset the singleton.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>11/30/10</created>
+        </member>
+        <member name="P:Triton.Logic.ResetSingletonAction.SingletonNameIn">
+            <summary>
+            Gets or sets the fully qualified name(s) of the singleton(s) to reset.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.ResetSingletonAction.SingletonNameParamIn">
+            <summary>
+            Gets or sets the name of the request parameter containing the fully
+            qualified name(s) of the singleton(s) to reset.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.ResetSingletonAction.ResetMethodNameIn">
+            <summary>
+            Gets or sets the name of the singleton's reset method.
+            </summary>
         </member>
         <member name="T:Triton.Controller.XmlController">
             <summary>
@@ -3794,13 +4028,6 @@
             </summary>
             <param name="context">The <b>TransitionContext</b> to get the published content for.</param>
             <returns>A <b>string</b> containing the content to be returned to the client.</returns>
-        </member>
-        <member name="M:Triton.Controller.HtmlContentProvider.ShouldBePublished(Triton.Controller.TransitionContext)">
-            <summary>
-            Determines if the content fulfilling the given context's request should be published.
-            </summary>
-            <param name="context">The context of the request the content is for.</param>
-            <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
         </member>
         <member name="M:Triton.Controller.HtmlContentProvider.RenderContent(Triton.Controller.TransitionContext)">
             <summary>
@@ -4491,6 +4718,15 @@
             Get the list of keys of the collection.
             </summary>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Triton.Controller.Publish.PublisherRuleFactory" -->
+        <member name="M:Triton.Controller.Publish.PublisherRuleFactory.Make(System.String,System.String)">
+            <summary>
+            Creates the <c>IPublisherRule</c> for the given name and type.
+            </summary>
+            <param name="ruleName">The name of the rule.</param>
+            <param name="typeClass">The type of the class.</param>
+            <returns></returns>
+        </member>
         <member name="T:Triton.Controller.TransitionSession">
             <summary>
             <c>TransitionSession</c> keeps track of the transitions made by a particular
@@ -4706,6 +4942,23 @@
             <param name="context">The context to generate a key for.</param>
             <returns>A publish key for the given context.</returns>
         </member>
+        <member name="M:Triton.Controller.Publish.Publisher.UsePublishedContent(System.String,Triton.Controller.TransitionContext)">
+            <summary>
+            Determines whether or not previously published content should be used
+            to filfull the given request.
+            </summary>
+            <param name="key">The publish key of the request.</param>
+            <param name="context">The <c>TransitionContext</c> to determine published
+            	content use for.</param>
+            <returns><c>True</c> if published content should be used, <c>false</c> if not.</returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.Publisher.ShouldBePublished(Triton.Controller.TransitionContext)">
+            <summary>
+            Determines if the content fulfilling the given context's request should be published.
+            </summary>
+            <param name="context">The context of the request the content is for.</param>
+            <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
+        </member>
         <member name="M:Triton.Controller.Publish.Publisher.IsPublished(System.String)">
             <summary>
             Determines if the content for the given publish key is published.
@@ -4757,6 +5010,38 @@
         <member name="P:Triton.Controller.Publish.Publisher.Name">
             <summary>
             Gets the name of the Publisher.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.StoreObjectToSessionAction">
+            <summary>
+            Action to store an object to session.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>ok</c> - successfully stored the object in session.<br/>
+            <c>novalue</c> - no object was found in Request.Items for the given name.<br/>
+            <c>error</c> - an error occurred while attempting to store the object to session.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>3/11/10</created>
+        </member>
+        <member name="P:Triton.Logic.StoreObjectToSessionAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing the object
+            to place into session.  If wrapped in a SearchResult, the action unwraps the object.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.StoreObjectToSessionAction.SessionName">
+            <summary>
+            Gets or sets the name under which the object is stored in session.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.StoreObjectToSessionAction.ExtractFromSearchResult">
+            <summary>
+            Gets or sets the flag to indicate if the object stored in session
+            should be extracted from a SearchResult if embedded in such, or
+            store "as is" from Items (keeping the SearchResult if present).
+            Default is <c>false</c>, keeping the SearchResult if present.
             </summary>
         </member>
         <member name="T:Triton.Utilities.Db.DbUtilities">
@@ -5183,6 +5468,37 @@
             contained within a single cookie object.
             </summary>
         </member>
+        <member name="T:Triton.Logic.GetObjectPropertyAsParameterAction">
+            <summary>
+            Gets a property of an object in Request.Items and sets a request parameter
+            to the property value.
+            </summary>
+            <remarks>
+            <para>Returned events:</para>
+            <c>ok</c> - the property value was successfully retrieved and stored in a parameter.<br/>
+            <c>novalue</c> - there was no value for the property.<br/>
+            <c>error</c> - an error occurred while attempting to get the item's property.<br/>
+            </remarks>
+            <author>Scott Dyke</author>
+            <created>6/30/10</created>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ObjectItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items to get the
+            property from.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ObjectPropertyNameIn">
+            <summary>
+            Gets or sets the name of the property to get.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ParameterNameOut">
+            <summary>
+            Gets or sets the name of the request parameter to store the
+            property value in.
+            </summary>
+        </member>
         <member name="T:Triton.Support.Error.Error">
             <summary></summary>
             <author>Scott Dyke</author>
@@ -5386,57 +5702,6 @@
             <param name="message"><c>LogMessage</c> that is to be sent to the data source</param>
             <returns><c>bool</c> indicating if the <c>LogMessage</c> is to be sent to the data source</returns>
         </member>
-        <member name="T:Triton.Logic.CompareAction">
-            <summary>
-            Action to compare the value of a request item to a given value.
-            </summary>
-            <remarks>
-            <para>Returned events:</para>
-            <c>equal</c> - the object/property's value is equal to the given value.<br/>
-            <c>lessthan</c> - the object/property's value is less than the given value.<br/>
-            <c>greaterthan</c> - the object/property's value is greater than the given value.<br/>
-            <c>novalue</c> - a property value in the object's property path was null.<br/>
-            <c>error</c> - an error occurred while attempting to compare object's value.<br/>
-            </remarks>
-            <author>Scott Dyke</author>
-            <created>7/12/10</created>
-        </member>
-        <member name="M:Triton.Logic.CompareAction.#ctor">
-            <summary>
-            Default constructor to set the property defaults.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.CompareAction.ObjectItemNameIn">
-            <summary>
-            Gets or sets the name of the item in Request.Items containing the object
-            to use to compare against the given value. The object itself is used for
-            the comparison if no <c>ObjectPropertyNameIn</c> is provided, or a property
-            (or nested property) of the object if <c>ObjectPropertyNameIn</c> is provided.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.CompareAction.ObjectPropertyNameIn">
-            <summary>
-            Gets or sets the name of the property of the object identified by the
-            <c>ObjectItemNameIn</c> attribute to be compared. The property may be of a
-            nested object where <c>ObjectPropertyNameIn</c> would be the path of the
-            desired property, for example, PropertyA.PropertyB.PropertyC. If
-            <c>ObjectPropertyNameIn</c> is not provided, the object identified by
-            <c>ObjectItemNameIn</c> is used directly.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.CompareAction.CompareValueIn">
-            <summary>
-            Gets or sets the value to compare the object/property value against.
-            This may be the name of a request parameter specified by placing the
-            parameter name within [ ], for example, <c>[paramName]</c>.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.CompareAction.Unwrap">
-            <summary>
-            Gets or sets the flag to indicate whether or not to "unwrap" an object
-            from a <c>SearchResult</c> if encapsulated within one.
-            </summary>
-        </member>
         <member name="T:Triton.Logic.RetrieveObjectFromSessionAction">
             <summary>
             Action to retrieve an object from session.
@@ -5496,194 +5761,6 @@
         <member name="P:Triton.Logic.EqualAction.CompareValueIn">
             <summary>
             Gets or sets the value to compare to.
-            </summary>
-        </member>
-        <member name="T:Triton.Logic.GetObjectPropertyAsItemAction">
-            <summary>
-            Gets a property of an object in Request.Items and stores the property
-            value back to Request.Items.
-            </summary>
-            <remarks>
-            <para>Returned events:</para>
-            <c>ok</c> - the property value was successfully retrieved and stored in Request.Items.<br/>
-            <c>novalue</c> - there was no value for the property.<br/>
-            <c>error</c> - an error occurred while attempting to get the item's property.<br/>
-            </remarks>
-            <author>Scott Dyke</author>
-            <created>3/16/10</created>
-        </member>
-        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ObjectItemNameIn">
-            <summary>
-            Gets or sets the name of the item in Request.Items to get the
-            property from.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ObjectPropertyNameIn">
-            <summary>
-            Gets or sets the name of the property to get.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.GetObjectPropertyAsItemAction.ItemNameOut">
-            <summary>
-            Gets or sets the name in Request.Items into which the
-            property value is stored.
-            </summary>
-        </member>
-        <member name="T:Triton.Logic.GetObjectPropertyAsParameterAction">
-            <summary>
-            Gets a property of an object in Request.Items and sets a request parameter
-            to the property value.
-            </summary>
-            <remarks>
-            <para>Returned events:</para>
-            <c>ok</c> - the property value was successfully retrieved and stored in a parameter.<br/>
-            <c>novalue</c> - there was no value for the property.<br/>
-            <c>error</c> - an error occurred while attempting to get the item's property.<br/>
-            </remarks>
-            <author>Scott Dyke</author>
-            <created>6/30/10</created>
-        </member>
-        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ObjectItemNameIn">
-            <summary>
-            Gets or sets the name of the item in Request.Items to get the
-            property from.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ObjectPropertyNameIn">
-            <summary>
-            Gets or sets the name of the property to get.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ParameterNameOut">
-            <summary>
-            Gets or sets the name of the request parameter to store the
-            property value in.
-            </summary>
-        </member>
-        <member name="T:Triton.Logic.ResetSingletonAction">
-            <summary>
-            Resets a singleton, forcing it to re-initialize on its next usage.
-            </summary>
-            <remarks>
-            This action is designed for SingletonBase singletons but will also work
-            with other singletons that meet the following criteria:
-            <ol>
-            <li>Must have a static bool Exists property that indicates if the instance of
-            	the singleton has be instantiated.</li>
-            <li>Must have a reset method to force re-initialization of the singleton.</li>
-            </ol>
-            <para>Returned events:</para>
-            <c>ok</c> - the singleton was successfully reset.<br/>
-            <c>error</c> - an error occurred while attempting to reset the singleton.<br/>
-            </remarks>
-            <author>Scott Dyke</author>
-            <created>11/30/10</created>
-        </member>
-        <member name="P:Triton.Logic.ResetSingletonAction.SingletonNameIn">
-            <summary>
-            Gets or sets the fully qualified name(s) of the singleton(s) to reset.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.ResetSingletonAction.SingletonNameParamIn">
-            <summary>
-            Gets or sets the name of the request parameter containing the fully
-            qualified name(s) of the singleton(s) to reset.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.ResetSingletonAction.ResetMethodNameIn">
-            <summary>
-            Gets or sets the name of the singleton's reset method.
-            </summary>
-        </member>
-        <member name="T:Triton.Logic.SetObjectPropertyAction">
-            <summary>
-            Action to set the property of an object.
-            </summary>
-            <remarks>
-            The value to set the property to may be specified in one of 3 ways:
-            <ol>
-            <li>The value of a request parameter.</li>
-            <li>Another object from Request.Items.</li>
-            <li>A fixed value.</li>
-            </ol>
-            <para>Returned events:</para>
-            <c>ok</c> - the property of the object was successfully set.<br/>
-            <c>error</c> - an error occurred processing the action.<br/>
-            </remarks>
-            <author>Scott Dyke</author>
-            <created>6/28/10</created>
-        </member>
-        <member name="P:Triton.Logic.SetObjectPropertyAction.ObjectItemNameIn">
-            <summary>
-            Gets or sets the name of the item in Request.Items containing the
-            object to set the property of.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.SetObjectPropertyAction.ObjectPropertyNameIn">
-            <summary>
-            Gets or sets the name of the property of the object to set.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueParamNameIn">
-            <summary>
-            Gets or set the name of the request parameter containing the
-            value to set the property to.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueItemNameIn">
-            <summary>
-            Gets or sets the name of the item in Request.Items to set
-            the property value to.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.SetObjectPropertyAction.ValueIn">
-            <summary>
-            Gets or sets a fixed value to set the property to.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.SetObjectPropertyAction.CreateObjects">
-            <summary>
-            Gets or sets the flag indicating whether or not the action should
-            create intermediate objects in the path to the property to be set.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.SetObjectPropertyAction.Unwrap">
-            <summary>
-            Gets or sets the flag indicating whether a value coming from Request.Items should be
-            unwrapped from an enclosing <c>SearchResult</c> if it is in one. This is only valid
-            when using the <c>ValueItemNameIn</c> option.
-            </summary>
-        </member>
-        <member name="T:Triton.Logic.StoreObjectToSessionAction">
-            <summary>
-            Action to store an object to session.
-            </summary>
-            <remarks>
-            <para>Returned events:</para>
-            <c>ok</c> - successfully stored the object in session.<br/>
-            <c>novalue</c> - no object was found in Request.Items for the given name.<br/>
-            <c>error</c> - an error occurred while attempting to store the object to session.<br/>
-            </remarks>
-            <author>Scott Dyke</author>
-            <created>3/11/10</created>
-        </member>
-        <member name="P:Triton.Logic.StoreObjectToSessionAction.ObjectItemNameIn">
-            <summary>
-            Gets or sets the name of the item in Request.Items containing the object
-            to place into session.  If wrapped in a SearchResult, the action unwraps the object.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.StoreObjectToSessionAction.SessionName">
-            <summary>
-            Gets or sets the name under which the object is stored in session.
-            </summary>
-        </member>
-        <member name="P:Triton.Logic.StoreObjectToSessionAction.ExtractFromSearchResult">
-            <summary>
-            Gets or sets the flag to indicate if the object stored in session
-            should be extracted from a SearchResult if embedded in such, or
-            store "as is" from Items (keeping the SearchResult if present).
-            Default is <c>false</c>, keeping the SearchResult if present.
             </summary>
         </member>
     </members>

@@ -99,9 +99,9 @@ namespace Triton.Logic
 				ErrorList errors;
 
 						//  if the request contains the error list, append to it, else create a new one
-				if (request.Items[ErrorsItemNameIn] != null &&
-				    request.Items[ErrorsItemNameIn] is ErrorList &&
-				    request.GetItem<ErrorList>(ErrorsItemNameIn) != null) {
+				if (request.Items[ErrorsItemNameIn] != null
+						&& request.Items[ErrorsItemNameIn] is ErrorList
+						&& request.GetItem<ErrorList>(ErrorsItemNameIn) != null) {
 
 					errors = request.GetItem<ErrorList>(ErrorsItemNameIn);
 				} else {

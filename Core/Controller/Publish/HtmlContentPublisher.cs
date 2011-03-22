@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Text;
@@ -15,16 +16,17 @@ namespace Triton.Controller.Publish {
 #region History
 
 // History:
-//  6/2/2009	KP	Changed the logging to Common.logging
-//  09/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
-//  9/3/2010	SD	Added getting of published page expiration time from config settings.
+//   6/2/2009	KP	Changed the logging to Common.logging
+//  9/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
+//   9/3/2010	SD	Added getting of published page expiration time from config settings.
+//  3/21/2011	SD	Moved ShouldBePublished from HtmlContentProvider to here.
 
 #endregion
 
 /// <summary>
 /// </summary>
 ///	<author>Scott Dyke</author>
-public class HtmlContentPublisher : ContentPublisher
+public class HtmlContentPublisher : IContentPublisher
 {
 	/// <summary>
 	/// The name of the configuration setting within controllerSettings/publishing/settings for the
@@ -113,6 +115,21 @@ public class HtmlContentPublisher : ContentPublisher
 	}
 
 
+	public bool HasRules
+	{
+		get {
+			return ((Rules != null) && (Rules.Count > 0));
+		}
+	}
+
+
+	public IList<IPublisherRule> Rules
+	{
+		get;
+		set;
+	}
+
+
 	/// <summary>
 	/// Publishes the content contained in the publishParam.
 	/// </summary>
@@ -130,28 +147,28 @@ public class HtmlContentPublisher : ContentPublisher
 
 		LogManager.GetCurrentClassLogger().Debug(
 			traceMessage => traceMessage("PagePublisher.Publish page {0}: start page = {1}, event = {2}",
-			                                           context.EndState.Id,
-			                                           context.StartState.Id,
-			                                           context.StartEvent));
+					context.EndState.Id,
+					context.StartState.Id,
+					context.StartEvent));
 
 		PublishRecord pubRec = publisher.GetPublishRecord(key, context, true);
 
 		try {
-			//  make sure some other thread is not already publishing the page
+					//  make sure some other thread is not already publishing the page
 			if (!pubRec.Publishing) {
-				//  flag the page as in the process of being published
+						//  flag the page as in the process of being published
 				pubRec.Publishing = true;
-				//  get the key for the PublishRecord
+						//  get the key for the PublishRecord
 				string filePrefix = pubRec.Key;
-				//  strip off the state ID
-				//  (should find a better way to do this so it's not so tightly coupled with
-				//  what MakeKey's implementation is
+						//  strip off the state ID
+						//  (should find a better way to do this so it's not so tightly coupled with
+						//  what MakeKey's implementation is
 				filePrefix = filePrefix.Substring(filePrefix.IndexOf('_') + 1);
 
-				// replace special characters with their unicode representations.
+						// replace special characters with their unicode representations.
 				filePrefix = this.fileNameRegEx.Replace(filePrefix, this.fileNameEvaluator);
 
-				//  get the publish state -- the one we are publishing
+						//  get the publish state -- the one we are publishing
 				PublishableState publishState = (PublishableState) context.EndState;
 
 //				try {
@@ -165,22 +182,19 @@ public class HtmlContentPublisher : ContentPublisher
 				string fileName = publishState.BaseFileName;
 				string section = publishState.Section;
 
-				//  build the path to the directory to publish to
+						//  build the path to the directory to publish to
 				string targetPath = string.Format(@"{0}{1}/{2}", this.publishPath, publishState.Site, section);
-				//  make sure the directory exists
+						//  make sure the directory exists
 				IO.CreateDirectory(this.basePath + targetPath);
 
-				//	if the length of full path exceeds the maximum, 
-				//	use hash code of filePrefix instead of filePrefix to construct tagetPath
+						//	if the length of full path exceeds the maximum, 
+						//	use hash code of filePrefix instead of filePrefix to construct tagetPath
 				string tmpFullPath = string.Format(@"{0}{1}/{2}_{3}.html",
-				                                   this.basePath,
-				                                   targetPath,
-				                                   filePrefix,
-				                                   fileName);
+						this.basePath, targetPath, filePrefix, fileName);
 				if (tmpFullPath.Length > this.maxPathLen) {
 					filePrefix = filePrefix.GetHashCode().ToString();
 				}
-				//  add the file name to the path
+						//  add the file name to the path
 				targetPath = string.Format(@"{0}/{1}_{2}", targetPath, filePrefix, fileName);
 				string path = this.basePath + targetPath;
 
@@ -188,11 +202,11 @@ public class HtmlContentPublisher : ContentPublisher
 				try {
 					writer = new StreamWriter(path.ToLower(), false, Encoding.UTF8);
 
-					//  write the content received from Execute to the publish file
+							//  write the content received from Execute to the publish file
 					writer.Write(content + Environment.NewLine + PUBLISH_MARKER);
 				} catch (Exception e) {
 					LogManager.GetCurrentClassLogger().Error(
-						errorMessage => errorMessage("PagePublisher.Publish write: "), e);
+							errorMessage => errorMessage("PagePublisher.Publish write: "), e);
 					throw;
 				} finally {
 					if (writer != null) {
@@ -200,7 +214,7 @@ public class HtmlContentPublisher : ContentPublisher
 					}
 				}
 
-				//  make sure the relative URL starts with "/"
+						//  make sure the relative URL starts with "/"
 				if (!targetPath.StartsWith("/")) {
 					targetPath = "/" + targetPath;
 				}
@@ -213,7 +227,7 @@ public class HtmlContentPublisher : ContentPublisher
 				errorMessage => errorMessage("PagePublisher.Publish: "), e);
 			content = null;
 		} finally {
-			//  we never want to leave the page in a state of publishing
+					//  we never want to leave the page in a state of publishing
 			pubRec.Publishing = false;
 		}
 
@@ -240,8 +254,8 @@ public class HtmlContentPublisher : ContentPublisher
 				//  build combined list of parameters to always exclude from the key
 				//  + any defined in the state
 		string excludeParams = (state.PublishExcludeParams == null)
-		                       	? PARAMS_TO_IGNORE
-		                       	: PARAMS_TO_IGNORE + "," + state.PublishExcludeParams;
+					? PARAMS_TO_IGNORE
+					: PARAMS_TO_IGNORE + "," + state.PublishExcludeParams;
 				//  make the list into an array, and remove them from the list to key parameters
 		string[] excludes = excludeParams.Split(',');
 		foreach (string p in excludes) {
@@ -269,6 +283,22 @@ public class HtmlContentPublisher : ContentPublisher
 		//Logger.GetLogger(LOGGER).Config("MakeKey time: " + t.Time + " seconds");
 
 		return key;
+	}
+
+
+	/// <summary>
+	/// Determines if the content fulfilling the given context's request should be published.
+	/// </summary>
+	/// <param name="context">The context of the request the content is for.</param>
+	/// <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
+	public virtual bool ShouldBePublished(
+		TransitionContext context)
+	{
+		PublishConfigSection config = ConfigurationManager.GetSection(
+				"controllerSettings/publishing") as PublishConfigSection;
+
+				//  is the EndState a PublishableState and is publish set to true
+		return (config.Publish && (context.EndState is PublishableState) && ((PublishableState)context.EndState).Publish);
 	}
 
 

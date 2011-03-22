@@ -67,6 +67,8 @@
     <Compile Include="Controller\Action\IAction.cs" />
     <Compile Include="Controller\Config\SitesConfig.cs" />
     <Compile Include="Controller\ControllerConfig.cs" />
+    <Compile Include="Controller\Publish\IPublisherRule.cs" />
+    <Compile Include="Controller\Publish\PublisherRuleFactory.cs" />
     <Compile Include="Controller\StateMachine\StateInfo.cs" />
     <Compile Include="Logic\CompareAction.cs" />
     <Compile Include="Logic\EqualAction.cs" />
@@ -100,7 +102,7 @@
     <Compile Include="Controller\FrontController.cs" />
     <Compile Include="Controller\HtmlContentProvider.cs" />
     <Compile Include="Controller\PageFinder.cs" />
-    <Compile Include="Controller\Publish\ContentPublisher.cs" />
+    <Compile Include="Controller\Publish\IContentPublisher.cs" />
     <Compile Include="Controller\Publish\HtmlContentPublisher.cs" />
     <Compile Include="Controller\Publish\PublishConfig.cs" />
     <Compile Include="Controller\Publish\IPublishDao.cs" />

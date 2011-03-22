@@ -20,6 +20,7 @@ namespace Triton.Controller {
 //  1/31/2011	SD	Updated GetPublisher(TransitionContext) to get the name of the publisher from the
 //					"publisher" attribute of the ContentProvider registration in config file, rather
 //					than be hard-coded to "html".
+//  3/21/2011	SD	Moved ShouldBePublished from here to HtmlContentPublisher.
 
 #endregion
 
@@ -97,22 +98,6 @@ public class HtmlContentProvider : ContentProvider
 
 
 	/// <summary>
-	/// Determines if the content fulfilling the given context's request should be published.
-	/// </summary>
-	/// <param name="context">The context of the request the content is for.</param>
-	/// <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
-	public virtual bool ShouldBePublished(
-		TransitionContext context)
-	{
-		PublishConfigSection config = ConfigurationManager.GetSection(
-		                              	"controllerSettings/publishing") as PublishConfigSection;
-
-				//  is the EndState a PublishableState and is publish set to true
-		return (config.Publish && (context.EndState is PublishableState) && ((PublishableState)context.EndState).Publish);
-	}
-
-
-	/// <summary>
 	/// Renders the HTML content to be returned to the client.
 	/// </summary>
 	/// <param name="context">The context of the request the content is being rendered for.</param>
@@ -127,9 +112,9 @@ public class HtmlContentProvider : ContentProvider
 		if (target == null) {
 			throw new ApplicationException(
 				string.Format("End state was not set, check the states configuration. Start state: {0}{1}. Start event: {2}.",
-				              context.StartState.Id,
-				              string.IsNullOrEmpty(context.StartState.Name) ? "" : " [" + context.StartState.Name + "]",
-				              context.StartEvent));
+						context.StartState.Id,
+						string.IsNullOrEmpty(context.StartState.Name) ? "" : " [" + context.StartState.Name + "]",
+						context.StartEvent));
 		}
 
 				//  find the aspx file for the target page
@@ -159,7 +144,7 @@ public class HtmlContentProvider : ContentProvider
 			//context.Request.Transfer(fileRec.fullPath);
 		} catch (Exception e) {
 			LogManager.GetCurrentClassLogger().Error(
-				errorMessage => errorMessage("RenderContent: "), e);
+					errorMessage => errorMessage("RenderContent: "), e);
 
 					//rethrow the error so that the application error handler can handle it
 			throw;
@@ -217,7 +202,7 @@ public class HtmlContentProvider : ContentProvider
 			}
 			if (config.ContentProviders[name] == null) {
 				throw new ConfigurationErrorsException(
-					string.Format("No contentProvider found in confg for '{0}'.", name));
+						string.Format("No contentProvider found in confg for '{0}'.", name));
 			}
 
 					//  get the name of the publisher
