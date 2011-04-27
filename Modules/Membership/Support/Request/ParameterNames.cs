@@ -1,5 +1,11 @@
-﻿namespace Triton.Membership.Support.Request
-{
+﻿namespace Triton.Membership.Support.Request {
+
+	#region History
+
+	//   4/6/2011	SD	Added MODIFIED_DATE and CREATED_DATE for Account.Filter.
+
+	#endregion
+
 	public class ParameterNames
 	{
 		#region Nested type: Account
@@ -72,6 +78,10 @@
 				public const string ATTRIBUTE_IS_CSV = "filter_account_attribute_is_csv";
 
 				public const string PERSONNAME = "filter_account_person_name";
+
+				public const string MODIFIED_DATE = "filter_account_modified_date";
+
+				public const string CREATED_DATE = "filter_account_created_date";
 			}
 
 			#endregion

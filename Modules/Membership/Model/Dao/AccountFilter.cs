@@ -2,8 +2,14 @@ using System;
 using System.Collections.Generic;
 using Triton.Model.Dao;
 
-namespace Triton.Membership.Model.Dao
-{
+namespace Triton.Membership.Model.Dao {
+
+	#region History
+
+	//   4/6/2011	SD	Added ModifiedDate and CreatedDate properties.
+
+	#endregion
+
 	/// <summary>
 	/// Defines the AccountFilter used to retrieve Accounts.
 	/// </summary>
@@ -42,10 +48,21 @@ namespace Triton.Membership.Model.Dao
 		/// </summary>
 		public Role[] Roles { get; set; }
 
-
 		///<summary>
 		/// The Person.Name to Filter results by
 		///</summary>
 		public string Name { get; set; }
+
+		///<summary>
+		/// The date/time the account was last modified.
+		/// This is a "since" date - to get accounts modified since this date.
+		///</summary>
+		public DateTime? ModifiedDate { get; set; }
+
+		///<summary>
+		/// The date/time the account was created.
+		/// This is a "since" date - to get accounts created since this date.
+		///</summary>
+		public DateTime? CreatedDate { get; set; }
 	}
 }

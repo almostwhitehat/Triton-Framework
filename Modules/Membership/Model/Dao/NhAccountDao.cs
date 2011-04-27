@@ -6,8 +6,14 @@ using Triton.Model;
 using Triton.NHibernate.Model.Dao;
 using Triton.NHibernate.Model.Dao.Support;
 
-namespace Triton.Membership.Model.Dao
-{
+namespace Triton.Membership.Model.Dao {
+
+	#region History
+
+	//   4/6/2011	SD	Added support for filtering by ModifiedDate and CreatedDate.
+
+	#endregion
+
 	public class NhAccountDao : NHibernateBaseDao<Account>, IAccountDao
 	{
 		#region IAccountDao Members
@@ -41,11 +47,11 @@ namespace Triton.Membership.Model.Dao
 			} else {
 				ICriteria criteria = base.Session.CreateCriteria<Account>("account");
 				
-				if(filter.Ids != null && filter.Ids.Length > 0) {
+				if (filter.Ids != null && filter.Ids.Length > 0) {
 					criteria = criteria.Add(Expression.In("Id", filter.Ids));
 				}
 
-				if(filter.Usernames != null && filter.Usernames.Length > 0) {
+				if (filter.Usernames != null && filter.Usernames.Length > 0) {
 					//figure out what the criteria is for searching in a list of values.
 					criteria = criteria.CreateAlias("Usernames", "usernames")
 						.Add(Expression.In("usernames.Value", filter.Usernames));
@@ -56,6 +62,14 @@ namespace Triton.Membership.Model.Dao
                     criteria = criteria.CreateAlias("Person", "person")
 						.Add(Expression.Or(Expression.Like("person.Name.Last", filter.Name, MatchMode.Start), 
 						Expression.Like("person.Name.First", filter.Name, MatchMode.Start)));
+				}
+
+				if (filter.ModifiedDate.HasValue) {
+					criteria = criteria.Add(Expression.Ge("ModifiedDate", filter.ModifiedDate.Value));
+				}
+
+				if (filter.CreatedDate.HasValue) {
+					criteria = criteria.Add(Expression.Ge("CreateDate", filter.CreatedDate.Value));
 				}
 
 				accounts = SessionUtilities.GetItems<Account>(base.Session, criteria, filter, out totalMatches);
