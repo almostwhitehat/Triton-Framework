@@ -6,8 +6,16 @@ using Triton.Model;
 using Triton.Utilities.Reflection;
 using Triton.Web.Support;
 
-namespace Triton.Web.View.Controls
-{
+namespace Triton.Web.View.Controls {
+
+	#region History
+
+	// History:
+	//   4/20/2011	SD	Added PageParameterName and PageSizeParameterName properties to allow the
+	//					control to work with type-safe paging parameters.
+
+	#endregion
+
 	/// <summary>
 	/// Paging control to use on search result thumbnails.
 	/// </summary>
@@ -29,22 +37,24 @@ namespace Triton.Web.View.Controls
 		public Pagination()
 			: base(HtmlTextWriterTag.Div)
 		{
-			this.CurrentLinkClass = "currentPageLink";
-			this.LinkClass = "pageLink";
-			this.RenderPageSizeSelection = false;
-			this.PageNumberDisplayStyle = "Center";
-			this.PageNumberDisplaySize = int.MaxValue;
-			this.PageParameterPrefix = "";
-			this.TransitionName = "search";
-			this.RequestItemName = string.Empty;
-			this.NextRenderName = "Next";
-			this.PrevRenderName = "Prev";
-			this.NextClass = "pageLink";
-			this.PrevClass = "pageLink";
-			this.parametersToExclude.Add("st");
-			this.parametersToExclude.Add("e");
-			this.parametersToExclude.Add("uid");
-			this.parametersToExclude.Add("page");
+			CurrentLinkClass = "currentPageLink";
+			LinkClass = "pageLink";
+			RenderPageSizeSelection = false;
+			PageNumberDisplayStyle = "Center";
+			PageNumberDisplaySize = int.MaxValue;
+			PageParameterPrefix = "";
+			TransitionName = "search";
+			RequestItemName = string.Empty;
+			NextRenderName = "Next";
+			PrevRenderName = "Prev";
+			NextClass = "pageLink";
+			PrevClass = "pageLink";
+			PageParameterName = "page";
+			PageSizeParameterName = "pagesize";
+			parametersToExclude.Add("st");
+			parametersToExclude.Add("e");
+			parametersToExclude.Add("uid");
+			parametersToExclude.Add("page");
 		}
 
 
@@ -53,129 +63,219 @@ namespace Triton.Web.View.Controls
 		/// they are given.
 		/// Options are: Numbers,Next,Prev,First,Last
 		/// </summary>
-		public string DisplayOptions { get; set; }
+		public string DisplayOptions
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// The title tag to be rendered on all links
 		/// </summary>
-		public string Title { get; set; }
+		public string Title
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Class name to be rendered on the anchor items for styling.
 		/// Defaults to pageLink
 		/// </summary>
-		public string LinkClass { get; set; }
+		public string LinkClass
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Text to render for the "next" link.
 		/// Defaults to "Next"
 		/// </summary>
-		public string NextRenderName { get; set; }
+		public string NextRenderName
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// The name of the class to render on the "next" link.
 		/// </summary>
-		public string NextClass { get; set; }
+		public string NextClass
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// The name of the class to render on the "prev" link.
 		/// </summary>
-		public string PrevClass { get; set; }
+		public string PrevClass
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Text to render for the "prev" link.
 		/// Defaults to "Prev"
 		/// </summary>
-		public string PrevRenderName { get; set; }
+		public string PrevRenderName
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Class name to be rendered on the currently selected link
 		/// Defaults to currentPageLink
 		/// </summary>
-		public string CurrentLinkClass { get; set; }
+		public string CurrentLinkClass
+		{
+			get;
+			set;
+		}
 
 		/// <summary>
 		/// Name of the item in the request that contains the paged search results.
 		/// </summary>
-		public string RequestItemName { get; set; }
+		public string RequestItemName
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Transition event for each page link.
 		/// </summary>
-		public string TransitionName { get; set; }
+		public string TransitionName
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Prefix added to pagesize and page for sorting a particulate item type.
 		/// </summary>
-		public string PageParameterPrefix { get; set; }
+		public string PageParameterPrefix
+		{
+			get;
+			set;
+		}
+
+
+		/// <summary>
+		/// Gets or sets the name of the request parameter for the page number.
+		/// </summary>
+		public string PageParameterName
+		{
+			get;
+			set;
+		}
+
+
+		/// <summary>
+		/// Gets or sets the name of the request parameter for the page size.
+		/// </summary>
+		public string PageSizeParameterName
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public int PageNumberDisplaySize { get; set; }
+		public int PageNumberDisplaySize
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Takes a string: "Center", "Right", or "Left" and denotes which side of the
 		/// page control the currently selected page is placed at.
 		/// </summary>
-		public string PageNumberDisplayStyle { get; set; }
+		public string PageNumberDisplayStyle
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// The current WebPage.
 		/// </summary>
 		public new WebPage Page
 		{
-			get { return (WebPage)base.Page; }
+			get {
+				return (WebPage)base.Page;
+			}
 		}
+
 
 		/// <summary>
 		/// Boolean value that, if set to true, will set the baseUrl to "/"
 		/// </summary>
 		public bool ResetUrlParameters
 		{
-			get { return this.resetUrlParameters; }
-			set
-			{
-				this.resetUrlParameters = value;
+			get {
+				return resetUrlParameters;
+			}
+			set {
+				resetUrlParameters = value;
 				if (value) {
-					this.baseUrl = "/";
+					baseUrl = "/";
 				}
 			}
 		}
+
 
 		/// <summary>
 		/// Boolean value that determines if a page size control is rendered on the page.
 		/// The values for the control are listed in the page's content copy under
 		/// "PageSizeSelectorCopy".  Choices are defaulted to increment from 0 to 5.
 		/// </summary>
-		public bool RenderPageSizeSelection { get; set; }
+		public bool RenderPageSizeSelection
+		{
+			get;
+			set;
+		}
+
 
 		/// <summary>
 		/// Comma seperated list of request Parameters to be removed from the url
 		/// </summary>
 		public string ParametersToExclude
 		{
-			set
-			{
-				// split the string 
-				string[] parameters = value.Split(',');
-				foreach (string parameter in parameters) {
-					this.parametersToExclude.Add(parameter);
-				}
+			set {
+				parametersToExclude.AddRange(value.Split(','));
 			}
 		}
 
 
-		protected override void OnLoad(EventArgs e)
+		protected override void OnLoad(
+			EventArgs e)
 		{
-			this.parametersToExclude.Add(this.PageParameterPrefix + "page");
-			//get the nav node
-			if (this.searchResult == null) {
-				// get the searchresult from the request
+			parametersToExclude.Add(PageParameterPrefix + PageParameterName);
+					//get the nav node
+			if (searchResult == null) {
+						// get the searchresult from the request
 				try {
-					this.searchResult = (SearchResultBase)this.Page.Request.Items[this.RequestItemName];
+					searchResult = (SearchResultBase)Page.Request.Items[RequestItemName];
 				} catch (Exception) {
-					this.searchResult = null;
+					searchResult = null;
 				}
 			}
 		}
@@ -189,24 +289,26 @@ namespace Triton.Web.View.Controls
 		private bool IncludeParameter(
 			string key)
 		{
-			return (!this.parametersToExclude.Contains(key));
+			return (!parametersToExclude.Contains(key));
 		}
 
 
-		protected override void OnPreRender(EventArgs e)
+		protected override void OnPreRender(
+			EventArgs e)
 		{
 			base.OnPreRender(e);
 
-			this.baseUrl += string.Format("{0}?st={1}&e={2}", WebInfo.Controller, this.Page.State, this.TransitionName);
-			foreach (string key in this.Page.Request.Params.AllKeys) {
-				if (this.IncludeParameter(key)) {
-					this.baseUrl += string.Format("&{0}={1}", key, this.Page.Request.Params[key]);
+			baseUrl += string.Format("{0}?st={1}&e={2}", WebInfo.Controller, Page.State, TransitionName);
+			foreach (string key in Page.Request.Params.AllKeys) {
+				if (IncludeParameter(key)) {
+					baseUrl += string.Format("&{0}={1}", key, Page.Request.Params[key]);
 				}
 			}
 		}
 
 
-		public override void RenderBeginTag(HtmlTextWriter writer)
+		public override void RenderBeginTag(
+			HtmlTextWriter writer)
 		{
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "pagination");
 			base.RenderBeginTag(writer);
@@ -216,24 +318,24 @@ namespace Triton.Web.View.Controls
 		protected override void Render(
 			HtmlTextWriter output)
 		{
-			if ((this.searchResult != null) && (this.searchResult.TotalPages > 1)) {
+			if ((searchResult != null) && (searchResult.TotalPages > 1)) {
 				base.Render(output);
-				this.RenderBeginTag(output); // DIV
+				RenderBeginTag(output); // DIV
 				output.RenderBeginTag(HtmlTextWriterTag.Ul); // UL
 
-				if (!string.IsNullOrEmpty(this.DisplayOptions)) {
-					string[] displayFunctions = this.DisplayOptions.Split(',');
+				if (!string.IsNullOrEmpty(DisplayOptions)) {
+					string[] displayFunctions = DisplayOptions.Split(',');
 					foreach (string methodName in displayFunctions) {
 						string method = methodName.Trim();
 						ReflectionUtilities.CallMethod(this, method, new Object[] {output});
 					}
 				} else {
 					// Default to just numbers if no option is specified.
-					this.Numbers(output);
+					Numbers(output);
 				}
 
-				if (this.RenderPageSizeSelection) {
-					this.RenderPageSizeSelector(output);
+				if (RenderPageSizeSelection) {
+					RenderPageSizeSelector(output);
 				}
 				output.RenderEndTag(); // UL
 				RenderEndTag(output); // DIV
@@ -241,45 +343,47 @@ namespace Triton.Web.View.Controls
 		}
 
 
-		public void Numbers(HtmlTextWriter output)
+		public void Numbers(
+			HtmlTextWriter output)
 		{
 			int startpage = FIRST_PAGE;
-			int endpage = this.searchResult.TotalPages;
+			int endpage = searchResult.TotalPages;
 
-			if (this.PageNumberDisplaySize != int.MaxValue) {
-				switch (this.PageNumberDisplayStyle) {
+			if (PageNumberDisplaySize != int.MaxValue) {
+				switch (PageNumberDisplayStyle) {
 					case "Center":
-						startpage = Math.Max(this.searchResult.Page - (this.PageNumberDisplaySize/2), FIRST_PAGE);
+						startpage = Math.Max(searchResult.Page - (PageNumberDisplaySize/2), FIRST_PAGE);
 
-						if (this.searchResult.Page > (this.PageNumberDisplaySize/2)) {
-							endpage = Math.Min(this.searchResult.Page + (this.PageNumberDisplaySize/2), this.searchResult.TotalPages);
+						if (searchResult.Page > (PageNumberDisplaySize/2)) {
+							endpage = Math.Min(searchResult.Page + (PageNumberDisplaySize/2), searchResult.TotalPages);
 						} else {
-							endpage = Math.Min(this.PageNumberDisplaySize, this.searchResult.TotalPages);
+							endpage = Math.Min(PageNumberDisplaySize, searchResult.TotalPages);
 						}
 						break;
 					case "Left":
-						startpage = this.searchResult.Page;
-						endpage = Math.Min(this.searchResult.Page + this.PageNumberDisplaySize, this.searchResult.TotalPages);
+						startpage = searchResult.Page;
+						endpage = Math.Min(searchResult.Page + PageNumberDisplaySize, searchResult.TotalPages);
 						break;
 					case "Right":
-						startpage = Math.Max(this.searchResult.Page - this.PageNumberDisplaySize, FIRST_PAGE);
-						endpage = Math.Min(this.searchResult.Page + this.PageNumberDisplaySize, this.searchResult.TotalPages);
+						startpage = Math.Max(searchResult.Page - PageNumberDisplaySize, FIRST_PAGE);
+						endpage = Math.Min(searchResult.Page + PageNumberDisplaySize, searchResult.TotalPages);
 						break;
 				}
 			}
 
 			for (int pageNumber = startpage; pageNumber <= endpage; pageNumber++) {
 				output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
-				if (pageNumber == this.searchResult.Page) {
-					output.AddAttribute(HtmlTextWriterAttribute.Title, this.GetTitle("Current Page"));
-					output.AddAttribute(HtmlTextWriterAttribute.Class, this.CurrentLinkClass);
+
+				if (pageNumber == searchResult.Page) {
+					output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle("Current Page"));
+					output.AddAttribute(HtmlTextWriterAttribute.Class, CurrentLinkClass);
 					output.RenderBeginTag(HtmlTextWriterTag.Span); // SPAN
 					output.Write(String.Format("{0}", pageNumber));
 					output.RenderEndTag(); // SPAN
 				} else {
-					output.AddAttribute(HtmlTextWriterAttribute.Href, this.GeneratePageLink(pageNumber));
-					output.AddAttribute(HtmlTextWriterAttribute.Title, this.GetTitle(string.Format("page {0}", pageNumber + 1)));
-					output.AddAttribute(HtmlTextWriterAttribute.Class, this.LinkClass);
+					output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(pageNumber));
+					output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", pageNumber + 1)));
+					output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
 					output.RenderBeginTag(HtmlTextWriterTag.A); // A
 					output.Write(String.Format("{0}", pageNumber));
 					output.RenderEndTag(); // A
@@ -289,12 +393,13 @@ namespace Triton.Web.View.Controls
 		}
 
 
-		public void First(HtmlTextWriter output)
+		public void First(
+			HtmlTextWriter output)
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "first");
-			output.AddAttribute(HtmlTextWriterAttribute.Title, this.GetTitle(string.Format("page {0}", 0)));
-			output.AddAttribute(HtmlTextWriterAttribute.Href, this.GeneratePageLink(0));
+			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", 0)));
+			output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(0));
 			output.RenderBeginTag(HtmlTextWriterTag.A); // A
 			output.Write("first", true);
 			output.RenderEndTag(); // A or SPAN
@@ -302,13 +407,15 @@ namespace Triton.Web.View.Controls
 		}
 
 
-		public void Last(HtmlTextWriter output)
+		public void Last(
+			HtmlTextWriter output)
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "last");
-			output.AddAttribute(HtmlTextWriterAttribute.Title, this.GetTitle(string.Format("page {0}", this.searchResult.TotalPages - 1)));
-			if (this.searchResult.TotalPages > 0) {
-				output.AddAttribute(HtmlTextWriterAttribute.Href, this.GeneratePageLink(this.searchResult.TotalPages - 1));
+			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.TotalPages - 1)));
+
+			if (searchResult.TotalPages > 0) {
+				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.TotalPages - 1));
 			} else {
 				output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
 			}
@@ -320,16 +427,18 @@ namespace Triton.Web.View.Controls
 		}
 
 
-		public void Prev(HtmlTextWriter output)
+		public void Prev(
+			HtmlTextWriter output)
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "prevpage");
-			output.AddAttribute(HtmlTextWriterAttribute.Title, this.GetTitle(string.Format("page {0}", this.searchResult.Page - 1)));
-			if (this.searchResult.Page != FIRST_PAGE) {
-				output.AddAttribute(HtmlTextWriterAttribute.Href, this.GeneratePageLink(this.searchResult.Page - 1));
-				output.AddAttribute(HtmlTextWriterAttribute.Class, this.PrevClass);
+			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page - 1)));
+
+			if (searchResult.Page != FIRST_PAGE) {
+				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.Page - 1));
+				output.AddAttribute(HtmlTextWriterAttribute.Class, PrevClass);
 				output.RenderBeginTag(HtmlTextWriterTag.A); // A
-				output.Write(this.PrevRenderName);
+				output.Write(PrevRenderName);
 			} else {
 				output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
 			}
@@ -339,18 +448,20 @@ namespace Triton.Web.View.Controls
 		}
 
 
-		public void Next(HtmlTextWriter output)
+		public void Next(
+			HtmlTextWriter output)
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.RenderEndTag(); // LI
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "nextpage");
-			output.AddAttribute(HtmlTextWriterAttribute.Title, this.GetTitle(string.Format("page {0}", this.searchResult.Page + 1)));
-			if (this.searchResult.Page != this.searchResult.TotalPages) {
-				output.AddAttribute(HtmlTextWriterAttribute.Href, this.GeneratePageLink(this.searchResult.Page + 1));
-				output.AddAttribute(HtmlTextWriterAttribute.Class, this.NextClass);
+			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page + 1)));
+
+			if (searchResult.Page != searchResult.TotalPages) {
+				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.Page + 1));
+				output.AddAttribute(HtmlTextWriterAttribute.Class, NextClass);
 				output.RenderBeginTag(HtmlTextWriterTag.A); // A
-				output.Write(this.NextRenderName);
+				output.Write(NextRenderName);
 			} else {
 				output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
 			}
@@ -360,31 +471,33 @@ namespace Triton.Web.View.Controls
 		}
 
 
-		protected string GeneratePageLink(int pageNumber)
+		protected string GeneratePageLink(
+			int pageNumber)
 		{
-			string url = string.Format("{0}&{2}page={1}", this.baseUrl, pageNumber, this.PageParameterPrefix);
+			string url = string.Format("{0}&{1}{2}={3}", baseUrl, PageParameterPrefix, PageParameterName, pageNumber);
 
 			return url;
 		}
 
 
-		protected void RenderPageSizeSelector(HtmlTextWriter output)
+		protected void RenderPageSizeSelector(
+			HtmlTextWriter output)
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // <li>
 
 			string text = "Add Copy Tag (PageSizeSelectorCopy)";
-			text = this.Page.GetCopyContent("PageSizeSelectorCopy") != "" ? this.Page.GetCopyContent("PageSizeSelectorCopy") : text;
+			text = Page.GetCopyContent("PageSizeSelectorCopy") != "" ? Page.GetCopyContent("PageSizeSelectorCopy") : text;
 			output.AddAttribute(HtmlTextWriterAttribute.Class, "pagesizeseletorscopy");
 			output.RenderBeginTag(HtmlTextWriterTag.Label);
 			output.Write(text);
 			output.AddAttribute(HtmlTextWriterAttribute.Class, "pagesizeselectors");
-			output.AddAttribute(HtmlTextWriterAttribute.Name, this.PageParameterPrefix + "pagesize");
-			output.AddAttribute(HtmlTextWriterAttribute.Rel, this.GeneratePageLink(0));
+			output.AddAttribute(HtmlTextWriterAttribute.Name, PageParameterPrefix + PageSizeParameterName);
+			output.AddAttribute(HtmlTextWriterAttribute.Rel, GeneratePageLink(0));
 			output.RenderBeginTag(HtmlTextWriterTag.Select); // <select>
 
 			for (int pageSize = PAGE_SIZE_START; pageSize <= PAGE_SIZE_END; pageSize += PAGE_SIZE_INCREMENT) {
 				output.AddAttribute(HtmlTextWriterAttribute.Value, pageSize.ToString());
-				if (this.Page.Request[this.PageParameterPrefix + "pagesize"] == pageSize.ToString()) {
+				if (Page.Request[PageParameterPrefix + PageSizeParameterName] == pageSize.ToString()) {
 					output.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
 				}
 				output.RenderBeginTag(HtmlTextWriterTag.Option); // <option value="5">5</option>
@@ -397,12 +510,14 @@ namespace Triton.Web.View.Controls
 		}
 
 
-		protected string GetTitle(string title)
+		protected string GetTitle(
+			string title)
 		{
-			if (string.IsNullOrEmpty(this.Title)) {
+
+			if (string.IsNullOrEmpty(Title)) {
 				return title;
 			} else {
-				return this.Title;
+				return Title;
 			}
 		}
 	}
