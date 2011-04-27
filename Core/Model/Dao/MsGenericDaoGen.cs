@@ -6,13 +6,15 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Triton.Utilities.Reflection;
 
-namespace Triton.Model.Dao
-{
+namespace Triton.Model.Dao {
 
 	#region History
 
 	// 10/27/2009	GV	Fixed the search result return
+	//   4/6/2011	SD	Updated GetData to use ReflectionUtilities rather than custom
+	//					reflection implementation.
 
 	#endregion
 
@@ -103,7 +105,7 @@ namespace Triton.Model.Dao
 			DataTable dt = ds.Tables[tableName];
 			List<T> resultList = new List<T>();
 
-			//  loop through the rows of the table to build the object list
+					//  loop through the rows of the table to build the object list
 			for (int i = 0; i < dt.Rows.Count; i++) {
 				DataRow dr = dt.Rows[i];
 
@@ -116,76 +118,15 @@ namespace Triton.Model.Dao
 					string propertyName = fieldNode.Attributes["object_attr"].Value;
 					string typeName = (fieldNode.Attributes["type"] == null) ? null : fieldNode.Attributes["type"].Value;
 
-					//  get the property of the object as defined in the mapping
-					PropertyInfo property = this.GetProperty(obj.GetType(), propertyName, typeName);
-
-					//  get the value from the database
-					string attrValue = dr[fieldName].ToString();
-					object propertyValue = null;
-					MethodInfo method;
-
-					if (property.PropertyType.IsEnum) {
-// TODO: ? support this in the framework?
-						//  use enumeration values defined in dbMapping if available.
-						//NameValueCollection enumConfig = (NameValueCollection)ConfigurationSettings.GetConfig("dbMappings/" + aProperty.PropertyType.Name);
-
-						//if (enumConfig != null && enumConfig[attrValue] != null) {
-						//    attrValue = enumConfig[attrValue];
-						//}
-
-						//  get the Parse method of the property's type
-						method = property.PropertyType.BaseType.GetMethod(
-							"Parse",
-							new Type[3]{
-							           	Type.GetType("System.Type"),
-							           	"".GetType(),
-							           	true.GetType()
-							           });
-
-						//  call the Parse method to get the value
-						if ((method != null) && (method.IsStatic)) {
-							propertyValue = method.Invoke(
-								null,
-								new object[3]{
-								             	property.PropertyType,
-								             	attrValue,
-								             	true
-								             });
-						}
-					} else if (Type.GetTypeCode(property.PropertyType) == Type.GetTypeCode("".GetType())) {
-						propertyValue = attrValue;
+					bool hasProperty = false;
+					if (typeName == null) {
+						hasProperty = ReflectionUtilities.HasProperty(obj, propertyName);
 					} else {
-						//  attempt to get the Parse method for the property's type
-						method = property.PropertyType.GetMethod("Parse", new Type[1]{"".GetType()});
-
-						//  if we failed to get the Parse method, see if the propoerty's 
-						//  type is Nullable and try with the underlying type
-						if ((method == null) && property.PropertyType.Name.StartsWith("Nullable")) {
-							Type type = Nullable.GetUnderlyingType(property.PropertyType);
-							method = type.GetMethod("Parse", new Type[1]{"".GetType()});
-						}
-
-						if ((method != null) && (method.IsStatic)) {
-							try {
-								propertyValue = method.Invoke(
-									null,
-									new object[1]{attrValue});
-							} catch (Exception e) {
-//							throw new ApplicationException(string.Format(
-//									"PropertyType = '{0}', attrValue = '{1}'", 
-//									property.PropertyType.ToString(), attrValue));
-							}
-						}
+						hasProperty = ReflectionUtilities.HasProperty(obj, propertyName, Type.GetType(typeName));
 					}
 
-					try {
-						if (propertyValue != null) {
-							method = property.GetSetMethod();
-							method.Invoke(obj, new[]{propertyValue});
-						}
-					} catch (MissingMethodException e) {
-						// TODO: Handle MissingMethodException
-						throw;
+					if (hasProperty) {
+						ReflectionUtilities.SetPropertyValue(obj, propertyName, dr[fieldName]);
 					}
 				}
 
@@ -301,6 +242,7 @@ namespace Triton.Model.Dao
 
 		#endregion
 
+
 		/// <summary>
 		/// Builds the "where" clause for a sql query based on the given conditions and adds
 		/// the corresponding parameters to the given <b>SqlCommand</b>.
@@ -329,7 +271,7 @@ namespace Triton.Model.Dao
 					//  make sure we have the correct number of matches
 					if (m.Groups.Count < 3) {
 						throw new ApplicationException(string.Format(
-						                               	"Invalid condition: '{0}'.", conditions[k]));
+													   	"Invalid condition: '{0}'.", conditions[k]));
 					}
 
 					//  get the field/parameter name, operator, and value from the Regex
@@ -389,33 +331,33 @@ namespace Triton.Model.Dao
 			//  find properties of the object that are public instance properties,
 			//  are writable, and match the given property name
 			MemberInfo[] propList = objType.FindMembers(MemberTypes.Property,
-			                                            BindingFlags.Instance | BindingFlags.Public,
-			                                            this.FindMembersCanWriteDelegate,
-			                                            propertyName);
+					BindingFlags.Instance | BindingFlags.Public,
+					this.FindMembersCanWriteDelegate,
+					propertyName);
 
 			//  if no property found, throw exception
 			if (propList.Length == 0) {
 				throw new ApplicationException(string.Format("No property '{0}' found on class '{1}'.",
-				                                             propertyName,
-				                                             objType.Name));
+						 propertyName,
+						 objType.Name));
 
 				//  if there is more than 1 property with the specified name,
 				//  check for the specific type
 			} else if (propList.Length > 1) {
 				if (typeName != null) {
 					propList = objType.FindMembers(MemberTypes.Property,
-					                               BindingFlags.Instance | BindingFlags.Public,
-					                               this.FindMembersCanWriteDelegate,
-					                               propertyName + "|" + typeName);
+						   BindingFlags.Instance | BindingFlags.Public,
+						   this.FindMembersCanWriteDelegate,
+						   propertyName + "|" + typeName);
 				}
 
 				//  check again for the count (should be 1)
 				if (propList.Length != 1) {
 					throw new ApplicationException(string.Format("{2} properties '{0}' of type '{3}' found on class '{1}'.",
-					                                             propertyName,
-					                                             objType.Name,
-					                                             (propList.Length == 0) ? "No" : "Multiple",
-					                                             typeName));
+							 propertyName,
+							 objType.Name,
+							 (propList.Length == 0) ? "No" : "Multiple",
+							 typeName));
 				}
 			}
 
@@ -450,8 +392,8 @@ namespace Triton.Model.Dao
 			//  make sure it is writable
 			//  if a type was specified, match the type
 			return ((memberInfo.Name.ToLower() == name.ToLower())
-			        && ((PropertyInfo) memberInfo).CanWrite
-			        && ((typeName == null) || (((PropertyInfo) memberInfo).PropertyType.Name == typeName)));
+					&& ((PropertyInfo) memberInfo).CanWrite
+					&& ((typeName == null) || (((PropertyInfo) memberInfo).PropertyType.Name == typeName)));
 		}
 	}
 }
