@@ -111,58 +111,63 @@ public class CompareAction : IAction
 			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(CompareValueIn),
 					"No value to compare to given in the CompareValueIn attribute.");
 
-			object obj = request.GetRequestItem<object>(ObjectItemNameIn, true);
-			if (Unwrap && obj.GetType().Name.StartsWith("SearchResult")) {
-				Array list = (Array)ReflectionUtilities.GetPropertyValue(obj, "Items");
-				obj = list.GetValue(0);
-			}
-
-			if (!string.IsNullOrEmpty(ObjectPropertyNameIn)) {
-						//  loop thru the path of the ObjectPropertyNameIn to the lowest level property value
-				string[] path = ObjectPropertyNameIn.Split('.');
-				for (int k = 0; k < path.Length && obj != null; k++) {
-					obj = ReflectionUtilities.GetPropertyValue(obj, path[k]);
-				}
-			}
-
-					//  if the property value is null, return the no value event
+//			object obj = request.GetRequestItem<object>(ObjectItemNameIn, true);
+			object obj = request.Items[ObjectItemNameIn];
 			if (obj == null) {
 				retEvent = Events.NoValue;
-
 			} else {
-				object compareValue = CompareValueIn;;
-						//  if the compare value is enclosed within [ ], it means get the value
-						//  from the request parameter
-				if (CompareValueIn.StartsWith("[") && CompareValueIn.EndsWith("]")) {
-					string paramName = CompareValueIn.Substring(1, CompareValueIn.Length - 2);
-					if (request[paramName] == null) {
-						throw new NullReferenceException(string.Format(
-								"No request parameter '{0}' found.", paramName));
+				if (Unwrap && obj.GetType().Name.StartsWith("SearchResult")) {
+					Array list = (Array)ReflectionUtilities.GetPropertyValue(obj, "Items");
+					obj = list.GetValue(0);
+				}
+
+				if (!string.IsNullOrEmpty(ObjectPropertyNameIn)) {
+					//  loop thru the path of the ObjectPropertyNameIn to the lowest level property value
+					string[] path = ObjectPropertyNameIn.Split('.');
+					for (int k = 0; k < path.Length && obj != null; k++) {
+						obj = ReflectionUtilities.GetPropertyValue(obj, path[k]);
 					}
-					compareValue = request[paramName];
 				}
 
-				if (!(obj is string)) {
-					//if (!ReflectionUtilities.HasMethod(obj, "Parse")) {
-					//    throw new MissingMethodException(string.Format(
-					//            "The type '{0}' does not contain a Parse method.", obj.GetType().FullName));
-					//}
-					//compareValue = ReflectionUtilities.CallMethod(obj, "Parse", CompareValueIn);
-					compareValue = Convert.ChangeType(compareValue, obj.GetType());
-				}
+						//  if the property value is null, return the no value event
+				if (obj == null) {
+					retEvent = Events.NoValue;
 
-				if (!ReflectionUtilities.HasMethod(obj, "CompareTo", obj.GetType())) {
-					throw new MissingMethodException(string.Format(
-							"The type '{0}' does not contain a CompareTo method.", obj.GetType().FullName));
-				}
-				int result = (int)ReflectionUtilities.CallMethod(obj, "CompareTo", compareValue);
-
-				if (result == 0) {
-					retEvent = Events.Equal;
-				} else if (result < 0) {
-					retEvent = Events.LessThan;
 				} else {
-					retEvent = Events.GreaterThan;
+					object compareValue = CompareValueIn; ;
+							//  if the compare value is enclosed within [ ], it means get the value
+							//  from the request parameter
+					if (CompareValueIn.StartsWith("[") && CompareValueIn.EndsWith("]")) {
+						string paramName = CompareValueIn.Substring(1, CompareValueIn.Length - 2);
+						if (request[paramName] == null) {
+							throw new NullReferenceException(string.Format(
+									"No request parameter '{0}' found.", paramName));
+						}
+						compareValue = request[paramName];
+					}
+
+					if (!(obj is string)) {
+						//if (!ReflectionUtilities.HasMethod(obj, "Parse")) {
+						//    throw new MissingMethodException(string.Format(
+						//            "The type '{0}' does not contain a Parse method.", obj.GetType().FullName));
+						//}
+						//compareValue = ReflectionUtilities.CallMethod(obj, "Parse", CompareValueIn);
+						compareValue = Convert.ChangeType(compareValue, obj.GetType());
+					}
+
+					if (!ReflectionUtilities.HasMethod(obj, "CompareTo", obj.GetType())) {
+						throw new MissingMethodException(string.Format(
+								"The type '{0}' does not contain a CompareTo method.", obj.GetType().FullName));
+					}
+					int result = (int)ReflectionUtilities.CallMethod(obj, "CompareTo", compareValue);
+
+					if (result == 0) {
+						retEvent = Events.Equal;
+					} else if (result < 0) {
+						retEvent = Events.LessThan;
+					} else {
+						retEvent = Events.GreaterThan;
+					}
 				}
 			}
 
