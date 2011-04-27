@@ -194,12 +194,13 @@ public class SetObjectPropertyAction : IAction
 			} else if (!string.IsNullOrEmpty(ValueParamNameIn)) {
 				value = request[ValueParamNameIn];
 			} else if (!string.IsNullOrEmpty(ValueItemNameIn)) {
-				value = request.GetRequestItem<object>(ValueItemNameIn, true);
+//				value = request.GetRequestItem<object>(ValueItemNameIn, true);
+				value = request.Items[ValueItemNameIn];
 
 						//  if the item from the request is wrapped in a "SearchResult"
 						//  and we're instructed to unwrap it, get the first item from 
 						//  SearchResult.Items, or the SearchResult.Items array
-				if (value.GetType().Name.StartsWith("SearchResult")) {
+				if ((value != null) && value.GetType().Name.StartsWith("SearchResult")) {
 					if (Unwrap) {
 						value = ((object[])ReflectionUtilities.GetPropertyValue(value, "Items")).GetValue(0);
 					} else if (UnwrapAsArray) {
