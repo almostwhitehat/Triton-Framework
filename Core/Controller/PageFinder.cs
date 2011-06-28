@@ -219,7 +219,7 @@ namespace Triton.Controller
 		/// <param name="section">The name of the section the page is for.</param>
 		/// <param name="site">The site code for the site the page is for.</param>
 		/// <returns>A <b>FileRecord</b> containing the information on the page's location.</returns>
-		internal FileRecord FindPage(
+		public FileRecord FindPage(
 			string pageName,
 			string section,
 			string site)

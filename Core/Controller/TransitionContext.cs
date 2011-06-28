@@ -84,7 +84,7 @@ namespace Triton.Controller
 		/// <summary>
 		/// Gets the starting event for the context.
 		/// </summary>
-		internal string StartEvent
+		public string StartEvent
 		{
 			get { 
 				return this.startEvent; 
