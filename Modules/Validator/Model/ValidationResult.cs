@@ -4,6 +4,8 @@ namespace Triton.Validator.Model
 	#region History
 
 	// History:
+	//   6/30/2011	SD	Made the AddError/AddErrors and ClearErrors methods public so
+	//					that validator rules in applications can access.
 
 	#endregion
 
@@ -42,7 +44,7 @@ namespace Triton.Validator.Model
 		/// </summary>
 		/// <param name="field">The name of the field to which the error applies.</param>
 		/// <param name="errorId">The ID of the error that occurred.</param>
-		internal void AddError(
+		public void AddError(
 			string field,
 			long errorId)
 		{
@@ -56,7 +58,7 @@ namespace Triton.Validator.Model
 		/// Adds a new <b>ValidationError</b> to the collection of errors.
 		/// </summary>
 		/// <param name="error">The <b>ValidationError</b> to add.</param>
-		internal void AddError(
+		public void AddError(
 			ValidationError error)
 		{
 			if (error != null) {
@@ -74,7 +76,7 @@ namespace Triton.Validator.Model
 		/// the current error collection.
 		/// </summary>
 		/// <param name="errors">The <b>ValidationErrorCollection</b> to add the errors from.</param>
-		internal void AddErrors(
+		public void AddErrors(
 			ValidationErrorCollection errors)
 		{
 			if (errors != null) {
@@ -92,7 +94,7 @@ namespace Triton.Validator.Model
 		/// <summary>
 		/// Removes all of the errors associated with this <b>ValidationResult</b>.
 		/// </summary>
-		internal void ClearErrors()
+		public void ClearErrors()
 		{
 			if (this.Errors != null) {
 				this.Errors.Clear();
