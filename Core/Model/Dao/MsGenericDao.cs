@@ -14,8 +14,11 @@ namespace Triton.Model.Dao
 	#region History
 
 	// History:
-	// 6/5/2009		KP	Changed the logging to Common.Logging.
-	// 09/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
+	//   6/5/2009	KP	Changed the logging to Common.Logging.
+	//  9/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
+	//  5/10/2011	SD	Fix in LoadFieldInfo for reading maxLen and prec -- 
+	//					DbUtilities.GetIntValue returns a nullable so doing a .Value directly
+	//					threw an exception when the value was null.
 
 	#endregion
 
@@ -119,9 +122,9 @@ namespace Triton.Model.Dao
 						}
 
 						joins.Append(string.Format(" {0} {1} {2} ON ",
-						                           joinNode.Attributes["type"].Value,
-						                           this.tableName,
-						                           this.aliases[this.tableName]));
+												   joinNode.Attributes["type"].Value,
+												   this.tableName,
+												   this.aliases[this.tableName]));
 						joins.Append(this.BuildConditions(joinNode, cmd, null));
 					}
 				}
@@ -148,7 +151,7 @@ namespace Triton.Model.Dao
 					foreach (XmlNode orderField in selectNode.SelectSingleNode("OrderBy").ChildNodes) {
 						order.Append(string.Format("{0} {1}, ",
 													this.FormatOrderBy(orderField),
-						                           orderField.Attributes["direction"].Value));
+												   orderField.Attributes["direction"].Value));
 					}
 
 					// Remove the extra comma
@@ -206,7 +209,7 @@ namespace Triton.Model.Dao
 
 // TODO: this could potentially be vulnerable to sql injection!
 			sql = "select " + sql.Substring(0, sql.Length - 2) +
-			      " from " + tableName + " (nolock)";
+				  " from " + tableName + " (nolock)";
 
 			if (conditions != null) {
 				bool isFirst = true;
@@ -522,7 +525,7 @@ namespace Triton.Model.Dao
 
 			// Set parameter info if we're not in a grouping node
 			if ((op.Name != "Operator" && "or,and,not".IndexOf(oper) == -1)
-			    || (op.Name == "Operator" && "or,and,not".IndexOf(oper) == -1)) {
+					|| (op.Name == "Operator" && "or,and,not".IndexOf(oper) == -1)) {
 				string fieldName = null;
 				string fieldValue = null;
 				string parameterName = null;
@@ -536,12 +539,12 @@ namespace Triton.Model.Dao
 					// no literal attribute defaults to mean literal="true"
 					// false value indicates a table field is being used
 					bool isLiteral = op["Field"].Attributes["literal"] == null
-					                 || "true".Equals(op["Field"].Attributes["literal"].Value.ToLower());
+							|| "true".Equals(op["Field"].Attributes["literal"].Value.ToLower());
 
 					fieldValue = op["Field"].InnerText;
 					sourceColumn = (lastPeriodPosition == -1)
-					               	? fieldName
-					               	: fieldName.Substring(lastPeriodPosition + 1, fieldName.Length - lastPeriodPosition - 1);
+							? fieldName
+							: fieldName.Substring(lastPeriodPosition + 1, fieldName.Length - lastPeriodPosition - 1);
 					parameterName = string.Format("{0}{1}", sourceColumn, this.randomGenerator.Next(1, 1000));
 						// Random number added for parameter uniqueness
 					rightSide = (isLiteral) ? "@" + parameterName : this.FormatFieldName(fieldValue);
@@ -789,10 +792,10 @@ namespace Triton.Model.Dao
 				cmd.Connection = this.GetConnection();
 
 				cmd.CommandText = string.Format("select column_name, ordinal_position, column_default,"
-				                                +
-				                                " is_nullable, data_type, character_maximum_length, cast(numeric_precision as int) as numeric_precision"
-				                                + " from information_schema.columns where table_name = '{0}'",
-				                                tableName);
+												+
+												" is_nullable, data_type, character_maximum_length, cast(numeric_precision as int) as numeric_precision"
+												+ " from information_schema.columns where table_name = '{0}'",
+												tableName);
 
 				dr = cmd.ExecuteReader();
 
@@ -804,8 +807,10 @@ namespace Triton.Model.Dao
 //				object defaultVal	= DbUtilities.(dr, "column_default");
 					bool nullable = (string.Compare("yes", DbUtilities.GetStringValue(dr, "is_nullable"), true) == 0);
 					string type = DbUtilities.GetStringValue(dr, "data_type");
-					int maxLen = DbUtilities.GetIntValue(dr, "character_maximum_length").Value;
-					int prec = DbUtilities.GetIntValue(dr, "numeric_precision").Value;
+					int? maxLenNullable = DbUtilities.GetIntValue(dr, "character_maximum_length");
+					int maxLen = maxLenNullable.HasValue ? maxLenNullable.Value : 0;
+					int? precNullable = DbUtilities.GetIntValue(dr, "numeric_precision");
+					int prec = precNullable.HasValue ? precNullable.Value : 0;
 
 					this.fieldInfo.Add(name.ToLower(), new FieldInfo(pos, null, nullable, type, maxLen, prec));
 				}
