@@ -18,6 +18,9 @@ namespace Triton.Logic
 	//  11/12/2009	GV	Added subclass of events, for use for returning events.
 	//   3/16/2011	SD	Added support for replacing of placeholders in the message
 	//					with the value of like-named request parameters.
+	//   6/22/2011	SD	Added support for getting the error ID from a request parameter.
+	//   6/24/2011	SD	Added support for being able to specify a specific index in the
+	//					errors list to insert the given error at.
 
 	#endregion
 
@@ -54,6 +57,17 @@ namespace Triton.Logic
 
 
 		/// <summary>
+		/// Gets or sets the name of the request parameter containing
+		/// the error ID for the Error to be added.
+		/// </summary>
+		public string ErrorIdParamNameIn
+		{
+			get;
+			set;
+		}
+
+
+		/// <summary>
 		/// Errors collection item name to retrieve.
 		/// </summary>
 		public string ErrorsItemNameIn
@@ -67,6 +81,18 @@ namespace Triton.Logic
 		/// Errors collection item name to append the errors.
 		/// </summary>
 		public string ErrorsItemNameOut
+		{
+			get;
+			set;
+		}
+
+
+		/// <summary>
+		/// Gets or sets the zero-based index in the errors list
+		/// into which to place the specified error.
+		/// [Optional - if not provided error is added at end of list.]
+		/// </summary>
+		public int? Index
 		{
 			get;
 			set;
@@ -91,9 +117,14 @@ namespace Triton.Logic
 			MvcRequest request = context.Request;
 
 			try {
-						//  if error id was not set use the current state id.
+						//  if ErrorId not specified on the state, check for request parameter or use state ID
 				if (string.IsNullOrEmpty(ErrorId)) {
-					ErrorId = context.CurrentState.Id.ToString();
+					if (!string.IsNullOrEmpty(ErrorIdParamNameIn) && !string.IsNullOrEmpty(request[ErrorIdParamNameIn])) {
+						ErrorId = request[ErrorIdParamNameIn];
+					} else {
+							//  if error id was not set use the current state id.
+						ErrorId = context.CurrentState.Id.ToString();
+					}
 				}
 
 				ErrorList errors;
@@ -122,7 +153,11 @@ namespace Triton.Logic
 					}
 				}
 
-				errors.Add(err);
+				if (Index.HasValue && (Index.Value < errors.Count)) {
+					errors.Insert(Index.Value, err);
+				} else {
+					errors.Add(err);
+				}
 
 				request.Items[ErrorsItemNameOut] = errors;
 
