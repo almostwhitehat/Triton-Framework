@@ -10,6 +10,7 @@ namespace Triton.Membership.Model {
 
 	// History:
 	//   4/8/2011	SD	Added GetAttributeValue methods to simplify retrival of attribute values from the Account.
+	//  7/13/2011	SD	Updated IsMemberOf to check for null Roles before trying to dereference.
 
 	#endregion
 
@@ -48,9 +49,9 @@ namespace Triton.Membership.Model {
 		public virtual bool IsMemberOf(
 			string roleName)
 		{
-			Role role = Roles.FirstOrDefault(x => x.Code == roleName);
+			Role role = (Roles == null) ? null : Roles.FirstOrDefault(x => x.Code == roleName);
 
-			return role != null;
+			return (role != null);
 		}
 
 
