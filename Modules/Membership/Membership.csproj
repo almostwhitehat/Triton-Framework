@@ -68,6 +68,7 @@
     <Compile Include="Logic\AddAddressToAccountAction.cs" />
     <Compile Include="Logic\AddRoleToAccountAction.cs" />
     <Compile Include="Logic\AuthenticateAccountAction.cs" />
+    <Compile Include="Logic\GetUserAttributeValueAction.cs" />
     <Compile Include="Logic\CreateAttributeTypeAction.cs" />
     <Compile Include="Logic\GetAccountIdAction.cs" />
     <Compile Include="Logic\GetAttributeTypeAction.cs" />
