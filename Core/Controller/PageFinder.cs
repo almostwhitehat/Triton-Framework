@@ -16,6 +16,8 @@ namespace Triton.Controller
 	// History:
 	// 6/2/2009		KP  Changing the logging to Common.logging.
 	// 09/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
+    // 08/11/2011   MSC Made private method for FindPage public, 
+    //                  so external contentproviders and contentpublishers can utilize it.
 
 	#endregion
 
@@ -262,7 +264,7 @@ namespace Triton.Controller
 		/// <param name="site">The site code for the site the page is for.</param>
 		/// <param name="extension">The file extension of the file to find (including ".").</param>
 		/// <returns>A <b>FileRecord</b> containing the information on the page's location.</returns>
-		private FileRecord FindPage(
+		public FileRecord FindPage(
 			string pageName,
 			string section,
 			string site,
