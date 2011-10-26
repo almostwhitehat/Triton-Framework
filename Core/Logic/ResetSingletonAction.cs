@@ -11,6 +11,12 @@ using Triton.CodeContracts;
 
 namespace Triton.Logic {
 
+#region History
+
+// History:
+//  10/25/11 - SD -	Added return of "ok" event upon successful completion.
+
+#endregion
 
 /// <summary>
 /// Resets a singleton, forcing it to re-initialize on its next usage.
@@ -139,6 +145,8 @@ public class ResetSingletonAction : IAction
 							//  call the reset method
 					resetMethod.Invoke(null, null);
 				}
+
+				retEvent = Events.Ok;
 			}
 			
 		} catch (Exception e) {
