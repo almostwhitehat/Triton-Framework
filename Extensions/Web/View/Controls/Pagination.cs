@@ -11,8 +11,10 @@ namespace Triton.Web.View.Controls {
 	#region History
 
 	// History:
-	//   4/20/2011	SD	Added PageParameterName and PageSizeParameterName properties to allow the
-	//					control to work with type-safe paging parameters.
+    //   4/20/2011	SD	Added PageParameterName and PageSizeParameterName properties to allow the
+    //					control to work with type-safe paging parameters.
+    //   11/15/2011	MSC	Added AdditionalParameters to allow the control 
+    //                  to append additional parameters to request url.
 
 	#endregion
 
@@ -225,6 +227,12 @@ namespace Triton.Web.View.Controls {
 		}
 
 
+        /// <summary>
+        /// Additional Parameters to append in search criteria
+        /// </summary>
+        public string AdditionalParameters { get; set; }
+
+
 		/// <summary>
 		/// Boolean value that, if set to true, will set the baseUrl to "/"
 		/// </summary>
@@ -304,7 +312,10 @@ namespace Triton.Web.View.Controls {
 					baseUrl += string.Format("&{0}={1}", key, Page.Request.Params[key]);
 				}
 			}
-		}
+            if (!string.IsNullOrEmpty(AdditionalParameters)) {
+                baseUrl += string.Format("&{0}", AdditionalParameters);
+            }
+        }
 
 
 		public override void RenderBeginTag(
