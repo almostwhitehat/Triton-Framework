@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Common.Logging;
@@ -18,7 +19,7 @@ namespace Triton.Graphml.Model.Dao
 
 	// History:
 	// 08/16/2009	GV	Ran clean up and reformat.
-	// 09/27/2009
+	// 11/21/2011	SD	Added support for state prerequisites
 
 	#endregion
 
@@ -36,10 +37,13 @@ namespace Triton.Graphml.Model.Dao
 		private const string PAGE_ATTRIBUTE = "page";
 		private const string STOP_ATTRIBUTE = "stop";
 
+				// Key is the prerequisite name, Value is [startStateID],[event]
+		Dictionary<string, string> prerequisiteLookup = new Dictionary<string, string>();
 		/// <summary> 
 		/// private logger refference
 		/// </summary>
 		private readonly ILog log = LogManager.GetCurrentClassLogger();
+
 
 		#region IStateMachineStatesDao Members
 
@@ -79,9 +83,14 @@ namespace Triton.Graphml.Model.Dao
 
 				if (Directory.Exists(statesConfigPath)) {
 					if (Directory.GetFiles(statesConfigPath, "*.graphml", SearchOption.TopDirectoryOnly).Length > 0) {
-						foreach (string fileName in Directory.GetFiles(statesConfigPath, "*.graphml", SearchOption.TopDirectoryOnly)) {
-							this.ProcessGraphmlFile(fileName, states, transitionGroups, stateTransitionGroups);
+						string[] graphmlFiles = Directory.GetFiles(statesConfigPath, "*.graphml", SearchOption.TopDirectoryOnly);
+						foreach (string fileName in graphmlFiles) {
+							PreProcessGraphmlFile(fileName);
 						}
+						foreach (string fileName in graphmlFiles) {
+							ProcessGraphmlFile(fileName, states, transitionGroups, stateTransitionGroups);
+						}
+
 						foreach (KeyValuePair<long, List<string>> kvp in stateTransitionGroups) {
 							long fromStateId = kvp.Key;
 							IState state = states[fromStateId];
@@ -128,17 +137,67 @@ namespace Triton.Graphml.Model.Dao
 
 		#endregion
 
+
+		/// <summary>
+		/// Preprocesses the given file for any information that needs to be gathered
+		/// before the states are created in ProcessGraphmlFile.
+		/// </summary>
+		/// <param name="filename">The path of the states graphml file to preprocess.</param>
+		private void PreProcessGraphmlFile(
+			string filename)
+		{
+			XmlDocument doc = new XmlDocument();
+
+			doc.Load(filename);
+			XmlNamespaceManager namespaceManager = new XmlNamespaceManager(doc.NameTable);
+
+			XmlNode top = doc.ChildNodes[1];
+
+					//  add the namespaces from the parent "graphml" node to the 
+					//  namespaceManager for use in SelectSingleNode/SelectNodes
+			foreach (XmlAttribute attr in top.Attributes) {
+				if (attr.Name.StartsWith("xmlns")) {
+					string[] name = attr.Name.Split(':');
+					string prefix = (name.Length > 1) ? name[1] : "";
+					namespaceManager.AddNamespace(prefix, attr.Value);
+				}
+			}
+
+					//  find the ShapeNode nodes with Shape type of "diamond"
+			string path = "//y:ShapeNode[y:Shape/@type=\"diamond\"]";
+			XmlNodeList diamondNodes = top.SelectNodes(path, namespaceManager);
+
+					//  process the diamnond nodes -- prerequisite definitions
+			foreach (XmlNode diamond in diamondNodes) {
+						//  get the text for the prerequisite definitions
+				string val = diamond.SelectSingleNode("y:NodeLabel", namespaceManager).InnerText;
+						//  separate the lines (definitions)
+				string[] lines = val.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+
+						//  format of a prerequisite definition is {name}: {start_state_id},{start_event}
+				foreach (string line in lines) {
+					string[] pieces = line.Replace(" ", "").Split(':', ',');
+
+							//  should have: name, start state ID, event
+					if (pieces.Length != 3) {
+						this.log.ErrorFormat("Error occurred processing prerequisite definition: {0}", line);
+					} else {
+						prerequisiteLookup.Add(pieces[0], pieces[1] + "," + pieces[2]);
+					}
+				}
+			}
+		}
+
+
 		private void ProcessGraphmlFile(
 			string filename,
 			IDictionary<long, IState> states,
 			IDictionary<string, Dictionary<string, long>> transitionGroups,
 			IDictionary<long, List<string>> stateTransitionGroups)
 		{
-			// Key is the id of the node, Value is the stateID
+					// Key is the id of the node, Value is the stateID
 			Dictionary<string, int> transitionLookup = new Dictionary<string, int>();
-
 			Dictionary<string, string> transitionGroupLookup = new Dictionary<string, string>();
-
 
 			XDocument xdoc = XDocument.Load(filename);
 			XPathNavigator nav = xdoc.CreateNavigator();
@@ -156,6 +215,7 @@ namespace Triton.Graphml.Model.Dao
 				do {
 					if (nodeAttributes.Name == "id") {
 						nodeId = nodeAttributes.Value;
+						break;
 					}
 				} while (nodeAttributes.MoveToNextAttribute());
 
@@ -213,10 +273,11 @@ namespace Triton.Graphml.Model.Dao
 						} while (dataNodes.MoveToNext());
 					}
 				} while (node.MoveToNext());
+
 				try {
 					int stateId;
 					switch (type) {
-						case "rectangle":
+						case "rectangle":		// page state
 							IState pageNode = this.CreatePageState(out stateId, contents);
 							if (states.ContainsKey(pageNode.Id)) {
 								throw new ApplicationException(string.Format("Page State ({0})already exists.", pageNode.Id));
@@ -225,7 +286,8 @@ namespace Triton.Graphml.Model.Dao
 							states[pageNode.Id] = pageNode;
 							transitionLookup[nodeId] = stateId;
 							break;
-						case "octagon":
+
+						case "octagon":			// stop state
 							IState stopNode = this.CreateStopState(out stateId, contents);
 							if (states.ContainsKey(stopNode.Id)) {
 								throw new ApplicationException(string.Format("Stop State ({0})already exists.", stopNode.Id));
@@ -234,7 +296,8 @@ namespace Triton.Graphml.Model.Dao
 							states[stopNode.Id] = stopNode;
 							transitionLookup[nodeId] = stateId;
 							break;
-						case "roundrectangle":
+
+						case "roundrectangle":	// action state
 							IState actionNode = this.CreateActionState(out stateId, contents);
 							if (states.ContainsKey(actionNode.Id)) {
 								throw new ApplicationException(string.Format("Action State ({0})already exists.", actionNode.Id));
@@ -243,16 +306,14 @@ namespace Triton.Graphml.Model.Dao
 							states[actionNode.Id] = actionNode;
 							transitionLookup[nodeId] = stateId;
 							break;
-						case "ellipse":
+
+						case "ellipse":			// connector
 							transitionLookup[nodeId] = int.Parse(contents);
 							break;
-						case "diamond":
-							if (transitionGroupLookup.ContainsKey(nodeId)) {
-								throw new ApplicationException("Transition Group Definition already exists.");
-							}
 
-							transitionGroupLookup[nodeId] = contents;
+						case "diamond":			// prerequisite definitions are handled in PreProcessGraphmlFile
 							break;
+
 						case "parallelogram":
 							string transitionGroupName = string.Empty;
 							string[] split = contents.Split('\n');
@@ -271,6 +332,7 @@ namespace Triton.Graphml.Model.Dao
 							}
 
 							break;
+
 						default:
 							break;
 					}
@@ -303,7 +365,6 @@ namespace Triton.Graphml.Model.Dao
 				// find the y:PolyLineEdge node
 				XPathNavigator dataNodes = edge.Clone();
 				dataNodes.MoveToChild(XPathNodeType.All);
-
 
 				do {
 					if ((dataNodes.Name == "data") && dataNodes.HasAttributes && dataNodes.HasChildren) {
@@ -443,6 +504,8 @@ namespace Triton.Graphml.Model.Dao
 				attributes[NAME_ATTRIBUTE] = split[1].Trim();
 			}
 
+			TransformAttributes(attributes, stateId);
+
 			IState state = StateFactory.MakeState(STOP_ATTRIBUTE, stateId, attributes);
 
 			return state;
@@ -489,6 +552,8 @@ namespace Triton.Graphml.Model.Dao
 				attributes[PAGE_ATTRIBUTE] = split[1];
 			}
 
+			TransformAttributes(attributes, stateId);
+
 			IState state = StateFactory.MakeState(PAGE_ATTRIBUTE, stateId, attributes);
 
 			return state;
@@ -527,10 +592,33 @@ namespace Triton.Graphml.Model.Dao
 				attributes[ACTION_ATTRIBUTE] = split[1].Trim();
 			}
 
+			TransformAttributes(attributes, stateId);
 
 			IState state = StateFactory.MakeState(ACTION_ATTRIBUTE, stateId, attributes);
 
 			return state;
+		}
+
+
+		private void TransformAttributes(
+			NameValueCollection attributes,
+			int stateId)
+		{
+
+					//  for the prerequisite attribute, change the value from the name(s) of the
+					//  prerequisite(s) to the name + definition
+			if (attributes["prerequisite"] != null) {
+				string[] prereqNames = attributes["prerequisite"].Split('|');
+				string newVal = "";
+				foreach (string name in prereqNames) {
+					if (prerequisiteLookup.ContainsKey(name)) {
+						newVal += ((newVal.Length > 0) ? "|" : "") + name + "=" + prerequisiteLookup[name];
+					} else {
+						this.log.ErrorFormat("No prerequisite found with name of '{0}' as referenced on state {1}", name, stateId);
+					}
+				}
+				attributes["prerequisite"] = newVal;
+			}
 		}
 
 
@@ -541,7 +629,8 @@ namespace Triton.Graphml.Model.Dao
 		/// </param>
 		/// <returns>
 		/// </returns>
-		private NameValueCollection ProcessContent(string[] contents)
+		private NameValueCollection ProcessContent(
+			string[] contents)
 		{
 			NameValueCollection keyVal = new NameValueCollection();
 
