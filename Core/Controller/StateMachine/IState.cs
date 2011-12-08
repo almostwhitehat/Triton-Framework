@@ -4,6 +4,7 @@ namespace Triton.Controller.StateMachine
 	#region History
 
 	// History:
+	//  11/18/11	SD	Added support for Prerequisite.
 
 	#endregion
 
@@ -19,25 +20,55 @@ namespace Triton.Controller.StateMachine
 		/// </summary>
 		/// <param name="key">The name of the attribute to get.</param>
 		/// <returns>The value of the specified attribute.</returns>
-		string this[string key] { get; }
+		string this[string key]
+		{
+			get;
+		}
 
 
 		/// <summary>
 		/// Gets the type of the state.
 		/// </summary>
-		string Type { get; }
+		string Type
+		{
+			get;
+		}
 
 
 		/// <summary>
 		/// Gets the ID of the state.
 		/// </summary>
-		long Id { get; }
+		long Id
+		{
+			get;
+		}
 
 
 		/// <summary>
 		/// Gets the name of the state.
 		/// </summary>
-		string Name { get; }
+		string Name
+		{
+			get;
+		}
+
+
+		/// <summary>
+		/// Gets a flag indicating whether or no the state has prerequisites.
+		/// </summary>
+		bool HasPrerequisite
+		{
+			get;
+		}
+
+
+		/// <summary>
+		/// Gets the prerequisite(s) for the state.
+		/// </summary>
+		StatePrerequisite[] Prerequisite
+		{
+			get;
+		}
 
 
 		/// <summary>

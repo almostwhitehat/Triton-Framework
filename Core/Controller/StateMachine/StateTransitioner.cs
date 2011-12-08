@@ -19,6 +19,7 @@ namespace Triton.Controller.StateMachine {
 // 11/16/2009	GV	Fixed the logging to include the inner exception. Removed unnessesary commented out old code
 //					Added a throw at the global try catch.
 // 02/18/2011	SD	Added support for default transitions.
+// 11/18/2011	SD	Added support for state prerequisites.
 
 #endregion
 
@@ -106,6 +107,19 @@ public class StateTransitioner
 
 						//  handle the state
 				try {
+							//  if there is a prerequisite on the state, recursively call DoTransition
+							//  for the prerequisite
+					if (targetState.HasPrerequisite) {
+						for (int p = 0; p < targetState.Prerequisite.Length; p++) {
+							LogManager.GetCurrentClassLogger().Debug(traceMessage => traceMessage(
+									"Begin prerequisite {0}", targetState.Prerequisite[p].Name));
+							DoTransition(sm.GetState(targetState.Prerequisite[p].StartStateId), targetState.Prerequisite[p].StartEvent, transContext);
+							LogManager.GetCurrentClassLogger().Debug(traceMessage => traceMessage(
+									"End prerequisite {0}", targetState.Prerequisite[p].Name));
+						}
+						// ?? what if ended on page state
+					}
+
 					evnt = targetState.Execute(transContext);
 				} catch (Exception ex) {
 					throw new ApplicationException(string.Format("Error executing state {0}.",
@@ -117,8 +131,7 @@ public class StateTransitioner
 			} catch (Exception e) {
 						//  to exit the loop if something goes wrong
 				evnt = null;
-				LogManager.GetCurrentClassLogger().Error(
-						errorMessage => errorMessage(e.Message), e);
+				LogManager.GetCurrentClassLogger().Error(errorMessage => errorMessage(e.Message), e);
 
 				throw;
 			}

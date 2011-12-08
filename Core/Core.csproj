@@ -70,6 +70,7 @@
     <Compile Include="Controller\Publish\IPublisherRule.cs" />
     <Compile Include="Controller\Publish\PublisherRuleFactory.cs" />
     <Compile Include="Controller\StateMachine\StateInfo.cs" />
+    <Compile Include="Controller\StateMachine\StatePrerequisite.cs" />
     <Compile Include="Logic\CompareAction.cs" />
     <Compile Include="Logic\EqualAction.cs" />
     <Compile Include="Logic\GetObjectPropertyAsItemAction.cs" />

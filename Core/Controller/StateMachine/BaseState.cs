@@ -8,6 +8,7 @@ namespace Triton.Controller.StateMachine
 	#region History
 
 	// History:
+	//  11/18/11	SD	Added support for Prerequisite.
 
 	#endregion
 
@@ -23,6 +24,7 @@ namespace Triton.Controller.StateMachine
 		protected string name;
 		protected Hashtable transitions = new Hashtable();
 		protected string type;
+		protected StatePrerequisite[] prerequisite = null;
 
 
 		public BaseState(
@@ -36,7 +38,9 @@ namespace Triton.Controller.StateMachine
 
 		public NameValueCollection Attributes
 		{
-			get { return this.attributes; }
+			get {
+				return this.attributes;
+			}
 		}
 
 
@@ -44,25 +48,52 @@ namespace Triton.Controller.StateMachine
 
 		public string Type
 		{
-			get { return this.type; }
+			get {
+				return this.type;
+			}
 		}
 
 
 		public string this[string key]
 		{
-			get { return ((this.attributes == null) ? null : this.attributes[key]); }
+			get {
+				return ((this.attributes == null) ? null : this.attributes[key]);
+			}
 		}
 
 
 		public long Id
 		{
-			get { return this.id; }
+			get {
+				return this.id;
+			}
 		}
 
 
 		public string Name
 		{
-			get { return this.name; }
+			get {
+				return this.name;
+			}
+		}
+
+
+		public bool HasPrerequisite
+		{
+			get {
+				return ((prerequisite != null) && (prerequisite.Length > 0));
+			}
+		}
+
+
+		public StatePrerequisite[] Prerequisite
+		{
+			get {
+				return prerequisite;
+			}
+			internal set {
+				prerequisite = value;
+			}
 		}
 
 
