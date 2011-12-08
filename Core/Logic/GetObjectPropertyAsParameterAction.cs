@@ -13,6 +13,9 @@ using Triton.CodeContracts;
 
 namespace Triton.Logic {
 
+// History:
+//    8/18/11 SD -	Made ObjectPropertyNameIn property optional. If not provided the object
+//					itself is returned, as a string.
 
 /// <summary>
 /// Gets a property of an object in Request.Items and sets a request parameter
@@ -43,6 +46,7 @@ public class GetObjectPropertyAsParameterAction : IAction
 
 	/// <summary>
 	/// Gets or sets the name of the property to get.
+	/// Optional. If not provided the object itself is returned, as a string.
 	/// </summary>
 	public string ObjectPropertyNameIn
 	{
@@ -73,8 +77,8 @@ public class GetObjectPropertyAsParameterAction : IAction
 		try {
 			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(ObjectItemNameIn),
 					"No item name given in the ObjectItemNameIn attribute.");
-			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(ObjectPropertyNameIn),
-					"No object property name given in the ObjectPropertyNameIn attribute.");
+			//ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(ObjectPropertyNameIn),
+			//        "No object property name given in the ObjectPropertyNameIn attribute.");
 			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(ParameterNameOut),
 					"No parameter name given in the ParameterNameOut attribute.");
 
@@ -84,18 +88,24 @@ public class GetObjectPropertyAsParameterAction : IAction
 				obj = list.GetValue(0);
 			}
 
-					//  loop thru the path to the lowest level property
-			string[] path = ObjectPropertyNameIn.Split('.');
-			for (int k = 0; k < path.Length && obj != null; k++) {
-				obj = ReflectionUtilities.GetPropertyValue(obj, path[k]);
-			}
-			object propVal = obj;
-
-			if (propVal != null) {
-				request[ParameterNameOut] = propVal.ToString();
+					//  if no property name given, return the object itself (as string)
+			if (string.IsNullOrEmpty(ObjectPropertyNameIn)) {
+				request[ParameterNameOut] = obj.ToString();
 				retEvent = Events.Ok;
 			} else {
-				retEvent = Events.NoValue;
+						//  loop thru the path to the lowest level property
+				string[] path = ObjectPropertyNameIn.Split('.');
+				for (int k = 0; k < path.Length && obj != null; k++) {
+					obj = ReflectionUtilities.GetPropertyValue(obj, path[k]);
+				}
+				object propVal = obj;
+
+				if (propVal != null) {
+					request[ParameterNameOut] = propVal.ToString();
+					retEvent = Events.Ok;
+				} else {
+					retEvent = Events.NoValue;
+				}
 			}
 		} catch (Exception e) {
 			ILog logger = LogManager.GetCurrentClassLogger();
@@ -128,8 +138,7 @@ public class GetObjectPropertyAsParameterAction : IAction
 
 		public static string Error
 		{
-			get
-			{
+			get {
 				return EventNames.ERROR;
 			}
 		}
