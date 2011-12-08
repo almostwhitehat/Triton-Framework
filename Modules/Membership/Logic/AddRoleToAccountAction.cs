@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Common.Logging;
 using Triton.Controller;
 using Triton.Controller.Action;
@@ -37,8 +38,8 @@ namespace Triton.Membership.Logic
 
 			try {
 				if (context.Request.Items[this.AccountItemNameIn] == null ||
-				    !(context.Request.Items[this.AccountItemNameIn] is SearchResult<Account>) ||
-				    context.Request.GetItem<SearchResult<Account>>(this.AccountItemNameIn).Items.Length != 1) {
+				    !(((context.Request.Items[this.AccountItemNameIn] is SearchResult<Account> ||
+                     context.Request.Items[this.AccountItemNameIn] is Account))))   {
 					
 					throw new MissingFieldException("Could not find the account item in the request items.");
 				}
@@ -49,13 +50,22 @@ namespace Triton.Membership.Logic
 					
 					throw new MissingFieldException("Could not find the role item in the request items.");
 				}
+			    Account account;
+                if (context.Request.Items[this.AccountItemNameIn] is SearchResult<Account>)
+                {
+                     account = context.Request.GetItem<SearchResult<Account>>(this.AccountItemNameIn).Items[0];
+                }else
+                {
+                     account = context.Request.GetItem<Account>(this.AccountItemNameIn);
+                }
+			    Role role = context.Request.GetItem<SearchResult<Role>>(this.RoleItemNameIn).Items[0];
 
-				Account account = context.Request.GetItem<SearchResult<Account>>(this.AccountItemNameIn).Items[0];
-
-				Role role = context.Request.GetItem<SearchResult<Role>>(this.RoleItemNameIn).Items[0];
-
-				
+                if (account.Roles == null)
+                {
+                    account.Roles = new List<Role>();
+                }
 				if (!account.IsMemberOf(role.Code)) {
+                    
 					account.Roles.Add(role);
 				}
 

@@ -15,18 +15,44 @@ namespace Triton.Membership.Model.Dao {
 	/// </summary>
 	public class AccountFilter : BaseFilter
 	{
+
+
+		/// <summary>
+		/// Defines filtering criteria for account attributes.
+		/// </summary>
+		public class AttributeFilter
+		{
+			public string AttributeCode
+			{
+				get;
+				set;
+			}
+
+			public string Relation
+			{
+				get;
+				set;
+			}
+
+			public string Value
+			{
+				get;
+				set;
+			}
+		}
+
+	
 		/// <summary>
 		/// Create a new AccountFilter.
 		/// </summary>
 		public AccountFilter()
 		{
-			this.Attributes = new Dictionary<string, string>();
 		}
 
 		/// <summary>
 		/// Attributes to filter the results by.
 		/// </summary>
-		public IDictionary<string, string> Attributes { get; set; }
+		public IList<AttributeFilter> Attributes { get; set; }
 
 		/// <summary>
 		/// Get and set the status id for the account filtering.
@@ -64,5 +90,18 @@ namespace Triton.Membership.Model.Dao {
 		/// This is a "since" date - to get accounts created since this date.
 		///</summary>
 		public DateTime? CreatedDate { get; set; }
+
+		//public string AttributeValue { get; set; }
+
+		//public string AttributeCode { get; set; }
+
+		public string[] RoleNames { get; set; }
+
+		public string Latitude { get; set; }
+
+		public string Longitude { get; set; }
+
+		public string Radius { get; set; }
+
 	}
 }

@@ -66,8 +66,11 @@ namespace Triton.Membership.Model {
 		{
 			string val = null;
 
-			if (Attributes.Any(attr => attr.Key.Code == attributeCode)) {
-				val = Attributes[Attributes.First(attr => attr.Key.Code == attributeCode).Key];
+			if (Attributes != null) {
+				try {
+					var attr = Attributes.FirstOrDefault(a => a.Key.Code == attributeCode);
+					val = attr.Value;
+				} catch { }
 			}
 
 			return val;
@@ -85,8 +88,11 @@ namespace Triton.Membership.Model {
 		{
 			string val = null;
 
-			if (Attributes.Any(attr => attr.Key.Id.Value == attributeId)) {
-				val = Attributes[Attributes.First(attr => attr.Key.Id.Value == attributeId).Key];
+			if (Attributes != null) {
+				try {
+					var attr = Attributes.FirstOrDefault(a => a.Key.Id.Value == attributeId);
+					val = attr.Value;
+				} catch { }
 			}
 
 			return val;

@@ -44,15 +44,12 @@ public static class Extensions
 					// could be a search result but 
 					// the type of containing object is not equal but may be a descendant
 			} else if (request.Items[itemName].GetType().Name.StartsWith("SearchResult")) {
-				// is the cintaining type a descendant of the type T
+						// is the containing type a descendant of the type T
 				Type type = request.Items[itemName].GetType();
-				if (type.IsGenericType &&
-					typeof(T).IsAssignableFrom(type.GetGenericTypeDefinition()))
-				{
+				if (type.IsGenericType && typeof(T).IsAssignableFrom(type.GetGenericTypeDefinition())) {
 					object items = ReflectionUtilities.GetPropertyValue(request.Items[itemName], "Items");
 					if (items.GetType().IsArray &&
-						int.Parse(ReflectionUtilities.GetPropertyValue(items, "Length").ToString()) > 0)
-					{
+							int.Parse(ReflectionUtilities.GetPropertyValue(items, "Length").ToString()) > 0) {
 						retVal = (T)ReflectionUtilities.CallMethod(items, "GetValue", 0);
 					}
 				}

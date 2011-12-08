@@ -28,6 +28,13 @@
             <returns>A <b></b> object with the state/transition information loaded 
             from the config file.</returns>
         </member>
+        <member name="M:Triton.Graphml.Model.Dao.GraphmlSmStateDao.PreProcessGraphmlFile(System.String)">
+            <summary>
+            Preprocesses the given file for any information that needs to be gathered
+            before the states are created in ProcessGraphmlFile.
+            </summary>
+            <param name="filename">The path of the states graphml file to preprocess.</param>
+        </member>
         <member name="M:Triton.Graphml.Model.Dao.GraphmlSmStateDao.CreatePageState(System.Int32@,System.String)">
             <summary> this method creates a page state from the contents of the page state node in the graphml file.
             </summary>

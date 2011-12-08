@@ -30,6 +30,7 @@ namespace Triton.Membership.Logic
 	{
 		private readonly ILog logger = LogManager.GetCurrentClassLogger();
 
+        public string RequiredAccountStatus { get; set; }
 
 		public AuthenticateAccountAction()
 		{
@@ -37,8 +38,7 @@ namespace Triton.Membership.Logic
 		}
 
 
-		public string RequiredAccountStatus { get; set; }
-
+		
 		#region IAction Members
 
 		public string Execute(
@@ -53,7 +53,8 @@ namespace Triton.Membership.Logic
 
 				filter.Fill(context.Request);
 
-				filter.Status = DaoFactory.GetDao<IAccountStatusDao>().Get("active");
+                // moved to filter extensions
+				//filter.Status = DaoFactory.GetDao<IAccountStatusDao>().Get("active");
 
 				//  get the account for the given username
 				SearchResult<Account> result = dao.Find(filter);

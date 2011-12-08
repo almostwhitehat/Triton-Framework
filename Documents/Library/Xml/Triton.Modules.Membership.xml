@@ -44,6 +44,23 @@
              The Person.Name to Filter results by
             </summary>
         </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.ModifiedDate">
+            <summary>
+             The date/time the account was last modified.
+             This is a "since" date - to get accounts modified since this date.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.CreatedDate">
+            <summary>
+             The date/time the account was created.
+             This is a "since" date - to get accounts created since this date.
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Model.Dao.AccountFilter.AttributeFilter">
+            <summary>
+            Defines filtering criteria for account attributes.
+            </summary>
+        </member>
         <member name="T:Triton.Membership.Logic.IsLoggedInAction">
             <remarks>
             Returned events:<br/>
@@ -161,6 +178,27 @@
             Deprecated. Please use the Field or Filter parameter names.
             </summary>
         </member>
+        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.String)">
+            <summary>
+            Returns the value of the account attribute with the
+            given attribute code associated with the account.
+            </summary>
+            <param name="attributeCode">The code of the attribute to get the value for.</param>
+            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
+        </member>
+        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.Int32)">
+            <summary>
+            Returns the value of the account attribute with the
+            given attribute ID associated with the account.
+            </summary>
+            <param name="attributeId">The ID of the attribute to get the value for.</param>
+            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
+        </member>
+        <member name="F:Triton.Membership.Model.Dao.Support.FilterExtensions.ACCOUNT_ATTRIBUTE_RELATIONS">
+            <summary>
+            List of valid relations for use with account attribute criteria for AccountFilter.Fill.
+            </summary>
+        </member>
         <member name="P:Triton.Membership.Logic.CreateAccountAction.AccountItemNameOut">
             <summary>
             Overloaded AccountsItemNameOut so that the state's attribute can match the action "Account".
@@ -276,6 +314,37 @@
         </member>
         <member name="T:Triton.Membership.Model.Dao.NhAccountStatusDao">
             <summary>
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Logic.GetUserAttributeValueAction">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Triton.Membership.Logic.GetUserAttributeValueAction.#ctor">
+            <summary>
+            Default Contstructor.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.ConnectionType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AccountItemNameIn">
+            <summary>
+            Gets or sets the name of the results of the action used to identify this result in
+            the Request.Items collection.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AttributeTypeName">
+            <summary>
+            The Code name of the attribute Type to return the value for.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AttributeValueItemNameOut">
+            <summary>
+            Request ITem name for the attribute value to be placed into the Request.Items collection.
             </summary>
         </member>
     </members>

@@ -16,17 +16,20 @@ namespace Triton.Membership.Logic
 	{
 		private readonly ILog logger = LogManager.GetCurrentClassLogger();
 
+
+		public string AccountItemNameOut { get; set; }
+
+
 		public GetAccountAction()
 		{
 			this.AccountItemNameOut = ItemNames.Account.DEFAULT_SEARCH_RESULT_ACCOUNTS;
 		}
 
 
-		public string AccountItemNameOut { get; set; }
-
 		#region IAction Members
 
-		public string Execute(TransitionContext context)
+		public string Execute(
+			TransitionContext context)
 		{
 			string retEvent = Events.Error;
 
@@ -50,6 +53,7 @@ namespace Triton.Membership.Logic
 		}
 
 		#endregion
+
 
 		#region Nested type: Events
 

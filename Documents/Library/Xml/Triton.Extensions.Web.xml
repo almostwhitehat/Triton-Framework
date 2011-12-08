@@ -82,6 +82,16 @@
             Prefix added to pagesize and page for sorting a particulate item type.
             </summary>
         </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageParameterName">
+            <summary>
+            Gets or sets the name of the request parameter for the page number.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageSizeParameterName">
+            <summary>
+            Gets or sets the name of the request parameter for the page size.
+            </summary>
+        </member>
         <member name="P:Triton.Web.View.Controls.Pagination.PageNumberDisplaySize">
             <summary>
             
@@ -96,6 +106,11 @@
         <member name="P:Triton.Web.View.Controls.Pagination.Page">
             <summary>
             The current WebPage.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.AdditionalParameters">
+            <summary>
+            Additional Parameters to append in search criteria
             </summary>
         </member>
         <member name="P:Triton.Web.View.Controls.Pagination.ResetUrlParameters">

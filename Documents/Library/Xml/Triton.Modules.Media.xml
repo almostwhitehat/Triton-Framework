@@ -11,7 +11,7 @@
             <param name="filePath">File path returned by the <code>WebPostedFile.Name</code></param>
             <returns>File name of the file.</returns>
         </member>
-        <member name="M:Triton.Media.Logic.UploadMediaAction.ProportionallyResizeBitmap(System.Drawing.Bitmap,System.Int32,System.Int32)">
+        <member name="M:Triton.Media.Logic.UploadMediaAction.ProportionallyResizeBitmap(System.Drawing.Bitmap,System.Double,System.Double)">
             <summary>
             
             </summary>

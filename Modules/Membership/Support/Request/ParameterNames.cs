@@ -46,6 +46,7 @@
 
 			#endregion
 
+
 			#region Nested type: Field
 
 			public class Field
@@ -63,6 +64,7 @@
 			
 			#endregion			
 
+
 			#region Nested type: Filter
 
 			public class Filter
@@ -73,7 +75,7 @@
 
 				public const string USERNAME = "filter_account_username";
 
-				public const string ATTRIBUTE_VALUE = "filter_account_attribute_value";
+				public const string ATTRIBUTE_PREFIX = "filter_account_attribute_";
 
 				public const string ATTRIBUTE_IS_CSV = "filter_account_attribute_is_csv";
 
@@ -82,12 +84,27 @@
 				public const string MODIFIED_DATE = "filter_account_modified_date";
 
 				public const string CREATED_DATE = "filter_account_created_date";
+
+				//public const string ATTRIBUTE_PREFIX = "filter_attr_";
+
+				//public const string ATTRIBUTE_CODE = "filter_account_attribute_code";
+
+				public const string ROLE = "filter_account_role";
+
+				public const string LATITUDE = "filter_account_latitude";
+
+				public const string LONGITUDE = "filter_account_longitude";
+
+				public const string RADIUS = "filter_account_radius";
+
+				public const string STATUS = "filter_account_status";
 			}
 
 			#endregion
 		}
 
 		#endregion
+
 
 		#region Nested type: AttributeType
 
@@ -106,6 +123,7 @@
 
 		#endregion
 
+
 		#region Nested type: NameSuffix
 
 		public class NameSuffix
@@ -114,6 +132,7 @@
 		}
 
 		#endregion
+
 
 		#region Nested type: Person
 
@@ -138,6 +157,7 @@
 
 		#endregion
 
+
 		#region Nested type: Role
 
 		public class Role
@@ -150,6 +170,7 @@
 		}
 
 		#endregion
+
 
 		#region Nested type: Account Status
 

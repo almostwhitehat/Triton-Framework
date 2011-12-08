@@ -814,6 +814,16 @@
             Gets the name of the state.
             </summary>
         </member>
+        <member name="P:Triton.Controller.StateMachine.IState.HasPrerequisite">
+            <summary>
+            Gets a flag indicating whether or no the state has prerequisites.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.StateMachine.IState.Prerequisite">
+            <summary>
+            Gets the prerequisite(s) for the state.
+            </summary>
+        </member>
         <member name="M:Triton.Controller.StateMachine.BaseState.Execute(Triton.Controller.TransitionContext)">
             <summary>
             Carries out the actions to be performed by the state.
@@ -1494,6 +1504,15 @@
             <summary>
             Creates a new State instance for the specified type.
             </summary>
+            <remarks>
+            State prerequisite are included in the <c>attributes</c> collection with the
+            attribute name of "prerequisite" and a value in the form of
+            [{name}=]{start_state_id},{start_event}|[{name}=]{start_state_id},{start_event}|...
+            where {name} is the name of the (optional) name of the prerequisite, {start_state_id}
+            is the ID of the start state for the prerequisite flow and {start_event} is the
+            event from the start state to follow. {name} is optional. With no name the value
+            would look like: {start_state_id},{start_event}|{start_state_id},{start_event}|...
+            </remarks>
             <param name="stateType">The type of State to make.</param>
             <param name="id">The state ID for the state.</param>
             <param name="attributes">A <b>NameValueCollection</b> containing the attributes
@@ -2970,6 +2989,12 @@
             Gets or sets ErrorId for the Error to be added.
             </summary>
         </member>
+        <member name="P:Triton.Logic.SetErrorAction.ErrorIdParamNameIn">
+            <summary>
+            Gets or sets the name of the request parameter containing
+            the error ID for the Error to be added.
+            </summary>
+        </member>
         <member name="P:Triton.Logic.SetErrorAction.ErrorsItemNameIn">
             <summary>
             Errors collection item name to retrieve.
@@ -2978,6 +3003,13 @@
         <member name="P:Triton.Logic.SetErrorAction.ErrorsItemNameOut">
             <summary>
             Errors collection item name to append the errors.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.SetErrorAction.Index">
+            <summary>
+            Gets or sets the zero-based index in the errors list
+            into which to place the specified error.
+            [Optional - if not provided error is added at end of list.]
             </summary>
         </member>
         <member name="T:Triton.Support.Error.ErrorDictionary">
@@ -3643,6 +3675,28 @@
         <member name="P:Triton.Logic.ResetSingletonAction.ResetMethodNameIn">
             <summary>
             Gets or sets the name of the singleton's reset method.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.StateMachine.StatePrerequisite">
+            <summary>
+            Defines a prerequisite for a <c>State</c>.
+            </summary>
+            <author>Scott Dyke</author>
+            <created>11/18/11</created>
+        </member>
+        <member name="P:Triton.Controller.StateMachine.StatePrerequisite.Name">
+            <summary>
+            Gets or sets the (optional) name of prerequisite. 
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.StateMachine.StatePrerequisite.StartStateId">
+            <summary>
+            Gets or sets the start state ID of prerequisite. 
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.StateMachine.StatePrerequisite.StartEvent">
+            <summary>
+            Gets or sets the starting event of prerequisite. 
             </summary>
         </member>
         <member name="T:Triton.Controller.XmlController">
@@ -5491,6 +5545,7 @@
         <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ObjectPropertyNameIn">
             <summary>
             Gets or sets the name of the property to get.
+            Optional. If not provided the object itself is returned, as a string.
             </summary>
         </member>
         <member name="P:Triton.Logic.GetObjectPropertyAsParameterAction.ParameterNameOut">
