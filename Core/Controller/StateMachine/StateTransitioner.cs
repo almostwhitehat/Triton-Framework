@@ -20,6 +20,8 @@ namespace Triton.Controller.StateMachine {
 //					Added a throw at the global try catch.
 // 02/18/2011	SD	Added support for default transitions.
 // 11/18/2011	SD	Added support for state prerequisites.
+// 12/20/2011	SD	Added transContext.SetCurrentState after the execution of prerequisites so that the correct
+//					state will be in transContext.CurrentState when it is executed.
 
 #endregion
 
@@ -117,6 +119,9 @@ public class StateTransitioner
 							LogManager.GetCurrentClassLogger().Debug(traceMessage => traceMessage(
 									"End prerequisite {0}", targetState.Prerequisite[p].Name));
 						}
+
+								//  need to reset the current state here since it will be the end state of the prerequisite otherwise
+						transContext.SetCurrentState(targetState);
 						// ?? what if ended on page state
 					}
 
