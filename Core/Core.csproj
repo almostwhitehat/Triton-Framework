@@ -73,6 +73,7 @@
     <Compile Include="Controller\StateMachine\StatePrerequisite.cs" />
     <Compile Include="Logic\CompareAction.cs" />
     <Compile Include="Logic\EqualAction.cs" />
+    <Compile Include="Logic\GetAppSettingAction.cs" />
     <Compile Include="Logic\GetObjectPropertyAsItemAction.cs" />
     <Compile Include="Logic\GetObjectPropertyAsParameterAction.cs" />
     <Compile Include="Logic\ResetSingletonAction.cs" />
