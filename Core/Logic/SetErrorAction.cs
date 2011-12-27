@@ -7,6 +7,7 @@ using Triton.Controller.Request;
 using Triton.Logic.Support;
 using Triton.Support.Error;
 using Triton.Support.Request;
+using Triton.Utilities;
 
 namespace Triton.Logic
 {
@@ -149,7 +150,7 @@ namespace Triton.Logic
 						//  parameter values
 				if (parameterMatches.Count > 0) {
 					foreach (Match match in parameterMatches) {
-						err.Message = err.Message.Replace(match.Value, request[match.Groups[1].Value]);
+						err.Message = err.Message.Replace(match.Value, request[match.Groups[1].Value.EvaluatePropertyValue()]);
 					}
 				}
 

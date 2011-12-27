@@ -9,6 +9,7 @@ using Triton.Controller.Action;
 using Triton.Controller.Request;
 using Triton.Controller.StateMachine;
 using Triton.Logic.Support;
+using Triton.Utilities;
 
 namespace Triton.Logic
 {
@@ -62,7 +63,7 @@ namespace Triton.Logic
 								}
 							}
 							foreach (string param in removalList) {
-								req.Params.Remove(param);
+								req.Params.Remove(param.EvaluatePropertyValue());
 							}
 						}
 					} catch (Exception e) {

@@ -9,6 +9,7 @@ using Triton.Controller.Request;
 using Triton.Controller.StateMachine;
 using Triton.Logic.Support;
 using Triton.Utilities;
+using Triton.Support.Request;
 
 namespace Triton.Logic
 {
@@ -85,7 +86,7 @@ namespace Triton.Logic
 				//  parameters to set in the Request
 				if (paramList != null) {
 					for (int i = 0; i < paramList.Count; i++) {
-						parms.Add(new Param(paramList.GetKey(i), paramList.Get(i), false));
+						parms.Add(new Param(paramList.GetKey(i).EvaluatePropertyValue(), paramList.Get(i).EvaluatePropertyValue(), false));
 					}
 				}
 
