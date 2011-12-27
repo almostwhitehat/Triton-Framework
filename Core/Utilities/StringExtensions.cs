@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Triton.Utilities.Reflection;
 
 namespace Triton.Utilities
 {
@@ -188,6 +189,33 @@ namespace Triton.Utilities
 
 					//  put the capitalized words back together into a single string
 			return string.Join(delimiter.ToString(), words);
+		}
+
+		/// <summary>
+		/// This method will take the <b>String</b> provided and evaluate the Property/Const value.
+		/// If no value can be discerned then the origional value is returned
+		/// for instance "{Triton.Location.Support.Request.ParameterNames+PersistedAddress+Field.LINE1}"
+		/// this will create a instance of the class 
+		/// Triton.Location.Support.Request.ParameterNames.PersistedAddress.Field
+		/// and evaluate the value for the constant field "LINE1"
+		/// the + operators are needed when the class definition is internal to the parent class.
+		/// so the namespace is "Triton.Location.Support.Request" and the class Parameternames has 
+		/// an internal class PersistedAddress which has an internal class Field.
+		/// Note: this is only usefull for constants or static Properties.
+		/// </summary>
+		/// <param name="request">MvcRequest</param>
+		/// <param name="paramName">fully qualified class name</param>
+		/// <returns>string representation</returns>
+		public static string EvaluatePropertyValue(this String str)
+		{
+			object result = null;
+			result = ReflectionUtilities.Evaluate(str.TrimStart('{', '[').TrimEnd(']', '}'));
+
+			if (str.StartsWith("{[")) {
+				result = string.Format("[{0}]", result);
+			}
+
+			return result != null ? result.ToString() : str;
 		}
 	}
 }

@@ -325,5 +325,34 @@ namespace Triton.Utilities.Reflection
 				}
 			}
 		}
+
+		public static object Evaluate(string classPath)
+		{
+			object result = string.Empty;
+			try {
+
+				int index = classPath.LastIndexOf('.');
+
+				string typeName = classPath.Substring(0, index);
+				string fieldName = classPath.Substring(index + 1);
+
+				Type type = Type.GetType(typeName);
+
+				if (type == null) {
+					System.Reflection.Assembly[] AssembliesLoaded = AppDomain.CurrentDomain.GetAssemblies();
+					for (int assemblyIndex = 0; type == null && assemblyIndex < AssembliesLoaded.GetLength(0); assemblyIndex++) {
+						type = Type.GetType(typeName + "," + AssembliesLoaded[assemblyIndex].FullName);
+					}
+				}
+				Object ob = Activator.CreateInstance(type);
+
+				result =  type.GetField(fieldName).GetValue(ob);
+			}
+			catch (Exception) {
+				result = null;
+			}
+
+			return result;
+		}
 	}
 }
