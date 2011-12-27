@@ -16,6 +16,17 @@ namespace Triton.Location.Support.Request {
 public static class Deserialize
 {
 
+	/// <summary>
+	/// Creates a new <c>PersistedAddress</c> from the request.
+	/// </summary>
+	/// <param name="request">Request to create the PersistedAddress from.</param>
+	/// <returns>A populated PersistedAddress object.</returns>
+	public static PersistedAddress CreatePersistedAddress(MvcRequest request)
+	{
+		return new PersistedAddress() {
+			//TODO {INIT_PARAMS}
+		};
+	}
 
 	public static void Populate(
 		MvcRequest request,
@@ -59,6 +70,46 @@ public static class Deserialize
 
 		if (!string.IsNullOrEmpty(request[ParameterNames.Address.Field.COUNTRY])) {
 			address.CountryName = request[ParameterNames.Address.Field.COUNTRY];
+		}
+
+		// PersistedAddress Address Request Parameters
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.ID])) {
+			long id;
+			if (long.TryParse(request[ParameterNames.PersistedAddress.Field.ID], out id)) {
+				address.Id = id;
+			}
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.LINE1])) {
+			address.Line1 = request[ParameterNames.PersistedAddress.Field.LINE1];
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.LINE2])) {
+			address.Line2 = request[ParameterNames.PersistedAddress.Field.LINE2];
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.LINE3])) {
+			address.Line3 = request[ParameterNames.PersistedAddress.Field.LINE3];
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.CITY])) {
+			address.CityName = request[ParameterNames.PersistedAddress.Field.CITY];
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.STATE])) {
+			address.StateName = request[ParameterNames.PersistedAddress.Field.STATE];
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.POSTALCODE])) {
+			address.PostalCodeName = request[ParameterNames.PersistedAddress.Field.POSTALCODE];
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.COUNTY])) {
+			address.County = request[ParameterNames.PersistedAddress.Field.COUNTY];
+		}
+
+		if (!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.COUNTRY])) {
+			address.CountryName = request[ParameterNames.PersistedAddress.Field.COUNTRY];
 		}
 	}
 }

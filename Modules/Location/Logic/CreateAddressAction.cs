@@ -15,6 +15,10 @@ namespace Triton.Location.Logic {
 public class CreateAddressAction : IAction
 {
 
+	public CreateAddressAction()
+	{
+		this.AddressItemNameOut = ItemNames.PersistedAddress.DEFAULT_SEARCH_RESULT_PERSISTED_ADDRESS;
+	}
 
 	public string AddressItemNameOut
 	{

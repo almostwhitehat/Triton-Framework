@@ -10,5 +10,16 @@
 		}
 
 		#endregion
+
+		#region Nested type: PersistedAddress
+
+		public class PersistedAddress
+		{
+
+			public const string DEFAULT_SEARCH_RESULT_PERSISTED_ADDRESS = "default_search_result_persisted_address";
+
+		}
+
+		#endregion
 	}
 }

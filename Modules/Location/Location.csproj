@@ -66,14 +66,19 @@
   <ItemGroup>
     <Compile Include="Logic\CreateAddressAction.cs" />
     <Compile Include="Logic\GetCountriesAction.cs" />
+    <Compile Include="Logic\GetPersistedAddressAction.cs" />
     <Compile Include="Logic\PopulateAddressFromRequestAction.cs" />
     <Compile Include="Model\Address.cs" />
     <Compile Include="Model\City.cs" />
     <Compile Include="Model\Country.cs" />
     <Compile Include="Model\Dao\ICountryDao.cs" />
+    <Compile Include="Model\Dao\IPersistedAddressDao.cs" />
     <Compile Include="Model\Dao\IStateDao.cs" />
     <Compile Include="Model\Dao\NhCountryDao.cs" />
+    <Compile Include="Model\Dao\NhPersistedAddressDao.cs" />
     <Compile Include="Model\Dao\NhStateDao.cs" />
+    <Compile Include="Model\Dao\PersistedAddressFilter.cs" />
+    <Compile Include="Model\Dao\Support\FilterExtensions.cs" />
     <Compile Include="Model\GeoLocation.cs" />
     <Compile Include="Model\PersistedAddress.cs" />
     <Compile Include="Model\PostalCode.cs" />

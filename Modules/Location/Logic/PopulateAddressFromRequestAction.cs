@@ -16,6 +16,12 @@ namespace Triton.Location.Logic {
 public class PopulateAddressFromRequestAction : IAction
 {
 
+	public PopulateAddressFromRequestAction()
+	{
+		this.AddressItemNameIn = ItemNames.PersistedAddress.DEFAULT_SEARCH_RESULT_PERSISTED_ADDRESS;
+	}
+
+
 	public string AddressItemNameIn
 	{
 		get;
