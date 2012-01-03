@@ -86,7 +86,9 @@ namespace Triton.Logic
 				//  parameters to set in the Request
 				if (paramList != null) {
 					for (int i = 0; i < paramList.Count; i++) {
-						parms.Add(new Param(paramList.GetKey(i).EvaluatePropertyValue(), paramList.Get(i).EvaluatePropertyValue(), false));
+						if (!string.IsNullOrEmpty(paramList.GetKey(i))) {
+							parms.Add(new Param(paramList.GetKey(i).EvaluatePropertyValue(), paramList.Get(i).EvaluatePropertyValue(), false));
+						}
 					}
 				}
 
