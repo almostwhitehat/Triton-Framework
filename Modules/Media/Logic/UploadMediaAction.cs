@@ -61,9 +61,9 @@ namespace Triton.Media.Logic
             IncludeTimeStamp = "yes";
         }
 
-        #region BizAction Members
+        #region IAction Members
 
-        public string Execute(
+        public virtual string Execute(
             TransitionContext context)
         {
             string retEvent = EVENT_ERROR;
@@ -174,7 +174,7 @@ namespace Triton.Media.Logic
         }
 
 
-        private string GetFileType(
+        protected string GetFileType(
             string fileName)
         {
             string[] split = fileName.Split('.');
@@ -187,7 +187,7 @@ namespace Triton.Media.Logic
         /// </summary>
         /// <param name="filePath">File path returned by the <code>WebPostedFile.Name</code></param>
         /// <returns>File name of the file.</returns>
-        private string GetFileName(
+        protected string GetFileName(
             string filePath)
         {
             string fileName = filePath;
@@ -201,7 +201,7 @@ namespace Triton.Media.Logic
         }
 
 
-        private string GetFilePathSuffix(
+        protected string GetFilePathSuffix(
             string suffix)
         {
             foreach (Match match in Regex.Matches(suffix, @"[\[[\w]+]")) {
@@ -214,7 +214,7 @@ namespace Triton.Media.Logic
         }
 
 
-        private Bitmap GetResizedImage(
+        protected Bitmap GetResizedImage(
             Stream stream,
             int maxWidth,
             int maxHeight)

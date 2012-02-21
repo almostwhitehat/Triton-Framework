@@ -65,10 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\GetMediaAction.cs" />
+    <Compile Include="Logic\SaveMediaAction.cs" />
     <Compile Include="Logic\UploadMediaAction.cs" />
     <Compile Include="Model\Dao\IMediaDao.cs" />
     <Compile Include="Model\Dao\IMediaTypeDao.cs" />
+    <Compile Include="Model\Dao\MediaFilter.cs" />
+    <Compile Include="Model\Dao\NhMediaDao.cs" />
     <Compile Include="Model\Dao\NhMediaTypeDao.cs" />
+    <Compile Include="Model\Dao\Support\FilterExtensions.cs" />
     <Compile Include="Model\FileRecord.cs" />
     <Compile Include="Model\Media.cs" />
     <Compile Include="Model\MediaType.cs" />
