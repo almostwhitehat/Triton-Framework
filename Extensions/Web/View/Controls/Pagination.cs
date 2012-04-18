@@ -306,7 +306,7 @@ namespace Triton.Web.View.Controls {
 		{
 			base.OnPreRender(e);
 
-			baseUrl += string.Format("{0}?st={1}&e={2}", WebInfo.Controller, Page.State, TransitionName);
+			baseUrl += string.Format("/{0}?st={1}&e={2}", WebInfo.Controller, Page.State, TransitionName);
 			foreach (string key in Page.Request.Params.AllKeys) {
 				if (IncludeParameter(key)) {
 					baseUrl += string.Format("&{0}={1}", key, Page.Request.Params[key]);
@@ -385,6 +385,8 @@ namespace Triton.Web.View.Controls {
 			for (int pageNumber = startpage; pageNumber <= endpage; pageNumber++) {
 				output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 
+				output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", pageNumber + 1));
+
 				if (pageNumber == searchResult.Page) {
 					output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle("Current Page"));
 					output.AddAttribute(HtmlTextWriterAttribute.Class, CurrentLinkClass);
@@ -409,7 +411,9 @@ namespace Triton.Web.View.Controls {
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "first");
+			output.AddAttribute(HtmlTextWriterAttribute.Rel, "{{page:0}}");
 			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", 0)));
+			output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
 			output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(0));
 			output.RenderBeginTag(HtmlTextWriterTag.A); // A
 			output.Write("first", true);
@@ -423,7 +427,9 @@ namespace Triton.Web.View.Controls {
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "last");
+			output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.TotalPages - 1));
 			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.TotalPages - 1)));
+			output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
 
 			if (searchResult.TotalPages > 0) {
 				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.TotalPages - 1));
@@ -443,7 +449,9 @@ namespace Triton.Web.View.Controls {
 		{
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "prevpage");
+			output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.Page - 1));
 			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page - 1)));
+			output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
 
 			if (searchResult.Page != FIRST_PAGE) {
 				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.Page - 1));
@@ -466,7 +474,9 @@ namespace Triton.Web.View.Controls {
 			output.RenderEndTag(); // LI
 			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 			output.AddAttribute(HtmlTextWriterAttribute.Id, "nextpage");
+			output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.Page + 1));
 			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page + 1)));
+			output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
 
 			if (searchResult.Page != searchResult.TotalPages) {
 				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.Page + 1));
