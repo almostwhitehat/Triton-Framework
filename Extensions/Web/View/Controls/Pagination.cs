@@ -385,7 +385,7 @@ namespace Triton.Web.View.Controls {
 			for (int pageNumber = startpage; pageNumber <= endpage; pageNumber++) {
 				output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
 
-				output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", pageNumber + 1));
+				output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", pageNumber));
 
 				if (pageNumber == searchResult.Page) {
 					output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle("Current Page"));
