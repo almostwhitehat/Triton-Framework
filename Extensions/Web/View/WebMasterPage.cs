@@ -23,7 +23,7 @@ namespace Triton.Web.View
 		{
 			string masterName = Path.GetFileNameWithoutExtension(this.AppRelativeVirtualPath);
 
-			this.Page.LoadControlXml(ConfigurationManager.AppSettings[PageFinder.MASTER_PAGE_PATH_CONFIG] + "\\" + masterName, this.MasterPageSection);
+			this.Page.LoadControlXml(ConfigurationManager.AppSettings[PageFinder.MASTER_PAGE_PATH_CONFIG] + "\\" + masterName, this.Page.MasterPageSection);
 
 			base.OnInit(e);
 		}
