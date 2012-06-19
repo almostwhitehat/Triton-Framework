@@ -103,6 +103,7 @@
     <Compile Include="Logic\StoreObjectToSessionAction.cs" />
     <Compile Include="Support\Error\TritonErrorDictionary.cs" />
     <Compile Include="Support\Request\Extensions.cs" />
+    <Compile Include="Utilities\Chaos\Chaos.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Logic\ClearParameterAction.cs" />
     <Compile Include="Controller\Action\FormatableAction.cs" />
