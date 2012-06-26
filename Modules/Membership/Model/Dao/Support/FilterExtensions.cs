@@ -6,7 +6,8 @@ using Triton.Model.Dao;
 using Triton.Model.Dao.Support;
 using Triton.Utilities;
 
-namespace Triton.Membership.Model.Dao.Support {
+namespace Triton.Membership.Model.Dao.Support
+{
 
 	#region History
 
@@ -19,9 +20,9 @@ namespace Triton.Membership.Model.Dao.Support {
 		/// <summary>
 		/// List of valid relations for use with account attribute criteria for AccountFilter.Fill.
 		/// </summary>
-		private const string ACCOUNT_ATTRIBUTE_RELATIONS	= "eq,ne,lt,gt,le,ge,lk";
+		private const string ACCOUNT_ATTRIBUTE_RELATIONS = "eq,ne,lt,gt,le,ge,lk";
 
-	
+
 		public static void Fill(
 			this AccountFilter filter,
 			MvcRequest request)
@@ -29,10 +30,14 @@ namespace Triton.Membership.Model.Dao.Support {
 			if (!string.IsNullOrEmpty(request[ParameterNames.Account.ID])) {
 				filter.Ids = request[ParameterNames.Account.ID].ToGuidArray();
 			}
+			else if (!string.IsNullOrEmpty(request[ParameterNames.Account.Filter.ID])) {
+				filter.Ids = request[ParameterNames.Account.Filter.ID].ToGuidArray();
+			}
 
 			if (!string.IsNullOrEmpty(request[ParameterNames.Account.Filter.USERNAME])) {
 				filter.Usernames = request[ParameterNames.Account.Filter.USERNAME].ToStringArray();
-			}else if (!string.IsNullOrEmpty(request[ParameterNames.Account.USERNAME])) {
+			}
+			else if (!string.IsNullOrEmpty(request[ParameterNames.Account.USERNAME])) {
 				filter.Usernames = request[ParameterNames.Account.USERNAME].ToStringArray();
 			}
 
@@ -58,23 +63,23 @@ namespace Triton.Membership.Model.Dao.Support {
 				}
 			}
 
-					//  attributes
-// TODO: should add support for specifying null -- "[null]"?
-					//  find any attribute parameters in the params collection
-					//  attribute parameter names are of the form: filter_account_attribute_[relation]_[attributeCode]
+			//  attributes
+			// TODO: should add support for specifying null -- "[null]"?
+			//  find any attribute parameters in the params collection
+			//  attribute parameter names are of the form: filter_account_attribute_[relation]_[attributeCode]
 			string[] attrParams = Array.FindAll<string>(request.Params.AllKeys,
 					key => (key != null) && key.StartsWith(ParameterNames.Account.Filter.ATTRIBUTE_PREFIX));
 
-					//  if we found attribute parameters, process them
+			//  if we found attribute parameters, process them
 			if ((attrParams != null) && (attrParams.Length > 0)) {
 				List<AccountFilter.AttributeFilter> attributeCriteria = new List<AccountFilter.AttributeFilter>();
 				string[] relations = ACCOUNT_ATTRIBUTE_RELATIONS.Split(',');
 
 				foreach (string paramName in attrParams) {
-							//  skip it if there is no value
+					//  skip it if there is no value
 					if (!string.IsNullOrEmpty(request[paramName])) {
 						int prefixLen = ParameterNames.Account.Filter.ATTRIBUTE_PREFIX.Length + 3;
-								//  get the relation
+						//  get the relation
 						string relation = paramName.Substring(ParameterNames.Account.Filter.ATTRIBUTE_PREFIX.Length, 2).ToLower();
 
 						AccountFilter.AttributeFilter val = new AccountFilter.AttributeFilter {
@@ -104,9 +109,10 @@ namespace Triton.Membership.Model.Dao.Support {
 
 			if (!string.IsNullOrEmpty(request[ParameterNames.Account.Filter.STATUS])) {
 				string status = request[ParameterNames.Account.Filter.STATUS].ToString();
- 
+
 				filter.Status = DaoFactory.GetDao<IAccountStatusDao>().Get(status);
-			} else {
+			}
+			else {
 				filter.Status = DaoFactory.GetDao<IAccountStatusDao>().Get("active");
 			}
 

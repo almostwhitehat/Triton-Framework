@@ -32,6 +32,7 @@ namespace Triton.Membership.Support.Request
 		                               Account account)
 		{
 			//if the username has been defined in the request
+			#region DEPRCIATED
 			if (!string.IsNullOrEmpty(request[ParameterNames.Account.USERNAME])) {
 				// This will only update the first username in the collection,
 				// needs to be updated to update any.
@@ -51,20 +52,48 @@ namespace Triton.Membership.Support.Request
 					                      });
 				}
 			}
+			#endregion
+
+			//if the username has been defined in the request
+			if (!string.IsNullOrEmpty(request[ParameterNames.Account.Field.USERNAME])) {
+				// This will only update the first username in the collection,
+				// needs to be updated to update any.
+				if (account.Usernames.Count > 0) {
+					if (account.Usernames[0] != null) {
+						account.Usernames[0].Value = request[ParameterNames.Account.Field.USERNAME];
+					}
+					else {
+						account.Usernames[0] = new Username {
+							Value = request[ParameterNames.Account.Field.USERNAME]
+						};
+					}
+				}
+				else {
+					account.Usernames.Add(new Username {
+						Value = request[ParameterNames.Account.Field.USERNAME]
+					});
+				}
+			}
 
 			if (account.Person != null) {
 				Populate(request, account.Person);
 			}
 
+			#region DEPRECIATED
 			if (!string.IsNullOrEmpty(request[ParameterNames.Account.PASSWORD])) {
 				account.Password = request[ParameterNames.Account.PASSWORD];
+			}
+			#endregion
+
+			if (!string.IsNullOrEmpty(request[ParameterNames.Account.Field.PASSWORD])) {
+				account.Password = request[ParameterNames.Account.Field.PASSWORD];
 			}
 
 			if (!string.IsNullOrEmpty(request[ParameterNames.AccountStatus.CODE])) {
 				AccountStatus accountStatus = DaoFactory.GetDao<IAccountStatusDao>().Get(request[ParameterNames.AccountStatus.CODE]);
 				account.Status = accountStatus;
 			}
-
+	
 			return account;
 		}
 
