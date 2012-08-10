@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Triton.Controller.Request;
+using Triton.Utilities;
 
 namespace Triton.Validator.Model.Rules
 {
@@ -37,10 +38,10 @@ namespace Triton.Validator.Model.Rules
 			MvcRequest request)
 		{
 			ValidationResult result = new ValidationResult {
-			                                               	Passed = false
-			                                               };
+				Passed = false
+			};
 
-			string fieldVal = request[Field];
+			string fieldVal = request[Field.EvaluatePropertyValue()];
 // TODO: what if fieldVal is null??  is it valid or not??
 
 			//  if the field value is null and the check is not explicitly for null,

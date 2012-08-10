@@ -133,7 +133,7 @@ namespace Triton.Media.Logic
 			};
 
 			retMedia.Name = originalFileName;
-
+			retMedia.Comments = request["media_comments"];
 			retMedia.CreatedDate = DateTime.Now;
 			retMedia.UpdatedDate = DateTime.Now;
 

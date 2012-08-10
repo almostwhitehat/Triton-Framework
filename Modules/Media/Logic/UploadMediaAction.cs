@@ -164,8 +164,8 @@ namespace Triton.Media.Logic
                 Name = fileName,
                 Path = webPath
             };
-
             retMedia.Name = originalFileName;
+			retMedia.Comments = request["media_comments"];
 
             retMedia.CreatedDate = DateTime.Now;
             retMedia.UpdatedDate = DateTime.Now;

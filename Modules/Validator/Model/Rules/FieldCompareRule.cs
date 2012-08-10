@@ -1,5 +1,6 @@
 using System;
 using Triton.Controller.Request;
+using Triton.Utilities;
 
 namespace Triton.Validator.Model.Rules
 {
@@ -90,12 +91,13 @@ namespace Triton.Validator.Model.Rules
 			//  if a mis-match is found, set the result to false, and add the error message
 			string val1 = request[this.fields[0]];
 			for (int k = 1; k < this.fields.Length; k++) {
-				if (((val1 == null) && (request[this.fields[k]] != null))
+				var field = this.fields[k].EvaluatePropertyValue();
+				if (((val1 == null) && (request[field] != null))
 				    ||
-				    !val1.Equals(request[this.fields[k]],
+					!val1.Equals(request[field],
 				                 this.CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase)) {
 					result.Passed = false;
-					result.AddError(this.fields[k], ErrorId);
+					result.AddError(field, ErrorId);
 					break;
 				}
 			}

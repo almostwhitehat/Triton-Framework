@@ -45,7 +45,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\Bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Documents\Library\Xml\Triton.Core.xml</DocumentationFile>
@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeContracts\ActionContract.cs" />
+    <Compile Include="Configuration\TritonConfiguration.cs" />
     <Compile Include="Controller\Action\ActionFactory.cs" />
     <Compile Include="Controller\Action\IAction.cs" />
     <Compile Include="Controller\Config\SitesConfig.cs" />

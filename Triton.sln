@@ -57,7 +57,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xml", "Xml", "{1CC15A95-8D3B-4E36-9233-403FD8CFBEEF}"
 	ProjectSection(SolutionItems) = preProject
 		Documents\Library\Xml\Triton.Extensions.Graphml.XML = Documents\Library\Xml\Triton.Extensions.Graphml.XML
-		Documents\Library\Xml\Triton.Extensions.NHibernate.xml = Documents\Library\Xml\Triton.Extensions.NHibernate.xml
 		Documents\Library\Xml\Triton.Extensions.Web.xml = Documents\Library\Xml\Triton.Extensions.Web.xml
 		Documents\Library\Xml\Triton.Modules.Membership.xml = Documents\Library\Xml\Triton.Modules.Membership.xml
 	EndProjectSection
@@ -79,43 +78,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validator", "Modules\Validator\Validator.csproj", "{4D2A808E-5096-4FAA-AC04-1A75287A572C}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs02.codeplex.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Core\\Core.csproj
-		SccProjectName1 = Core
-		SccLocalPath1 = Core
-		SccProjectUniqueName2 = Extensions\\Graphml\\Graphml.csproj
-		SccProjectTopLevelParentUniqueName2 = Triton.sln
-		SccProjectName2 = Extensions/Graphml
-		SccLocalPath2 = Extensions\\Graphml
-		SccProjectUniqueName3 = Extensions\\NHibernate\\Extensions.NHibernate.csproj
-		SccProjectTopLevelParentUniqueName3 = Triton.sln
-		SccProjectName3 = Extensions/NHibernate
-		SccLocalPath3 = Extensions\\NHibernate
-		SccProjectUniqueName4 = Extensions\\Web\\Web.csproj
-		SccProjectTopLevelParentUniqueName4 = Triton.sln
-		SccProjectName4 = Extensions/Web
-		SccLocalPath4 = Extensions\\Web
-		SccProjectUniqueName5 = Modules\\Location\\Location.csproj
-		SccProjectTopLevelParentUniqueName5 = Triton.sln
-		SccProjectName5 = Modules/Location
-		SccLocalPath5 = Modules\\Location
-		SccProjectUniqueName6 = Modules\\Media\\Media.csproj
-		SccProjectTopLevelParentUniqueName6 = Triton.sln
-		SccProjectName6 = Modules/Media
-		SccLocalPath6 = Modules\\Media
-		SccProjectUniqueName7 = Modules\\Membership\\Membership.csproj
-		SccProjectTopLevelParentUniqueName7 = Triton.sln
-		SccProjectName7 = Modules/Membership
-		SccLocalPath7 = Modules\\Membership
-		SccProjectUniqueName8 = Modules\\Validator\\Validator.csproj
-		SccProjectTopLevelParentUniqueName8 = Triton.sln
-		SccProjectName8 = Modules/Validator
-		SccLocalPath8 = Modules\\Validator
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
