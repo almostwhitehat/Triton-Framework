@@ -85,6 +85,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\MEMNHibernateSessionProvider.cs" />
     <Compile Include="Model\Dao\NHibernateBaseDao.cs" />
     <Compile Include="Model\Dao\Support\SessionUtilities.cs" />
     <Compile Include="Web\Support\NHibernateHttpModule.cs" />
