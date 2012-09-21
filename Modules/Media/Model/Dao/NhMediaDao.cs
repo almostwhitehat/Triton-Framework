@@ -74,21 +74,6 @@ namespace Triton.Media.Model.Dao
 			return results;
 		}
 
-		public void Save(Media stageCode)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Delete(Media stageCode)
-		{
-			throw new NotImplementedException();
-		}
-
-		#endregion
-
-		#region IMediaDao Members
-
-
 		public MediaFilter GetFilter()
 		{
 			return new MediaFilter();
