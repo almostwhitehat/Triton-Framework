@@ -9,9 +9,12 @@ using Common.Logging;
 using Triton.Controller;
 using Triton.Controller.Action;
 using Triton.Controller.Request;
+using Triton.Logic.Support;
 using Triton.Media.Model;
 using Triton.Media.Model.Dao;
+using Triton.Model;
 using Triton.Model.Dao;
+using Triton.Support.Request;
 using Triton.Web.Support;
 
 
@@ -31,13 +34,12 @@ namespace Triton.Media.Logic
 	//                  any other value will not prepend the timestamp.
 	#endregion
 
-	public class SaveMediaAction : UploadMediaAction
+	public class DeleteMediaAction
 	{
 		private const string EVENT_ERROR = "error";
 		private const string EVENT_OK = "ok";
 		private const string USER_UPLOADED_FILES_SETTING = "userUploadedFiles";
 
-		private MvcRequest request;
 
 		private string requestItemName = "uploaded_media";
 		//private string savePathSuffix;
@@ -50,45 +52,40 @@ namespace Triton.Media.Logic
 
 		public string MediaRequestName { get; set; }
 
-		public SaveMediaAction()
+		public DeleteMediaAction()
 		{
 			this.MediaRequestName = "media_file_path";
 		}
 
 		#region BizAction Members
 
-		public override string Execute(
+		public string Execute(
 			TransitionContext context)
 		{
-			string retEvent = EVENT_ERROR;
+			string retEvent = Events.Error;
+			MvcRequest request = context.Request;
 
 			try {
-				this.request = context.Request;
-				//idk how we got here and no files are in the request, and technically not an error
-
-				IList<Model.Media> media = new List<Model.Media>();
-				string[] files = context.Request[MediaRequestName].Split(',');
-				foreach (string file in files) {
-					media.Add(this.ProcessFile(file));
+				IMediaDao dao = DaoFactory.GetDao<IMediaDao>();
+				if (request.Items[MediaRequestName] is Triton.Media.Model.Media) {
+					dao.Delete(request.GetRequestItem<Triton.Media.Model.Media>(MediaRequestName, true));
+					this.ProcessFile(request.GetRequestItem<Triton.Media.Model.Media>(MediaRequestName, true));
 				}
-
-				context.Request.Items["size"] = "Successfully uploaded: ";
-
-				foreach (Model.Media m in media) {
-					context.Request.Items["size"] += string.Format("{0}, ", m.Name);
+				else if (request.Items[MediaRequestName] is SearchResult<Triton.Media.Model.Media>) {
+					SearchResult<Triton.Media.Model.Media> results = (SearchResult<Triton.Media.Model.Media>)request.Items[MediaRequestName];
+					foreach (Triton.Media.Model.Media media in results.Items) {
+						dao.Delete(media);
+						this.ProcessFile(media);
+					}
 				}
-
-				context.Request.Items[this.RequestItemName] = media;
-
-
 				context.Request.Items["result"] = "success";
 				retEvent = EVENT_OK;
 			}
 			catch (Exception ex) {
 				LogManager.GetLogger(typeof(UploadMediaAction)).Error(
-							errorMessage => errorMessage("Error occured in UploadMediaAction.", ex));
+							errorMessage => errorMessage("Error occurred in DeleteMediaAction.", ex));
 				context.Request.Items["result"] = "error";
-				context.Request.Items["error"] = "Internal error occured when uploading this file.";
+				context.Request.Items["error"] = "Internal error occurred when uploading this file.";
 			}
 
 			return retEvent;
@@ -97,50 +94,42 @@ namespace Triton.Media.Logic
 		#endregion
 
 
-		private Model.Media ProcessFile(
-			string file)
+		private void ProcessFile(
+			Triton.Media.Model.Media media)
 		{
-			Model.Media retMedia = new Model.Media();
-
-			string originalFileName = this.GetFileName(file);
-			string fileName = originalFileName;
-
-			MediaType type;
-			IMediaTypeDao dao = DaoFactory.GetDao<IMediaTypeDao>();
-			IMediaDao mdao = DaoFactory.GetDao<IMediaDao>();
-
-			IList<MediaType> types = dao.Get(new MediaType {
-				FileTypes = new List<string> { this.GetFileType(fileName) }
-			});
-
-			if (types.Count > 0) {
-				type = types[0];
+			try {
+				if (File.Exists(Path.Combine(media.File.Path, media.File.Name))) {
+					File.Delete(Path.Combine(media.File.Path, media.File.Name));
+				}
 			}
-			else {
-				type = dao.Get("misc_docs");
+			catch (Exception e) {
+				ILog logger = LogManager.GetCurrentClassLogger();
+				logger.Error(error => error("DeleteRelatedPurchasesAction - Error deleting related purchases from database."), e);
 			}
-
-			retMedia.Type = type;
-
-			string webPath = this.GetFilePathSuffix(string.Empty);
-
-			string filePath = Path.Combine(WebInfo.BasePath, webPath);
-
-			Directory.CreateDirectory(filePath);
-
-			retMedia.File = new FileRecord {
-				Name = fileName,
-				Path = webPath
-			};
-
-			retMedia.Name = originalFileName;
-			retMedia.Comments = request["media_comments"];
-			retMedia.CreatedDate = DateTime.Now;
-			retMedia.UpdatedDate = DateTime.Now;
-			
-			mdao.Save(retMedia);
-
-			return retMedia;
 		}
+
+		#region Nested type: Events
+
+		public class Events
+		{
+			public static string Ok
+			{
+				get
+				{
+					return EventNames.OK;
+				}
+			}
+
+			public static string Error
+			{
+				get
+				{
+					return EventNames.ERROR;
+				}
+			}
+		}
+
+		#endregion
+
 	}
 }
