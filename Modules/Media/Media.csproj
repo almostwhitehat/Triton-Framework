@@ -86,9 +86,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\CreateMediaFromRequestAction.cs" />
+    <Compile Include="Logic\DeleteMediaAction.cs" />
     <Compile Include="Logic\PopulateMediaAction.cs" />
     <Compile Include="Logic\GetMediaAction.cs" />
+    <Compile Include="Logic\PopulateMediaFromRequestAction.cs" />
     <Compile Include="Logic\SaveMediaAction.cs" />
+    <Compile Include="Support\Request\Deserialize.cs" />
+    <Compile Include="Support\Request\ItemNames.cs" />
+    <Compile Include="Support\Request\ParameterNames.cs" />
     <Compile Include="Logic\UploadMediaAction.cs" />
     <Compile Include="Model\Dao\IMediaDao.cs" />
     <Compile Include="Model\Dao\IMediaTypeDao.cs" />

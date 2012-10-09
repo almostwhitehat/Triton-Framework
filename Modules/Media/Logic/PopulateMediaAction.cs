@@ -29,11 +29,6 @@ namespace Triton.Media.Logic
 		private const string EVENT_ERROR = "error";
 		private const string EVENT_OK = "ok";
 
-		private MvcRequest request;
-
-		private string equestItemNameIn = "uploaded_media";
-
-
 		public string MediaRequestName { get; set; }
 
 		public PopulateMediaAction()
@@ -49,7 +44,7 @@ namespace Triton.Media.Logic
 			string retEvent = EVENT_ERROR;
 
 			try {
-				this.request = context.Request;
+				MvcRequest request = context.Request;
 				//idk how we got here and no files are in the request, and technically not an error
 
 				IList<Model.Media> media = new List<Model.Media>();
