@@ -2,6 +2,7 @@
 using System.Web;
 using Common.Logging;
 using NHibernate;
+using Triton.Support.Session;
 using NHibernateConfiguration = NHibernate.Cfg;
 
 namespace Triton.NHibernate.Model
@@ -55,7 +56,7 @@ namespace Triton.NHibernate.Model
 
 						Logger.Debug(debugMessage => debugMessage("Session factory closed and disposed."));
 					} catch (Exception ex) {
-						Logger.Error(errorMessage => errorMessage("Error occured when trying to destroy the NHibernateSessionProvider singleton.", ex));
+						Logger.Error(errorMessage => errorMessage("Error occurred when trying to destroy the NHibernateSessionProvider singleton.", ex));
 					}
 				}
 				instance = null;
@@ -65,12 +66,12 @@ namespace Triton.NHibernate.Model
 
 		public ISession GetSession()
 		{
-			if (HttpContext.Current.Session[SESSION_NHIBERNATE_SESSION] as ISession == null) {
+			if (SessionStateProvider.GetSessionState()[SESSION_NHIBERNATE_SESSION] as ISession == null) {
 				Logger.Debug(debugMessage => debugMessage("ISession was not found in the HttpSession, creating a new one."));
 				
 				this.CreateSession();
 			}
-			return HttpContext.Current.Session[SESSION_NHIBERNATE_SESSION] as ISession;
+			return SessionStateProvider.GetSessionState()[SESSION_NHIBERNATE_SESSION] as ISession;
 		}
 
 
@@ -79,24 +80,24 @@ namespace Triton.NHibernate.Model
 			try {
 				Logger.Debug(debugMessage => debugMessage("Call to destroy session."));
 
-				if (HttpContext.Current != null && HttpContext.Current.Session != null) {
-					ISession session = HttpContext.Current.Session[SESSION_NHIBERNATE_SESSION] as ISession;
+				if (SessionStateProvider.GetSessionState() != null) {
+					ISession session = SessionStateProvider.GetSessionState()[SESSION_NHIBERNATE_SESSION] as ISession;
 					if (session != null) {
 						session.Close();
 						session.Dispose();
 						Logger.Debug(debugMessage => debugMessage("Session closed and disposed."));
 					}
-					HttpContext.Current.Session[SESSION_NHIBERNATE_SESSION] = null;
+					SessionStateProvider.GetSessionState()[SESSION_NHIBERNATE_SESSION] = null;
 				}
 			} catch (Exception ex) {
-				Logger.Error(errorMessage => errorMessage("Error occured when trying to destroy the session.", ex));
+				Logger.Error(errorMessage => errorMessage("Error occurred when trying to destroy the session.", ex));
 			}
 		}
 
 
 		internal void CreateSession()
 		{
-			HttpContext.Current.Session[SESSION_NHIBERNATE_SESSION] = this.sessionFactory.OpenSession();
+			SessionStateProvider.GetSessionState()[SESSION_NHIBERNATE_SESSION] = this.sessionFactory.OpenSession();
 		}
 
 

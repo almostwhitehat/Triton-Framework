@@ -57,7 +57,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xml", "Xml", "{1CC15A95-8D3B-4E36-9233-403FD8CFBEEF}"
 	ProjectSection(SolutionItems) = preProject
 		Documents\Library\Xml\Triton.Extensions.Graphml.XML = Documents\Library\Xml\Triton.Extensions.Graphml.XML
-		Documents\Library\Xml\Triton.Extensions.Web.xml = Documents\Library\Xml\Triton.Extensions.Web.xml
 		Documents\Library\Xml\Triton.Modules.Membership.xml = Documents\Library\Xml\Triton.Modules.Membership.xml
 	EndProjectSection
 EndProject

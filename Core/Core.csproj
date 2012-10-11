@@ -104,6 +104,9 @@
     <Compile Include="Logic\StoreObjectToSessionAction.cs" />
     <Compile Include="Support\Error\TritonErrorDictionary.cs" />
     <Compile Include="Support\Request\Extensions.cs" />
+    <Compile Include="Support\Session\ISessionState.cs" />
+    <Compile Include="Support\Session\MemorySessionState.cs" />
+    <Compile Include="Support\Session\SessionStateProvider.cs" />
     <Compile Include="Utilities\Chaos\Chaos.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Logic\ClearParameterAction.cs" />

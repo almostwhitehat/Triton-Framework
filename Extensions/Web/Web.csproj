@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\Session\HttpSessionState.cs" />
     <Compile Include="Support\WebInfo.cs" />
     <Compile Include="View\Controls\BaseControl.cs" />
     <Compile Include="View\Controls\BaseSelect.cs" />
