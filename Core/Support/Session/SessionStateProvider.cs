@@ -13,7 +13,7 @@ namespace Triton.Support.Session
 
 		public static ISessionState GetSessionState()
 		{
-			if (sessionState == null) {
+			if (sessionState == null) { 
 				// find the implementation from a configuration entry
 				//  get the settings from configuration file
 				//ControllerConfigSection config = ConfigurationManager.GetSection("controllerSettings/content") as ControllerConfigSection;

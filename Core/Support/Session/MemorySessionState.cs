@@ -11,11 +11,6 @@ namespace Triton.Support.Session
 		
 		private static readonly object syncRoot = new object();
 
-		private MemorySessionState()
-		{
-			
-		}
-
 		#region ICollection Members
 
 		public void CopyTo(Array array, int index)
@@ -51,7 +46,15 @@ namespace Triton.Support.Session
 
 		public object this[string key]
 		{
-			get { return session[key]; }
+			get
+			{
+				if (session.ContainsKey(key))
+					return session[key];
+				else
+
+					return null;
+
+			}
 			set { session[key] = value; }
 		}
 	}
