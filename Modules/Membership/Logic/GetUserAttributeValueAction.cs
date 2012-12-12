@@ -39,6 +39,11 @@ namespace Triton.Membership.Logic
         /// </summary>
         public string AttributeValueItemNameOut { get; set; }
 
+		/// <summary>
+		/// Request Param name for the attribute value to be placed into the Request.Params collection.
+		/// </summary>
+		public string AttributeValueNameOut { get; set; }
+
         /// <summary>
         /// Default Contstructor.
         /// </summary>
@@ -47,6 +52,7 @@ namespace Triton.Membership.Logic
             this.AccountItemNameIn = ItemNames.Account.DEFAULT_SEARCH_RESULT_ACCOUNTS;
             this.AttributeTypeName = "";
             this.AttributeValueItemNameOut = "attribute_value";
+	        this.AttributeValueNameOut = null;
         }
 
         #region IAction Members
@@ -69,6 +75,8 @@ namespace Triton.Membership.Logic
                 }
 
                 context.Request.Items[this.AttributeValueItemNameOut] = result;
+				if (!string.IsNullOrEmpty(AttributeValueNameOut))
+					context.Request[AttributeValueNameOut] = result;
                 retEvent = Events.Ok;
             }
             catch (Exception exception) {
