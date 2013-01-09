@@ -4,7 +4,7 @@
 				   namespace="Triton.Location.Model">
 	<class name="Triton.Location.Model.Country, Triton.Modules.Location" table="countries" xmlns="urn:nhibernate-mapping-2.2">
 		<id name="Id" column="id" type="Int32">
-			<generator class="hilo" />
+			<generator class="native" />
 		</id>
 		<version name="Version" column="version"  type="int" unsaved-value="0"/>
 

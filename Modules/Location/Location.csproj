@@ -91,6 +91,7 @@
     <Compile Include="Logic\PopulateAddressFromRequestAction.cs" />
     <Compile Include="Model\Address.cs" />
     <Compile Include="Model\City.cs" />
+    <Compile Include="Model\Countries.cs" />
     <Compile Include="Model\Country.cs" />
     <Compile Include="Model\Dao\ICountryDao.cs" />
     <Compile Include="Model\Dao\IPersistedAddressDao.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Model\Region.cs" />
     <Compile Include="Model\State.cs" />
     <Compile Include="Logic\GetStatesAction.cs" />
+    <Compile Include="Model\States.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\Request\Deserialize.cs" />
     <Compile Include="Support\Request\ItemNames.cs" />
@@ -120,7 +122,9 @@
     <EmbeddedResource Include="Model\Dao\NHibernate\Country.hbm.xml" />
     <EmbeddedResource Include="Model\Dao\NHibernate\PersistedAddress.hbm.xml" />
     <EmbeddedResource Include="Model\Dao\NHibernate\PostalCode.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\State.hbm.xml" />
+    <EmbeddedResource Include="Model\Dao\NHibernate\State.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

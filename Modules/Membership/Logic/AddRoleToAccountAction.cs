@@ -65,8 +65,10 @@ namespace Triton.Membership.Logic
                     account.Roles = new List<Role>();
                 }
 				if (!account.IsMemberOf(role.Code)) {
-                    
-					account.Roles.Add(role);
+
+                    if(account.Roles == null) account.Roles = new List<Role>();
+					
+                    account.Roles.Add(role);
 				}
 
 				context.Request.Items[this.AccountItemNameOut] = new SearchResult<Account>(new Account[] {account});

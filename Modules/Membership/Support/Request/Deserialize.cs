@@ -77,6 +77,10 @@ namespace Triton.Membership.Support.Request
 
 			if (account.Person != null) {
 				Populate(request, account.Person);
+			}else
+			{
+			    account.Person = new Person();
+			    Populate(request, account.Person);
 			}
 
 			#region DEPRECIATED

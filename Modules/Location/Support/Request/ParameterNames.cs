@@ -20,6 +20,8 @@ public class ParameterNames
 
 			public const string COUNTRY = "country";
 
+		    public const string COUNTRY_ID = "country_id";
+
 			public const string COUNTY = "county";
 
 			public const string LINE1 = "address1";
@@ -31,6 +33,8 @@ public class ParameterNames
 			public const string POSTALCODE = "postalcode";
 
 			public const string STATE = "state";
+
+		    public const string STATE_ID = "state_id";
 		}
 
 		#endregion
@@ -58,6 +62,8 @@ public class ParameterNames
 
 			public const string COUNTRY = "persisted_address_country_name";
 
+		    public const string COUNTRY_ID = "persisted_address_country_id";
+
 			public const string COUNTY = "persisted_address_county";
 
 			public const string LINE1 = "persisted_address_line1";
@@ -69,6 +75,8 @@ public class ParameterNames
 			public const string POSTALCODE = "persisted_address_postal_code_name";
 
 			public const string STATE = "persisted_address_state_name";
+
+		    public const string STATE_ID = "persisted_address_state_id";
 
 
 		}
