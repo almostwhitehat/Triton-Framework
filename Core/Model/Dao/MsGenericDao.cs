@@ -19,6 +19,10 @@ namespace Triton.Model.Dao
 	//  5/10/2011	SD	Fix in LoadFieldInfo for reading maxLen and prec -- 
 	//					DbUtilities.GetIntValue returns a nullable so doing a .Value directly
 	//					threw an exception when the value was null.
+	//  2/15/2013	SD	Updated SaveData to return "-1" for insert if the table does not have
+	//					an identity field. SaveData returns 0 if error occurs but 0 was also
+	//					returned on successful insert if no identity field existed in the table,
+	//					making it impossible to distinguish between successful insert and error.
 
 	#endregion
 
@@ -46,12 +50,17 @@ namespace Triton.Model.Dao
 
 		public override string Name
 		{
-			get { return this.name; }
+			get { return name; }
 		}
+
 
 		#region IGenericDao Members
 
-		public bool SetIdentity { set; get; }
+		public bool SetIdentity
+		{
+			set;
+			get;
+		}
 
 
 		/// <summary>
@@ -68,7 +77,7 @@ namespace Triton.Model.Dao
 				// Load xml in an xml document and call the overload method.
 				XmlDocument xmlDoc = new XmlDocument();
 				xmlDoc.LoadXml(xml);
-				data = this.GetData(xmlDoc.DocumentElement);
+				data = GetData(xmlDoc.DocumentElement);
 			} catch (Exception ex) {
 				LogManager.GetCurrentClassLogger().Error(
 					errorMessage => errorMessage("MsGenericDao : GetData"), ex);
@@ -98,67 +107,67 @@ namespace Triton.Model.Dao
 				StringBuilder order = new StringBuilder();
 				SqlCommand cmd = new SqlCommand();
 				bool addDistinctClause = selectNode.SelectSingleNode("Fields").Attributes.GetNamedItem("Distinct") != null;
-				SqlConnection conn = this.GetConnection();
+				SqlConnection conn = GetConnection();
 				conn.Open();
 				cmd.Connection = conn;
 
-				// Add joins
+						// Add joins
 				for (int i = 0; i < tableNodes.Count; i++) {
 					XmlNode tableNode = tableNodes[i];
 
-					this.tableName = tableNode.Attributes["name"].Value;
-					this.aliases.Add(this.tableName, string.Format("alias{0}", i));
+					tableName = tableNode.Attributes["name"].Value;
+					aliases.Add(tableName, string.Format("alias{0}", i));
 
-					// Add the FROM/JOIN clauses
+							// Add the FROM/JOIN clauses
 					if (i == 0) {
-						joins.Append(string.Format(" FROM {0} {1} ", this.tableName, this.aliases[this.tableName]));
+						joins.Append(string.Format(" FROM {0} {1} ", tableName, aliases[tableName]));
 					} else {
-						// Clone this b/c we'll be updating values for temporary processing
+								// Clone this b/c we'll be updating values for temporary processing
 						XmlNode joinNode = tableNode.SelectSingleNode("Join").Clone();
 
-						// Add the table name to each field as it is only implicitly defined in the config
+								// Add the table name to each field as it is only implicitly defined in the config
 						foreach (XmlNode field in joinNode.SelectNodes("Operator//Field")) {
-							field.Attributes["name"].Value = string.Format("{0}.{1}", this.tableName, field.Attributes["name"].Value);
+							field.Attributes["name"].Value = string.Format("{0}.{1}", tableName, field.Attributes["name"].Value);
 						}
 
 						joins.Append(string.Format(" {0} {1} {2} ON ",
 												   joinNode.Attributes["type"].Value,
-												   this.tableName,
-												   this.aliases[this.tableName]));
-						joins.Append(this.BuildConditions(joinNode, cmd, null));
+												   tableName,
+												   aliases[tableName]));
+						joins.Append(BuildConditions(joinNode, cmd, null));
 					}
 				}
 
-				// Add each field
+						// Add each field
 				foreach (XmlNode field in selectNode.SelectNodes("Fields/Field")) {
-					fields.Append(string.Format("{0}, ", this.FormatFieldName(field.Attributes["name"].Value)));
+					fields.Append(string.Format("{0}, ", FormatFieldName(field.Attributes["name"].Value)));
 				}
 
-				// Remove the extra comma
+						// Remove the extra comma
 				fields.Remove(fields.Length - 2, 2);
 
-				// Add where conditions
+						// Add where conditions
 				if (selectNode.SelectSingleNode("Where") != null && selectNode.SelectSingleNode("Where").ChildNodes.Count > 0) {
 					where.Append(" WHERE ");
-					where.Append(this.BuildConditions(selectNode.SelectSingleNode("Where"), cmd, null));
+					where.Append(BuildConditions(selectNode.SelectSingleNode("Where"), cmd, null));
 				}
 
-				// Add the order by
+						// Add the order by
 				if (selectNode.SelectSingleNode("OrderBy") != null && selectNode.SelectSingleNode("OrderBy").ChildNodes.Count > 0) {
 					order.Append(" ORDER BY ");
 
-					// Loop all field for ordering
+							// Loop all field for ordering
 					foreach (XmlNode orderField in selectNode.SelectSingleNode("OrderBy").ChildNodes) {
 						order.Append(string.Format("{0} {1}, ",
-													this.FormatOrderBy(orderField),
+													FormatOrderBy(orderField),
 												   orderField.Attributes["direction"].Value));
 					}
 
-					// Remove the extra comma
+							// Remove the extra comma
 					order.Remove(order.Length - 2, 2);
 				}
 
-				// Formulate the sql
+						// Formulate the sql
 				sql.Append("SELECT ");
 				if (addDistinctClause) sql.Append("DISTINCT ");
 				sql.Append(fields);
@@ -169,7 +178,7 @@ namespace Triton.Model.Dao
 
 				cmd.CommandType = CommandType.Text;
 				cmd.CommandText = sql.ToString();
-				data = this.GetData(cmd, sql.ToString(), this.tableName);
+				data = GetData(cmd, sql.ToString(), tableName);
 			} catch (Exception e) {
 				LogManager.GetCurrentClassLogger().Error(
 					errorMessage => errorMessage("MsGenericDao.GetData()"), e);
@@ -183,7 +192,7 @@ namespace Triton.Model.Dao
 			string tableName,
 			string[] fields)
 		{
-			return this.GetData(tableName, fields, null);
+			return GetData(tableName, fields, null);
 		}
 
 
@@ -225,14 +234,14 @@ namespace Triton.Model.Dao
 			}
 
 			// Build db connection
-			SqlConnection conn = this.GetConnection();
+			SqlConnection conn = GetConnection();
 			conn.Open();
 
 			// Build command object
 			SqlCommand command = new SqlCommand(sql, conn);
 			command.CommandType = CommandType.Text;
 
-			return this.GetData(command, sql, tableName);
+			return GetData(command, sql, tableName);
 		}
 
 
@@ -319,14 +328,14 @@ namespace Triton.Model.Dao
 			long retVal = 0;
 
 			try {
-				// Load xml in an xml document and call the overload method.
+						// Load xml in an xml document and call the overload method.
 				XmlDocument xmlDoc = new XmlDocument();
 				xmlDoc.LoadXml(xml);
-				retVal = this.SaveData(xmlDoc);
+				retVal = SaveData(xmlDoc);
 			} catch (Exception ex) {
-				// Log errors.
+						// Log errors.
 				LogManager.GetCurrentClassLogger().Error(
-					errorMessage => errorMessage("MsGenericDao : SaveData"), ex);
+						errorMessage => errorMessage(string.Format("MsGenericDao.SaveData: data= {0}", xml)), ex);
 			}
 
 			return retVal;
@@ -345,38 +354,38 @@ namespace Triton.Model.Dao
 			long retVal = 0;
 
 			try {
-				conn = this.GetConnection();
+				conn = GetConnection();
 				conn.Open();
 
 				XmlNode cmdNode = xmlDoc.DocumentElement;
 
-				// Set table name
-				this.tableName = cmdNode.Attributes["table"].Value;
-				this.aliases.Add(this.tableName, string.Format("{0}", "0"));
+						// Set table name
+				tableName = cmdNode.Attributes["table"].Value;
+				aliases.Add(tableName, string.Format("{0}", "0"));
 				cmdName = cmdNode.Name.ToLower();
 
-				// If this is an insert request ...
+						// If this is an insert request ...
 				if (cmdName == "insert") {
 					cmd = new SqlCommand();
 					cmd.Connection = conn;
 
 					XmlNodeList rowNodes = cmdNode.SelectNodes("Row");
 
-					// If set indentity is true, turn on the set indentity_insert
-					if (this.SetIdentity) {
-						sql.Append(string.Format("if IDENT_CURRENT('{0}') IS NOT NULL\nBEGIN\nset identity_insert {0} on;", this.tableName));
+							// If set indentity is true, turn on the set indentity_insert
+					if (SetIdentity) {
+						sql.Append(string.Format("if IDENT_CURRENT('{0}') IS NOT NULL\nBEGIN\nset identity_insert {0} on;", tableName));
 					}
 
-					// For each row ...
+							// For each row ...
 					foreach (XmlNode row in rowNodes) {
-						sql.Append(string.Format("insert into {0} ", this.tableName));
+						sql.Append(string.Format("insert into {0} ", tableName));
 						fields.Append("(");
 						values.Append("values (");
 
 //					XmlNode fieldsNode = row.SelectSingleNode("//Fields");
-						Set fieldSet = this.GetFields(row.SelectSingleNode("//Fields"), cmd);
+						Set fieldSet = GetFields(row.SelectSingleNode("//Fields"), cmd);
 
-						// For each field returned: append field name and value
+								// For each field returned: append field name and value
 						foreach (string field in fieldSet) {
 							fields.Append(string.Format("{0}, ", field));
 							values.Append(string.Format("@{0}, ", field));
@@ -384,26 +393,31 @@ namespace Triton.Model.Dao
 //  !! need to add the param here
 						}
 
-						// Remove the extra comma and space
+								// Remove the extra comma and space
 						fields.Remove(fields.Length - 2, 2);
 						fields.Append(") ");
 						values.Remove(values.Length - 2, 2);
 						values.Append(") ");
 
-						// Append the fields and values clauses
-						sql.Append(fields + values.ToString() + ";select IDENT_CURRENT('" + this.tableName + "')");
+								// Append the fields and values clauses
+						sql.Append(fields + values.ToString() + ";select IDENT_CURRENT('" + tableName + "')");
 
-						// Turn off the set indentity_insert
-						if (this.SetIdentity) {
-							sql.Append(string.Format("set identity_insert {0} off\nEND ", this.tableName));
+								// Turn off the set indentity_insert
+						if (SetIdentity) {
+							sql.Append(string.Format("set identity_insert {0} off\nEND ", tableName));
 						}
 
-						// Set commandtext and execute command
+								// Set commandtext and execute command
 						cmd.CommandText = sql.ToString();
 						object ident = cmd.ExecuteScalar();
 
+								//  if there is an identity field the identity of the new record should be returned,
+								//  but if there is no identity field we need to return something other than 0 which
+								//  indicates an error occurred
 						if (ident is Decimal) {
-							retVal = (long) ((Decimal) ident);
+							retVal = (long)((Decimal)ident);
+						} else {
+							retVal = -1;
 						}
 					}
 				} else if (cmdName == "update") {
@@ -413,24 +427,24 @@ namespace Triton.Model.Dao
 
 					cmd = new SqlCommand();
 					cmd.Connection = conn;
-					fieldSet = this.GetFields(cmdNode.SelectSingleNode("Fields"), cmd);
+					fieldSet = GetFields(cmdNode.SelectSingleNode("Fields"), cmd);
 					update.Append("SET ");
 
-					// For each field returned: append field name and value
+							// For each field returned: append field name and value
 					foreach (string field in fieldSet) {
 						update.Append(string.Format("{0} = @{0}, ", field));
 					}
 
-					// Remove the extra comma
+							// Remove the extra comma
 					update.Remove(update.Length - 2, 2);
 
-					// Add where conditions
+							// Add where conditions
 					if (cmdNode.SelectSingleNode("Where").ChildNodes.Count > 0) {
 						where.Append(" WHERE ");
-						where.Append(this.BuildConditions(cmdNode.SelectSingleNode("Where"), cmd, null));
+						where.Append(BuildConditions(cmdNode.SelectSingleNode("Where"), cmd, null));
 					}
 
-					// Formulate the sql
+							// Formulate the sql
 					sql.Append(string.Format("UPDATE {0} ", cmdNode.Attributes["table"].Value));
 					sql.Append(update);
 					sql.Append(where);
@@ -440,9 +454,13 @@ namespace Triton.Model.Dao
 					cmd.ExecuteNonQuery();
 				}
 			} catch (Exception ex) {
-				// Log errors.
+				string data = null;
+				try {
+					data = xmlDoc.ToString();
+				} catch { }
+						// Log error
 				LogManager.GetCurrentClassLogger().Error(
-					errorMessage => errorMessage("MsGenericDao : SaveData"), ex);
+						errorMessage => errorMessage(string.Format("MsGenericDao.SaveData: data= {0}", data)), ex);
 			} finally {
 				DbUtilities.Close(conn, null, null);
 			}
@@ -451,6 +469,7 @@ namespace Triton.Model.Dao
 		}
 
 		#endregion
+
 
 		/// <summary>
 		/// Performs the actual data retrieval for GetData() methods.
@@ -463,16 +482,16 @@ namespace Triton.Model.Dao
 			string sql,
 			string tableName)
 		{
-			// Build data adapter object
+					// Build data adapter object
 			SqlDataAdapter adapter = new SqlDataAdapter();
 			adapter.TableMappings.Add("Table", tableName);
 			adapter.SelectCommand = cmd;
 
-			// Build and fill dataset
+					// Build and fill dataset
 			DataSet ds = new DataSet();
 			adapter.Fill(ds);
 
-			this.CloseConnection();
+			CloseConnection();
 
 			return ds;
 		}
@@ -492,14 +511,14 @@ namespace Triton.Model.Dao
 			StringBuilder conditionBuilder = new StringBuilder();
 			int conditionCounter = 0;
 
-			// Loop conditions
+					// Loop conditions
 			foreach (XmlNode op in conditions.ChildNodes) {
-				// Add the "and" or "or" operator to the where clause
+						// Add the "and" or "or" operator to the where clause
 				if (joiningOperator != null && conditionCounter > 0) {
 					conditionBuilder.Append(string.Format(" {0} ", joiningOperator));
 				}
 
-				conditionBuilder.Append(this.CreateCondition(op, cmd));
+				conditionBuilder.Append(CreateCondition(op, cmd));
 				conditionCounter++;
 			}
 
@@ -519,11 +538,11 @@ namespace Triton.Model.Dao
 		{
 			StringBuilder condition = new StringBuilder();
 			string formattedFieldName = null;
-			// Determine operator name (necesary for backwards compatibility)
+					// Determine operator name (necesary for backwards compatibility)
 			string oper = (op.Name == "Operator") ? op.Attributes["name"].Value.ToLower() : op.Name.ToLower();
 			string rightSide = null;
 
-			// Set parameter info if we're not in a grouping node
+					// Set parameter info if we're not in a grouping node
 			if ((op.Name != "Operator" && "or,and,not".IndexOf(oper) == -1)
 					|| (op.Name == "Operator" && "or,and,not".IndexOf(oper) == -1)) {
 				string fieldName = null;
@@ -536,8 +555,8 @@ namespace Triton.Model.Dao
 				} else {
 					fieldName = op["Field"].Attributes["name"].Value;
 					int lastPeriodPosition = fieldName.LastIndexOf(".");
-					// no literal attribute defaults to mean literal="true"
-					// false value indicates a table field is being used
+							// no literal attribute defaults to mean literal="true"
+							// false value indicates a table field is being used
 					bool isLiteral = op["Field"].Attributes["literal"] == null
 							|| "true".Equals(op["Field"].Attributes["literal"].Value.ToLower());
 
@@ -545,27 +564,27 @@ namespace Triton.Model.Dao
 					sourceColumn = (lastPeriodPosition == -1)
 							? fieldName
 							: fieldName.Substring(lastPeriodPosition + 1, fieldName.Length - lastPeriodPosition - 1);
-					parameterName = string.Format("{0}{1}", sourceColumn, this.randomGenerator.Next(1, 1000));
-						// Random number added for parameter uniqueness
-					rightSide = (isLiteral) ? "@" + parameterName : this.FormatFieldName(fieldValue);
+					parameterName = string.Format("{0}{1}", sourceColumn, randomGenerator.Next(1, 1000));
+							// Random number added for parameter uniqueness
+					rightSide = (isLiteral) ? "@" + parameterName : FormatFieldName(fieldValue);
 
-					// Create/add/set parameter if the field value is a literal
+							// Create/add/set parameter if the field value is a literal
 					if (isLiteral) {
 						string[] fieldPieces = fieldName.Split('.');
-						string newTable = (fieldPieces.Length > 1) ? fieldPieces[fieldPieces.Length - 2] : this.tableName;
+						string newTable = (fieldPieces.Length > 1) ? fieldPieces[fieldPieces.Length - 2] : tableName;
 
-						if (newTable != this.tableName) {
-							this.fieldInfo = null;
+						if (newTable != tableName) {
+							fieldInfo = null;
 						}
 
-						// Reset the table name if necessary to coincide with the field for MakeParameter field lookup
-						this.tableName = newTable;
-						cmd.Parameters.Add(this.MakeParameter(parameterName, sourceColumn));
+								// Reset the table name if necessary to coincide with the field for MakeParameter field lookup
+						tableName = newTable;
+						cmd.Parameters.Add(MakeParameter(parameterName, sourceColumn));
 						cmd.Parameters["@" + parameterName].Value = fieldValue;
 					}
 				}
 
-				formattedFieldName = this.FormatFieldName(fieldName);
+				formattedFieldName = FormatFieldName(fieldName);
 			}
 
 			switch (oper) {
@@ -600,17 +619,17 @@ namespace Triton.Model.Dao
 					break;
 				case "and":
 					condition.Append("(");
-					condition.Append(this.BuildConditions(op, cmd, "and"));
+					condition.Append(BuildConditions(op, cmd, "and"));
 					condition.Append(")");
 					break;
 				case "or":
 					condition.Append("(");
-					condition.Append(this.BuildConditions(op, cmd, "or"));
+					condition.Append(BuildConditions(op, cmd, "or"));
 					condition.Append(")");
 					break;
 				case "not":
 					condition.Append("NOT(");
-					condition.Append(this.BuildConditions(op, cmd, null));
+					condition.Append(BuildConditions(op, cmd, null));
 					condition.Append(")");
 					break;
 			}
@@ -626,7 +645,7 @@ namespace Triton.Model.Dao
 		/// <returns></returns>
 		private string FormatOrderBy(XmlNode orderField)
 		{
-			return orderField.Name == "Expression" ? orderField.InnerText : this.FormatFieldName(orderField.Attributes["name"].Value);
+			return orderField.Name == "Expression" ? orderField.InnerText : FormatFieldName(orderField.Attributes["name"].Value);
 		}
 
 
@@ -640,14 +659,14 @@ namespace Triton.Model.Dao
 		{
 			string[] fieldPieces = field.Split('.');
 
-			// Replace the table name with an alias
+					// Replace the table name with an alias
 			if (fieldPieces.Length > 1) {
 				int tableNamePosition = fieldPieces.Length - 2;
 
-				fieldPieces[tableNamePosition] = this.aliases[fieldPieces[tableNamePosition]].ToString();
+				fieldPieces[tableNamePosition] = aliases[fieldPieces[tableNamePosition]].ToString();
 			}
 
-			// Join the array of field pieces back together with the ".", and enclose all pieces in brackets
+					// Join the array of field pieces back together with the ".", and enclose all pieces in brackets
 			return string.Format("[{0}]", string.Join(".", fieldPieces).Replace(".", "].["));
 		}
 
@@ -659,7 +678,7 @@ namespace Triton.Model.Dao
 			Set fields = new Set();
 
 			try {
-				Set currentFields = this.GetCommandParamNames(cmd);
+				Set currentFields = GetCommandParamNames(cmd);
 
 				XmlNodeList fieldNodes = fieldsNode.SelectNodes("Field");
 				foreach (XmlNode field in fieldNodes) {
@@ -672,17 +691,17 @@ namespace Triton.Model.Dao
 				Set missingFields = fields - currentFields;
 				Set redundantFields = currentFields - fields;
 
-				// Remove redundant fields from the sql command.
+						// Remove redundant fields from the sql command.
 				foreach (string param in redundantFields) {
 					cmd.Parameters.Remove(cmd.Parameters[param]);
 				}
 
-				// Add missing fields to the sql command.
+						// Add missing fields to the sql command.
 				foreach (string param in missingFields) {
-					cmd.Parameters.Add(this.MakeParameter(param));
+					cmd.Parameters.Add(MakeParameter(param));
 				}
 
-				// Set parameter values
+						// Set parameter values
 				foreach (string param in fields) {
 					string sqlParam = "@" + param;
 					string stringValue = fieldsNode.SelectSingleNode("//Field[@name = '" + param + "']").InnerText;
@@ -699,7 +718,7 @@ namespace Triton.Model.Dao
 					}
 				}
 			} catch (Exception ex) {
-				// Log errors.
+						// Log errors.
 				LogManager.GetCurrentClassLogger().Error(
 					errorMessage => errorMessage("MsGenericDao : GetFields"), ex);
 			}
@@ -727,7 +746,7 @@ namespace Triton.Model.Dao
 		private SqlParameter MakeParameter(
 			string paramName)
 		{
-			return this.MakeParameter(paramName, paramName);
+			return MakeParameter(paramName, paramName);
 		}
 
 
@@ -735,9 +754,9 @@ namespace Triton.Model.Dao
 			string paramName,
 			string paramSourceColumn)
 		{
-			FieldInfo theField = (FieldInfo) (this.GetFieldInfo()[paramSourceColumn.ToLower()]);
+			FieldInfo theField = (FieldInfo)(GetFieldInfo()[paramSourceColumn.ToLower()]);
 
-			return this.MakeParameter(paramName, paramSourceColumn, theField.Type, theField.MaxLength);
+			return MakeParameter(paramName, paramSourceColumn, theField.Type, theField.MaxLength);
 		}
 
 
@@ -750,8 +769,8 @@ namespace Triton.Model.Dao
 			SqlParameter param = new SqlParameter("@" + paramName, paramType);
 			param.SourceColumn = paramSourceColumn;
 
-			// Size CAN NOT be included in the SqlParameter constructor. 
-			// An exception will occur if its value is set to null in database (e.g. numeric data types).
+					// Size CAN NOT be included in the SqlParameter constructor. 
+					// An exception will occur if its value is set to null in database (e.g. numeric data types).
 			if (paramMaxLength > 0) {
 				param.Size = paramMaxLength;
 			}
@@ -767,12 +786,12 @@ namespace Triton.Model.Dao
 		///			specified table, key on the field name.</returns>
 		private Hashtable GetFieldInfo()
 		{
-			// Table name has to be set before this method is called the first time.
-			if ((this.fieldInfo == null) && (this.tableName != null) && (this.tableName.Length > 0)) {
-				this.LoadFieldInfo(this.tableName);
+					// Table name has to be set before this method is called the first time.
+			if ((fieldInfo == null) && (tableName != null) && (tableName.Length > 0)) {
+				LoadFieldInfo(tableName);
 			}
 
-			return this.fieldInfo;
+			return fieldInfo;
 		}
 
 
@@ -789,7 +808,7 @@ namespace Triton.Model.Dao
 
 			try {
 				cmd = new SqlCommand();
-				cmd.Connection = this.GetConnection();
+				cmd.Connection = GetConnection();
 
 				cmd.CommandText = string.Format("select column_name, ordinal_position, column_default,"
 												+
@@ -799,7 +818,7 @@ namespace Triton.Model.Dao
 
 				dr = cmd.ExecuteReader();
 
-				this.fieldInfo = new Hashtable();
+				fieldInfo = new Hashtable();
 
 				while (dr.Read()) {
 					string name = DbUtilities.GetStringValue(dr, "column_name");
@@ -812,7 +831,7 @@ namespace Triton.Model.Dao
 					int? precNullable = DbUtilities.GetIntValue(dr, "numeric_precision");
 					int prec = precNullable.HasValue ? precNullable.Value : 0;
 
-					this.fieldInfo.Add(name.ToLower(), new FieldInfo(pos, null, nullable, type, maxLen, prec));
+					fieldInfo.Add(name.ToLower(), new FieldInfo(pos, null, nullable, type, maxLen, prec));
 				}
 			} catch (Exception ex) {
 				// Log errors
@@ -831,11 +850,11 @@ namespace Triton.Model.Dao
 		///			database defined when this Dao was instantiated</returns>
 		private new SqlConnection GetConnection()
 		{
-			if (this.conn == null) {
-				this.conn = (SqlConnection) base.GetConnection();
+			if (conn == null) {
+				conn = (SqlConnection)base.GetConnection();
 			}
 
-			return this.conn;
+			return conn;
 		}
 
 
@@ -844,11 +863,12 @@ namespace Triton.Model.Dao
 		/// </summary>
 		private void CloseConnection()
 		{
-			if (this.conn != null) {
-				this.conn.Close();
-				this.conn = null;
+			if (conn != null) {
+				conn.Close();
+				conn = null;
 			}
 		}
+
 
 		#region Nested type: FieldInfo
 
@@ -872,15 +892,15 @@ namespace Triton.Model.Dao
 				int maxLen,
 				int numPrecision)
 			{
-				this.position = pos;
-				this.defaultValue = defValue;
-				this.isNullable = nullable;
-				this.typeName = tName;
-				this.maxLength = maxLen;
-				this.numericPrecision = numPrecision;
+				position = pos;
+				defaultValue = defValue;
+				isNullable = nullable;
+				typeName = tName;
+				maxLength = maxLen;
+				numericPrecision = numPrecision;
 
 				try {
-					this.sqlType = this.GetSqlType(this.typeName);
+					sqlType = GetSqlType(typeName);
 				} catch (Exception ex) {
 					// Log errors.
 					LogManager.GetCurrentClassLogger().Error(
@@ -891,31 +911,31 @@ namespace Triton.Model.Dao
 
 			public int Position
 			{
-				get { return this.position; }
+				get { return position; }
 			}
 
 
 			public object IsNullable
 			{
-				get { return this.isNullable; }
+				get { return isNullable; }
 			}
 
 
 			public SqlDbType Type
 			{
-				get { return this.sqlType; }
+				get { return sqlType; }
 			}
 
 
 			public int MaxLength
 			{
-				get { return this.maxLength; }
+				get { return maxLength; }
 			}
 
 
 			public int NumericPrecision
 			{
-				get { return this.numericPrecision; }
+				get { return numericPrecision; }
 			}
 
 
