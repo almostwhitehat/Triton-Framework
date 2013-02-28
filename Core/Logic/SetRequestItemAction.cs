@@ -2,6 +2,7 @@ using System;
 using Common.Logging;
 using Triton.Controller;
 using Triton.Controller.Action;
+using Triton.Controller.Request;
 using Triton.Logic.Support;
 
 namespace Triton.Logic
@@ -10,6 +11,7 @@ namespace Triton.Logic
 	#region History
 
 	// History:
+	//    2/8/13 - SD -	Added support for setting Item value from parameter.
 
 	#endregion
 
@@ -29,13 +31,33 @@ namespace Triton.Logic
 		/// <summary>
 		/// Gets or sets the name used for the message in Request.Items.
 		/// </summary>
-		public string RequestItemName { get; set; }
+		public string RequestItemName
+		{
+			get;
+			set;
+		}
 
 
 		/// <summary>
 		/// Gets or sets the message content.
 		/// </summary>
-		public string Value { get; set; }
+		public string Value
+		{
+			get;
+			set;
+		}
+
+
+		/// <summary>
+		/// Gets or sets the name of the parameter whose value is
+		/// used for the value of the request item.
+		/// </summary>
+		public string ValueParamNameIn
+		{
+			get;
+			set;
+		}
+
 
 		#region IAction Members
 
@@ -48,14 +70,21 @@ namespace Triton.Logic
 			TransitionContext context)
 		{
 			string retEvent = Events.Error;
+			MvcRequest request = context.Request;
 
 			try {
 			
-				if(string.IsNullOrEmpty(this.RequestItemName)) {
+				if (string.IsNullOrEmpty(RequestItemName)) {
 					throw new ApplicationException("Could not get the RequestItemName to set to the value.");
 				}
 				
-				context.Request.Items[this.RequestItemName] = string.IsNullOrEmpty(this.Value) ? null : this.Value;
+				if (!string.IsNullOrEmpty(Value)) {
+					request.Items[RequestItemName] = Value;
+				} else if (!string.IsNullOrEmpty(ValueParamNameIn)) {
+					request.Items[RequestItemName] = request[ValueParamNameIn];
+				} else {
+					request.Items[RequestItemName] = null;
+				}
 
 				retEvent = Events.Ok;
 
@@ -67,6 +96,7 @@ namespace Triton.Logic
 		}
 
 		#endregion
+
 
 		#region Nested type: Events
 
