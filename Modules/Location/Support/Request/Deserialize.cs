@@ -78,6 +78,7 @@ public static class Deserialize
             if(int.TryParse(request[ParameterNames.Address.Field.STATE_ID], out stateId))
             {
                 address.State = States.Instance[stateId];
+	            address.StateName = address.State.ShortName;
             }
         }
 
@@ -87,6 +88,7 @@ public static class Deserialize
             if (int.TryParse(request[ParameterNames.Address.Field.COUNTRY_ID], out countryId))
             {
                 address.Country = Countries.Instance[countryId];
+	            address.CountryName = address.Country.ShortName;
             }
         }
 
@@ -136,7 +138,8 @@ public static class Deserialize
             if (int.TryParse(request[ParameterNames.PersistedAddress.Field.STATE_ID], out stateId))
             {
                 address.State = States.Instance[stateId];
-            }
+				address.StateName = address.State.ShortName;
+			}
         }
 
         if(!string.IsNullOrEmpty(request[ParameterNames.PersistedAddress.Field.COUNTRY_ID]))
@@ -145,7 +148,8 @@ public static class Deserialize
             if(int.TryParse(request[ParameterNames.PersistedAddress.Field.COUNTRY_ID], out countryId))
             {
                 address.Country = Countries.Instance[countryId];
-            }
+				address.CountryName = address.Country.ShortName;
+			}
         }
 	}
 }

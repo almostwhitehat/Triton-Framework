@@ -61,14 +61,18 @@
 			result = result.Replace("{l2}", this.Line2);
 			result = result.Replace("{l3}", this.Line3);
 			result = result.Replace("{c}", this.CityName);
-			result = result.Replace("{s}", this.StateName);
+			result = this.State == null ? result.Replace("{s}", this.StateName) : result.Replace("{s}", this.State.ShortName);
+			result = this.Country == null ? result.Replace("{ctry}", this.CountryName) : result.Replace("{ctry}", this.Country.ShortName);
+			result = result.Replace("{cty}", this.County);
+
 			result = result.Replace("{p}", this.PostalCodeName);
 
 			if (this.GeoLocation != null) {
 				result = result.Replace("{ls}", this.GeoLocation.Latitude.ToString());
 				result = result.Replace("{lo}", this.GeoLocation.Longitude.ToString());
 				result = result.Replace("{gps}", this.GeoLocation.ToString());
-			} else {
+			}
+			else {
 				result = result.Replace("{ls}", string.Empty);
 				result = result.Replace("{lo}", string.Empty);
 				result = result.Replace("{gps}", string.Empty);
