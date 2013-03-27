@@ -4,69 +4,10 @@
         <name>Triton.Modules.Membership</name>
     </assembly>
     <members>
-        <member name="T:Triton.Membership.Model.Dao.AccountFilter">
+        <member name="M:Triton.Membership.Support.EncryptionManager.#ctor">
             <summary>
-            Defines the AccountFilter used to retrieve Accounts.
+            Temporary Encryption Manager.
             </summary>
-        </member>
-        <member name="M:Triton.Membership.Model.Dao.AccountFilter.#ctor">
-            <summary>
-            Create a new AccountFilter.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Attributes">
-            <summary>
-            Attributes to filter the results by.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Status">
-            <summary>
-            Get and set the status id for the account filtering.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Ids">
-            <summary>
-            Get and set the account ids to retrieve.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Usernames">
-            <summary>
-            Get the user names to retrieve.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Roles">
-            <summary>
-            The Roles to filter the results by.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Name">
-            <summary>
-             The Person.Name to Filter results by
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.ModifiedDate">
-            <summary>
-             The date/time the account was last modified.
-             This is a "since" date - to get accounts modified since this date.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Model.Dao.AccountFilter.CreatedDate">
-            <summary>
-             The date/time the account was created.
-             This is a "since" date - to get accounts created since this date.
-            </summary>
-        </member>
-        <member name="T:Triton.Membership.Model.Dao.AccountFilter.AttributeFilter">
-            <summary>
-            Defines filtering criteria for account attributes.
-            </summary>
-        </member>
-        <member name="T:Triton.Membership.Logic.IsLoggedInAction">
-            <remarks>
-            Returned events:<br/>
-            <b>yes</b> - the account/user with the given username is logged in.<br/>
-            <b>no</b> - the account/user with the given username is not logged in.<br/>
-            </remarks>
         </member>
         <member name="T:Triton.Membership.Model.Dao.IAttributeTypeDao">
             <summary>
@@ -124,6 +65,22 @@
             <param name="filter">Filter with the criteria to search</param>
             <returns>SearchResult of AttributeTypes</returns>
         </member>
+        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.String)">
+            <summary>
+            Returns the value of the account attribute with the
+            given attribute code associated with the account.
+            </summary>
+            <param name="attributeCode">The code of the attribute to get the value for.</param>
+            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
+        </member>
+        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.Int32)">
+            <summary>
+            Returns the value of the account attribute with the
+            given attribute ID associated with the account.
+            </summary>
+            <param name="attributeId">The ID of the attribute to get the value for.</param>
+            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
+        </member>
         <member name="M:Triton.Membership.Model.Name.ToString(System.String)">
             <summary>
             Formats the Name.
@@ -178,25 +135,62 @@
             Deprecated. Please use the Field or Filter parameter names.
             </summary>
         </member>
-        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.String)">
-            <summary>
-            Returns the value of the account attribute with the
-            given attribute code associated with the account.
-            </summary>
-            <param name="attributeCode">The code of the attribute to get the value for.</param>
-            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
-        </member>
-        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.Int32)">
-            <summary>
-            Returns the value of the account attribute with the
-            given attribute ID associated with the account.
-            </summary>
-            <param name="attributeId">The ID of the attribute to get the value for.</param>
-            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
-        </member>
         <member name="F:Triton.Membership.Model.Dao.Support.FilterExtensions.ACCOUNT_ATTRIBUTE_RELATIONS">
             <summary>
             List of valid relations for use with account attribute criteria for AccountFilter.Fill.
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Logic.GetUserAttributeValueAction">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Triton.Membership.Logic.GetUserAttributeValueAction.#ctor">
+            <summary>
+            Default Contstructor.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.ConnectionType">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AccountItemNameIn">
+            <summary>
+            Gets or sets the name of the results of the action used to identify this result in
+            the Request.Items collection.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AttributeTypeName">
+            <summary>
+            The Code name of the attribute Type to return the value for.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AttributeValueItemNameOut">
+            <summary>
+            Request ITem name for the attribute value to be placed into the Request.Items collection.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AttributeValueNameOut">
+            <summary>
+            Request Param name for the attribute value to be placed into the Request.Params collection.
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Logic.IsMemberOfAction">
+            <remarks>
+            Returned events:<br/>
+            <b>yes</b> - the account/user with the given username is logged in.<br/>
+            <b>no</b> - the account/user with the given username is not logged in.<br/>
+            </remarks>
+        </member>
+        <member name="P:Triton.Membership.Logic.IsMemberOfAction.Roles">
+            <summary>
+            Gets or sets the role names that are to be used to test against.
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Model.Role">
+            <summary>
+            
             </summary>
         </member>
         <member name="P:Triton.Membership.Logic.CreateAccountAction.AccountItemNameOut">
@@ -224,41 +218,72 @@
             String parameter name to place the account id in the request.
             </summary>
         </member>
-        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.ProcessValue(System.String,System.String)">
-            <summary>
-            Updates the value of the attribute. Toggles the value if attribute is of type CSV.
-            </summary>
-            <param name="oldValue"></param>
-            <param name="newValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.CreateCsvValue(System.Collections.Generic.List{System.String})">
-            <summary>
-            Compile the delineated value of the attribute
-            </summary>
-            <param name="oldValues"></param>
-            <returns></returns>
-        </member>
-        <member name="T:Triton.Membership.Model.Role">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Triton.Membership.Support.EncryptionManager.#ctor">
-            <summary>
-            Temporary Encryption Manager.
-            </summary>
-        </member>
-        <member name="T:Triton.Membership.Logic.IsMemberOfAction">
+        <member name="T:Triton.Membership.Logic.IsLoggedInAction">
             <remarks>
             Returned events:<br/>
             <b>yes</b> - the account/user with the given username is logged in.<br/>
             <b>no</b> - the account/user with the given username is not logged in.<br/>
             </remarks>
         </member>
-        <member name="P:Triton.Membership.Logic.IsMemberOfAction.Roles">
+        <member name="T:Triton.Membership.Model.Dao.NhAccountStatusDao">
             <summary>
-            Gets or sets the role names that are to be used to test against.
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Model.Dao.AccountFilter">
+            <summary>
+            Defines the AccountFilter used to retrieve Accounts.
+            </summary>
+        </member>
+        <member name="M:Triton.Membership.Model.Dao.AccountFilter.#ctor">
+            <summary>
+            Create a new AccountFilter.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Attributes">
+            <summary>
+            Attributes to filter the results by.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Status">
+            <summary>
+            Get and set the status id for the account filtering.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Ids">
+            <summary>
+            Get and set the account ids to retrieve.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Usernames">
+            <summary>
+            Get the user names to retrieve.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Roles">
+            <summary>
+            The Roles to filter the results by.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.Name">
+            <summary>
+             The Person.Name to Filter results by
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.ModifiedDate">
+            <summary>
+             The date/time the account was last modified.
+             This is a "since" date - to get accounts modified since this date.
+            </summary>
+        </member>
+        <member name="P:Triton.Membership.Model.Dao.AccountFilter.CreatedDate">
+            <summary>
+             The date/time the account was created.
+             This is a "since" date - to get accounts created since this date.
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Model.Dao.AccountFilter.AttributeFilter">
+            <summary>
+            Defines filtering criteria for account attributes.
             </summary>
         </member>
         <member name="T:Triton.Membership.Support.Request.Deserialize">
@@ -312,40 +337,20 @@
             <param name="attributeType">AttributeType to populate</param>
             <returns>Populated from the request AttributeType object.</returns>
         </member>
-        <member name="T:Triton.Membership.Model.Dao.NhAccountStatusDao">
+        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.ProcessValue(System.String,System.String)">
             <summary>
+            Updates the value of the attribute. Toggles the value if attribute is of type CSV.
             </summary>
+            <param name="oldValue"></param>
+            <param name="newValue"></param>
+            <returns></returns>
         </member>
-        <member name="T:Triton.Membership.Logic.GetUserAttributeValueAction">
+        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.CreateCsvValue(System.Collections.Generic.List{System.String})">
             <summary>
-            
+            Compile the delineated value of the attribute
             </summary>
-        </member>
-        <member name="M:Triton.Membership.Logic.GetUserAttributeValueAction.#ctor">
-            <summary>
-            Default Contstructor.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.ConnectionType">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AccountItemNameIn">
-            <summary>
-            Gets or sets the name of the results of the action used to identify this result in
-            the Request.Items collection.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AttributeTypeName">
-            <summary>
-            The Code name of the attribute Type to return the value for.
-            </summary>
-        </member>
-        <member name="P:Triton.Membership.Logic.GetUserAttributeValueAction.AttributeValueItemNameOut">
-            <summary>
-            Request ITem name for the attribute value to be placed into the Request.Items collection.
-            </summary>
+            <param name="oldValues"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

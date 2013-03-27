@@ -4,6 +4,105 @@
         <name>Triton.Modules.Validator</name>
     </assembly>
     <members>
+        <member name="T:Triton.Validator.Model.ValidatorManager">
+            <summary>
+            The <b>ValidatorManager</b> manages the availabe <b>Validator</b>s.  A
+            <b>Validator</b> is obtained using <b>ValidatorManager</b>'s <c>GetValidator</c>
+            method.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidatorManager.#ctor">
+            <summary>
+            Private constructor to enforce singleton pattern.
+            </summary>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidatorManager.GetInstance">
+            <summary>
+            Gets the singleton instance of the <b>ValidatorManager</b>.
+            </summary>
+            <returns>The singleton instance of the <b>ValidatorManager</b>.</returns>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidatorManager.GetValidator(System.String)">
+            <summary>
+            Gets the <b>Validator</b> with the given name, or <c>null</c> if no
+            such validator exists.
+            </summary>
+            <param name="name">The name of the <b>Validator</b> to get.</param>
+            <returns>The <b>Validator</b> with the given name.</returns>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidatorManager.LoadValidators">
+            <summary>
+            Loads the <b>Validator</b>s from the config file.
+            </summary>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidatorManager.BuildValidator(System.Xml.XmlNode)">
+            <summary>
+            Builds a <b>Validator</b> and its rules from the given XML node.
+            </summary>
+            <param name="validatorNode">The XML node containing the definition
+            		for the <b>Validator</b> and its rules.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidatorManager.GetChildren(Triton.Validator.Model.Rules.IValidationRule,System.Xml.XmlNode)">
+            <summary>
+            Builds the child rules for the given rule from the given XML node.
+            </summary>
+            <param name="parent">The rule to build the children for.</param>
+            <param name="parentNode">The XML node containing the definition(s)
+            		of the chlid rules.</param>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidatorManager.Reset">
+            <summary>
+            Resets the cached validation rules.
+            </summary>
+        </member>
+        <member name="T:Triton.Validator.Model.ValidationRuleFactory">
+            <summary>
+            The <b>ValidationRuleFactory</b> implements a <i>Factory</i> pattern for
+            creating <b>IValidationRule</b>s.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Validator.Model.ValidationRuleFactory.CONFIG_PATH">
+            <summary>
+            The "path" of the settings for ValidationRules in web.config
+            </summary>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidationRuleFactory.#ctor">
+            <summary>
+            Private constructor to prevent instantiation.
+            </summary>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidationRuleFactory.Make(System.String)">
+            <summary>
+            Instantiates the <b>IValidationRule</b> with the given name, if available.
+            </summary>
+            <param name="ruleName">The name of the IValidationRule to instantiate.</param>
+            <returns>The <b>IValidationRule</b> with the specified name, or <b>null</b> if no
+            IValidationRule with that name is found.</returns>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidationRuleFactory.GetType(System.String,System.String,System.String)">
+            <summary>
+            Gets the <b>Type</b> for the rule with the given name in the specified namespace
+            and assembly.
+            </summary>
+            <param name="nameSpace">The namespace the rule class is defined in.</param>
+            <param name="assemblyName">The name of the assembly the rule class is defined in.</param>
+            <param name="ruleName">The name of the rule.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Triton.Validator.Model.Rules.Validator">
+            <summary>
+            A <b>Validator</b> is a collection of <b>IValidationRule</b>s used to
+            validate the values of a <b>MvcRequest</b>.
+            </summary>
+            <remarks>
+            A <b>Validator</b> is obtained using the ValidatorManager.  Validators
+            defined in the validators.config file.
+            </remarks>
+            <author>Scott Dyke</author>
+        </member>
         <member name="T:Triton.Validator.Model.Rules.AndRule">
             <summary>
             The <b>AndRule</b> is a composite <b>IValidationRule</b> that accumulates the
@@ -133,34 +232,77 @@
             <returns>A <b>ValidationResult</b> indicating the result of evaluating the
             		rule and any validation errors that occurred.</returns>
         </member>
-        <member name="T:Triton.Validator.Model.Rules.BaseLeafRule">
+        <member name="M:Triton.Validator.Model.Rules.Validator.#ctor(System.String)">
             <summary>
-            <b>BaseLeafRule</b> is the base implementation for a <b>IValidationRule</b> that
-            has no child rules.
+            Constructs a new Validator with the given name.
+            </summary>
+            <param name="name">The name of the Validator to construct.</param>
+        </member>
+        <member name="M:Triton.Validator.Model.Rules.Validator.Evaluate(Triton.Controller.Request.MvcRequest)">
+            <summary>
+            Evaluates the rule for the given request.  <b>Validator</b> "ands" all of its
+            child rules to determine if final result.
             </summary>
             <remarks>
-            <b>BaseLeafRule</b> provides "empty" implementations for the child related
-            properties and methods.
+            This override locks the validator before calling the base.Evaluate to ensure
+            thread safety.
             </remarks>
+            <param name="request">The <b>MvcRequest</b> to evaluate the rule for.</param>
+            <returns>A <b>ValidationResult</b> indicating the result of evaluating the
+            		rule and any validation errors that occurred.</returns>
+        </member>
+        <member name="P:Triton.Validator.Model.Rules.Validator.Name">
+            <summary>
+            Gets the name of the Validator.
+            </summary>
+        </member>
+        <member name="T:Triton.Validator.Model.ValidationResult">
+            <summary>
+            A <b>ValidationResult</b> contains the results of evaluating a <b>IValidationRule</b>.
+            It indicates whether or not the rule passed, and if not, what errors occurred.
+            </summary>
             <author>Scott Dyke</author>
         </member>
-        <member name="M:Triton.Validator.Model.Rules.BaseLeafRule.Add(Triton.Validator.Model.Rules.IValidationRule)">
+        <member name="M:Triton.Validator.Model.ValidationResult.#ctor">
             <summary>
-            Dummy implementation to satisfy the <b>IValidationRule</b> interface for
-            a leaf rule that can't have children.
+            Initializes Passed to true by default.
             </summary>
-            <param name="rule">Ignored.</param>
         </member>
-        <member name="M:Triton.Validator.Model.Rules.BaseLeafRule.Remove(System.String)">
+        <member name="M:Triton.Validator.Model.ValidationResult.AddError(System.String,System.Int64)">
             <summary>
-            Not implemented.
+            Adds a new <b>ValidationError</b> to the collection of errors for the
+            given field and error ID.
             </summary>
-            <param name="name"></param>
-            <returns></returns>
+            <param name="field">The name of the field to which the error applies.</param>
+            <param name="errorId">The ID of the error that occurred.</param>
         </member>
-        <member name="P:Triton.Validator.Model.Rules.BaseLeafRule.Children">
+        <member name="M:Triton.Validator.Model.ValidationResult.AddError(Triton.Validator.Model.ValidationError)">
             <summary>
-            Returns null for the list of children since leaf rules can't have children.
+            Adds a new <b>ValidationError</b> to the collection of errors.
+            </summary>
+            <param name="error">The <b>ValidationError</b> to add.</param>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidationResult.AddErrors(Triton.Validator.Model.ValidationErrorCollection)">
+            <summary>
+            Adds all of the <b>ValidationError</b>s from the given collection to
+            the current error collection.
+            </summary>
+            <param name="errors">The <b>ValidationErrorCollection</b> to add the errors from.</param>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidationResult.ClearErrors">
+            <summary>
+            Removes all of the errors associated with this <b>ValidationResult</b>.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Model.ValidationResult.Passed">
+            <summary>
+            Gets or sets the flag indicating whether or not the validation passed.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Model.ValidationResult.Errors">
+            <summary>
+            Gets the collection of errors that occurred during vaidation if the
+            validation did not pass.
             </summary>
         </member>
         <member name="T:Triton.Validator.Model.ValidationErrorCollection">
@@ -231,12 +373,115 @@
             Gets the curent item from the collection.
             </summary>
         </member>
+        <member name="T:Triton.Validator.Logic.ValidateRequestAction">
+            <summary>
+            <b>ValidateRequestAction</b> uses the Validator system to validate the parameters of
+            a request.  A <c>validatorName</c> attribute in the state identifying the action
+            indicates the name of the validator to use to perform the validation.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Validator.Logic.ValidateRequestAction.Execute(Triton.Controller.TransitionContext)">
+            <summary>
+            Executes the action to perform the validation.
+            </summary>
+            <param name="context">The <c>TransitionContext</c> in which the action is executing.</param>
+            <returns>The event resulting from the action's execution.</returns>
+        </member>
+        <member name="P:Triton.Validator.Logic.ValidateRequestAction.ValidatorName">
+            <summary>
+            Gets or sets the name of the <c>Validator</c> to use to perform
+            the validation.  Can be a comma-delimited list of names of <c>Validator</c>s
+            to run.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Logic.ValidateRequestAction.ErrorsItemNameIn">
+            <summary>
+            Errors collection item name to retrieve.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Logic.ValidateRequestAction.ErrorsItemNameOut">
+            <summary>
+            Errors collection item name to append the errors.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Logic.ValidateRequestAction.Events.Pass">
+            <summary>
+            Event returned if a validation passed.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Logic.ValidateRequestAction.Events.Fail">
+            <summary>
+            Event returned if a validation failed.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Logic.ValidateRequestAction.Events.Error">
+            <summary>
+            Event returned if errors occured during validation.
+            </summary>
+        </member>
+        <member name="T:Triton.Validator.Model.ValidationError">
+            <summary>
+            A <b>ValidationError</b> contains the information about a validation rule
+            failure.  It has the name of the field for whcil the validation failed and
+            an error ID to indicate what was wrong.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Validator.Model.ValidationError.#ctor(System.String,System.Int64)">
+            <summary>
+            Constructs a new <b>ValidationError</b> with the given 
+            field name and error ID.
+            </summary>
+            <param name="field">The name of the field the error applies to.</param>
+            <param name="errorId">The ID of the error indicating what the problem was.</param>
+        </member>
+        <member name="P:Triton.Validator.Model.ValidationError.Field">
+            <summary>
+            Gets the name of the field the error applies to.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Model.ValidationError.ErrorId">
+            <summary>
+            Gets the ID of the error that occurred.
+            </summary>
+        </member>
         <member name="T:Triton.Validator.Model.Rules.FileRule">
             <summary>
             <b>FileRule</b> is a leaf <b>IValidationRule</b> that validates
             a file by size or type.
             </summary>
             <author>Scott Dyke</author>
+        </member>
+        <member name="T:Triton.Validator.Model.Rules.BaseLeafRule">
+            <summary>
+            <b>BaseLeafRule</b> is the base implementation for a <b>IValidationRule</b> that
+            has no child rules.
+            </summary>
+            <remarks>
+            <b>BaseLeafRule</b> provides "empty" implementations for the child related
+            properties and methods.
+            </remarks>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Validator.Model.Rules.BaseLeafRule.Add(Triton.Validator.Model.Rules.IValidationRule)">
+            <summary>
+            Dummy implementation to satisfy the <b>IValidationRule</b> interface for
+            a leaf rule that can't have children.
+            </summary>
+            <param name="rule">Ignored.</param>
+        </member>
+        <member name="M:Triton.Validator.Model.Rules.BaseLeafRule.Remove(System.String)">
+            <summary>
+            Not implemented.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Triton.Validator.Model.Rules.BaseLeafRule.Children">
+            <summary>
+            Returns null for the list of children since leaf rules can't have children.
+            </summary>
         </member>
         <member name="F:Triton.Validator.Model.Rules.FileRule.fileSize">
             <summary>
@@ -269,39 +514,25 @@
             Gets or sets the acceptable file types.
             </summary>
         </member>
-        <member name="T:Triton.Validator.Model.Rules.Validator">
+        <member name="T:Triton.Validator.Model.Rules.RegexRule">
             <summary>
-            A <b>Validator</b> is a collection of <b>IValidationRule</b>s used to
-            validate the values of a <b>MvcRequest</b>.
+            <b>RegexRule</b> is a leaf <b>IValidationRule</b> that applies a
+            regular expression to the value of a form field.
             </summary>
-            <remarks>
-            A <b>Validator</b> is obtained using the ValidatorManager.  Validators
-            defined in the validators.config file.
-            </remarks>
             <author>Scott Dyke</author>
         </member>
-        <member name="M:Triton.Validator.Model.Rules.Validator.#ctor(System.String)">
+        <member name="M:Triton.Validator.Model.Rules.RegexRule.Evaluate(Triton.Controller.Request.MvcRequest)">
             <summary>
-            Constructs a new Validator with the given name.
+            Evaluates the rule for the given request.  The <b>RegexRule</b> applies its
+            regular expression pattern to its specified field in the given request.
             </summary>
-            <param name="name">The name of the Validator to construct.</param>
-        </member>
-        <member name="M:Triton.Validator.Model.Rules.Validator.Evaluate(Triton.Controller.Request.MvcRequest)">
-            <summary>
-            Evaluates the rule for the given request.  <b>Validator</b> "ands" all of its
-            child rules to determine if final result.
-            </summary>
-            <remarks>
-            This override locks the validator before calling the base.Evaluate to ensure
-            thread safety.
-            </remarks>
             <param name="request">The <b>MvcRequest</b> to evaluate the rule for.</param>
             <returns>A <b>ValidationResult</b> indicating the result of evaluating the
             		rule and any validation errors that occurred.</returns>
         </member>
-        <member name="P:Triton.Validator.Model.Rules.Validator.Name">
+        <member name="P:Triton.Validator.Model.Rules.RegexRule.Pattern">
             <summary>
-            Gets the name of the Validator.
+            Gets or sets the regular expression pattern to apply to the field value.
             </summary>
         </member>
         <member name="T:Triton.Validator.Model.Rules.FieldCompareRule">
@@ -356,53 +587,6 @@
             Gets or sets whether the compare is case-sensitive or not.
             </summary>
         </member>
-        <member name="T:Triton.Validator.Model.ValidationError">
-            <summary>
-            A <b>ValidationError</b> contains the information about a validation rule
-            failure.  It has the name of the field for whcil the validation failed and
-            an error ID to indicate what was wrong.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationError.#ctor(System.String,System.Int64)">
-            <summary>
-            Constructs a new <b>ValidationError</b> with the given 
-            field name and error ID.
-            </summary>
-            <param name="field">The name of the field the error applies to.</param>
-            <param name="errorId">The ID of the error indicating what the problem was.</param>
-        </member>
-        <member name="P:Triton.Validator.Model.ValidationError.Field">
-            <summary>
-            Gets the name of the field the error applies to.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Model.ValidationError.ErrorId">
-            <summary>
-            Gets the ID of the error that occurred.
-            </summary>
-        </member>
-        <member name="T:Triton.Validator.Model.Rules.RegexRule">
-            <summary>
-            <b>RegexRule</b> is a leaf <b>IValidationRule</b> that applies a
-            regular expression to the value of a form field.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="M:Triton.Validator.Model.Rules.RegexRule.Evaluate(Triton.Controller.Request.MvcRequest)">
-            <summary>
-            Evaluates the rule for the given request.  The <b>RegexRule</b> applies its
-            regular expression pattern to its specified field in the given request.
-            </summary>
-            <param name="request">The <b>MvcRequest</b> to evaluate the rule for.</param>
-            <returns>A <b>ValidationResult</b> indicating the result of evaluating the
-            		rule and any validation errors that occurred.</returns>
-        </member>
-        <member name="P:Triton.Validator.Model.Rules.RegexRule.Pattern">
-            <summary>
-            Gets or sets the regular expression pattern to apply to the field value.
-            </summary>
-        </member>
         <member name="T:Triton.Validator.Model.Rules.OrRule">
             <summary>
             The <b>OrRule</b> is a composite <b>IValidationRule</b> that evaluates its children
@@ -419,190 +603,6 @@
             <param name="request">The <b>MvcRequest</b> to evaluate the rule for.</param>
             <returns>A <b>ValidationResult</b> indicating the result of evaluating the
             		rule and any validation errors that occurred.</returns>
-        </member>
-        <member name="T:Triton.Validator.Model.ValidatorManager">
-            <summary>
-            The <b>ValidatorManager</b> manages the availabe <b>Validator</b>s.  A
-            <b>Validator</b> is obtained using <b>ValidatorManager</b>'s <c>GetValidator</c>
-            method.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidatorManager.#ctor">
-            <summary>
-            Private constructor to enforce singleton pattern.
-            </summary>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidatorManager.GetInstance">
-            <summary>
-            Gets the singleton instance of the <b>ValidatorManager</b>.
-            </summary>
-            <returns>The singleton instance of the <b>ValidatorManager</b>.</returns>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidatorManager.GetValidator(System.String)">
-            <summary>
-            Gets the <b>Validator</b> with the given name, or <c>null</c> if no
-            such validator exists.
-            </summary>
-            <param name="name">The name of the <b>Validator</b> to get.</param>
-            <returns>The <b>Validator</b> with the given name.</returns>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidatorManager.LoadValidators">
-            <summary>
-            Loads the <b>Validator</b>s from the config file.
-            </summary>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidatorManager.BuildValidator(System.Xml.XmlNode)">
-            <summary>
-            Builds a <b>Validator</b> and its rules from the given XML node.
-            </summary>
-            <param name="validatorNode">The XML node containing the definition
-            		for the <b>Validator</b> and its rules.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidatorManager.GetChildren(Triton.Validator.Model.Rules.IValidationRule,System.Xml.XmlNode)">
-            <summary>
-            Builds the child rules for the given rule from the given XML node.
-            </summary>
-            <param name="parent">The rule to build the children for.</param>
-            <param name="parentNode">The XML node containing the definition(s)
-            		of the chlid rules.</param>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidatorManager.Reset">
-            <summary>
-            Resets the cached validation rules.
-            </summary>
-        </member>
-        <member name="T:Triton.Validator.Model.ValidationResult">
-            <summary>
-            A <b>ValidationResult</b> contains the results of evaluating a <b>IValidationRule</b>.
-            It indicates whether or not the rule passed, and if not, what errors occurred.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationResult.#ctor">
-            <summary>
-            Initializes Passed to true by default.
-            </summary>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationResult.AddError(System.String,System.Int64)">
-            <summary>
-            Adds a new <b>ValidationError</b> to the collection of errors for the
-            given field and error ID.
-            </summary>
-            <param name="field">The name of the field to which the error applies.</param>
-            <param name="errorId">The ID of the error that occurred.</param>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationResult.AddError(Triton.Validator.Model.ValidationError)">
-            <summary>
-            Adds a new <b>ValidationError</b> to the collection of errors.
-            </summary>
-            <param name="error">The <b>ValidationError</b> to add.</param>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationResult.AddErrors(Triton.Validator.Model.ValidationErrorCollection)">
-            <summary>
-            Adds all of the <b>ValidationError</b>s from the given collection to
-            the current error collection.
-            </summary>
-            <param name="errors">The <b>ValidationErrorCollection</b> to add the errors from.</param>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationResult.ClearErrors">
-            <summary>
-            Removes all of the errors associated with this <b>ValidationResult</b>.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Model.ValidationResult.Passed">
-            <summary>
-            Gets or sets the flag indicating whether or not the validation passed.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Model.ValidationResult.Errors">
-            <summary>
-            Gets the collection of errors that occurred during vaidation if the
-            validation did not pass.
-            </summary>
-        </member>
-        <member name="T:Triton.Validator.Model.ValidationRuleFactory">
-            <summary>
-            The <b>ValidationRuleFactory</b> implements a <i>Factory</i> pattern for
-            creating <b>IValidationRule</b>s.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="F:Triton.Validator.Model.ValidationRuleFactory.CONFIG_PATH">
-            <summary>
-            The "path" of the settings for ValidationRules in web.config
-            </summary>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationRuleFactory.#ctor">
-            <summary>
-            Private constructor to prevent instantiation.
-            </summary>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationRuleFactory.Make(System.String)">
-            <summary>
-            Instantiates the <b>IValidationRule</b> with the given name, if available.
-            </summary>
-            <param name="ruleName">The name of the IValidationRule to instantiate.</param>
-            <returns>The <b>IValidationRule</b> with the specified name, or <b>null</b> if no
-            IValidationRule with that name is found.</returns>
-        </member>
-        <member name="M:Triton.Validator.Model.ValidationRuleFactory.GetType(System.String,System.String,System.String)">
-            <summary>
-            Gets the <b>Type</b> for the rule with the given name in the specified namespace
-            and assembly.
-            </summary>
-            <param name="nameSpace">The namespace the rule class is defined in.</param>
-            <param name="assemblyName">The name of the assembly the rule class is defined in.</param>
-            <param name="ruleName">The name of the rule.</param>
-            <returns></returns>
-        </member>
-        <member name="T:Triton.Validator.Logic.ValidateRequestAction">
-            <summary>
-            <b>ValidateRequestAction</b> uses the Validator system to validate the parameters of
-            a request.  A <c>validatorName</c> attribute in the state identifying the action
-            indicates the name of the validator to use to perform the validation.
-            </summary>
-            <author>Scott Dyke</author>
-        </member>
-        <member name="M:Triton.Validator.Logic.ValidateRequestAction.Execute(Triton.Controller.TransitionContext)">
-            <summary>
-            Executes the action to perform the validation.
-            </summary>
-            <param name="context">The <c>TransitionContext</c> in which the action is executing.</param>
-            <returns>The event resulting from the action's execution.</returns>
-        </member>
-        <member name="P:Triton.Validator.Logic.ValidateRequestAction.ValidatorName">
-            <summary>
-            Gets or sets the name of the <c>Validator</c> to use to perform
-            the validation.  Can be a comma-delimited list of names of <c>Validator</c>s
-            to run.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Logic.ValidateRequestAction.ErrorsItemNameIn">
-            <summary>
-            Errors collection item name to retrieve.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Logic.ValidateRequestAction.ErrorsItemNameOut">
-            <summary>
-            Errors collection item name to append the errors.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Logic.ValidateRequestAction.Events.Pass">
-            <summary>
-            Event returned if a validation passed.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Logic.ValidateRequestAction.Events.Fail">
-            <summary>
-            Event returned if a validation failed.
-            </summary>
-        </member>
-        <member name="P:Triton.Validator.Logic.ValidateRequestAction.Events.Error">
-            <summary>
-            Event returned if errors occured during validation.
-            </summary>
         </member>
     </members>
 </doc>

@@ -9,20 +9,20 @@
 		<version name="Version" column="version" type="Int64" unsaved-value="0"/>
 
 		<property name="CityName" column="city" type="String" length="255"/>
-		<many-to-one name="City" class="Triton.Location.Model.City, Triton.Modules.Location" column="city_id" foreign-key="FK_Address_City" />
+		<many-to-one name="City" class="Triton.Location.Model.City, Triton.Modules.Location" column="city_id" foreign-key="FK_Address_City" lazy="false"  />
 		
 		<property name="CountryName" column="country" type="String" length="255"/>
-		<many-to-one name="Country" class="Triton.Location.Model.Country, Triton.Modules.Location" column="country_id" foreign-key="FK_Address_Country" />
+		<many-to-one name="Country" class="Triton.Location.Model.Country, Triton.Modules.Location" column="country_id" foreign-key="FK_Address_Country" lazy="false" />
 		
 		<property name="Line1" column="line1" type="String" length="255"/>
 		<property name="Line2" column="line2" type="String" length="255"/>
 		<property name="Line3" column="line3" type="String" length="255"/>
 		
 		<property name="PostalCodeName" column="postalcode" type="String" length="255"/>
-		<many-to-one name="PostalCode" class="Triton.Location.Model.PostalCode, Triton.Modules.Location" column="postal_code_id" foreign-key="FK_Address_Postal_Code" />
+		<many-to-one name="PostalCode" class="Triton.Location.Model.PostalCode, Triton.Modules.Location" column="postal_code_id" foreign-key="FK_Address_Postal_Code" lazy="false"  />
 		
 		<property name="StateName" column="`state`" type="String" length="255"/>
-		<many-to-one name="State" class="Triton.Location.Model.State, Triton.Modules.Location" column="state_id" foreign-key="FK_Address_State" />
+		<many-to-one name="State" class="Triton.Location.Model.State, Triton.Modules.Location" column="state_id" foreign-key="FK_Address_State" lazy="false"  />
 
 		<component class="Triton.Location.Model.GeoLocation, Triton.Modules.Location" name="GeoLocation">
 			<property column="longitude" name="Longitude" type="float"/>

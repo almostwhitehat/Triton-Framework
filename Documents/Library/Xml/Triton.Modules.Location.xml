@@ -24,6 +24,36 @@
             Event names to return to the controller.
             </summary>
         </member>
+        <member name="T:Triton.Location.Support.Request.Deserialize">
+            <summary>
+            Helper class to take parameters from the request and generate objects to save/update.
+            For use with Triton.Location module.
+            </summary>
+        </member>
+        <member name="M:Triton.Location.Support.Request.Deserialize.CreatePersistedAddress(Triton.Controller.Request.MvcRequest)">
+            <summary>
+            Creates a new <c>PersistedAddress</c> from the request.
+            </summary>
+            <param name="request">Request to create the PersistedAddress from.</param>
+            <returns>A populated PersistedAddress object.</returns>
+        </member>
+        <member name="T:Triton.Location.Model.States">
+            <summary>
+            Singleton for storing location states for use in the deserialize address
+            </summary>
+        </member>
+        <member name="M:Triton.Location.Model.States.LoadStates">
+            <summary>
+            Loads the states from the database and populates singleton
+            </summary>
+        </member>
+        <member name="P:Triton.Location.Model.States.Item(System.Int32)">
+            <summary>
+            Indexer to get a State by ID
+            </summary>
+            <param name="id">The ID of the state to get</param>
+            <returns>The State with the given ID</returns>
+        </member>
         <member name="M:Triton.Location.Model.Address.ToString(System.String)">
             <summary>
             Formats the Name.
@@ -52,11 +82,85 @@
             <returns> The formatted string of the name.
             </returns>
         </member>
-        <member name="T:Triton.Location.Support.Request.Deserialize">
+        <member name="T:Triton.Location.Model.Dao.IPersistedAddressDao">
             <summary>
-            Helper class to take parameters from the request and generate objects to save/update.
-            For use with Triton.Location module.
+            Defines the contract of how PersistedAddress is retrieved, persisted and deleted.
             </summary>
+        </member>
+        <member name="M:Triton.Location.Model.Dao.IPersistedAddressDao.Get(System.Int64)">
+            <summary>
+            Gets the PersistedAddress by id.
+            </summary>
+            <param name="id">Id of the PersistedAddress to retrieve.</param>
+            <returns>PersistedAddress object.</returns>
+        </member>
+        <member name="M:Triton.Location.Model.Dao.IPersistedAddressDao.Get(Triton.Location.Model.PersistedAddress)">
+            <summary>
+            Gets the list of PersistedAddresss by example.
+            </summary>
+            <param name="example">Example object of PersistedAddress.</param>
+            <returns>List of PersistedAddress matching the example.</returns>
+        </member>
+        <member name="M:Triton.Location.Model.Dao.IPersistedAddressDao.Save(Triton.Location.Model.PersistedAddress)">
+            <summary>
+            Saves the PersistedAddress.
+            </summary>
+            <param name="persistedAddress">PersistedAddress object to save.</param>
+        </member>
+        <member name="M:Triton.Location.Model.Dao.IPersistedAddressDao.Save(System.Collections.Generic.IList{Triton.Location.Model.PersistedAddress})">
+            <summary>
+            Saves list of PersistedAddress.
+            </summary>
+            <param name="persistedAddresses">List of PersistedAddresss to save.</param>
+        </member>
+        <member name="M:Triton.Location.Model.Dao.IPersistedAddressDao.Delete(Triton.Location.Model.PersistedAddress)">
+            <summary>
+            Deletes the PersistedAddress.
+            </summary>
+            <param name="persistedAddress">PersistedAddress object to delete.</param>
+        </member>
+        <member name="M:Triton.Location.Model.Dao.IPersistedAddressDao.GetFilter">
+            <summary>
+            Get the filter.
+            </summary>
+        </member>
+        <member name="M:Triton.Location.Model.Dao.IPersistedAddressDao.Find(Triton.Location.Model.Dao.PersistedAddressFilter)">
+            <summary>
+            Find persistedAddresss by filter
+            </summary>
+            <param name="filter">Filter with the criteria to search</param>
+            <returns>SearchResult of PersistedAddress</returns>
+        </member>
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress">
+            <summary>
+            Definitions for Fields and Filters of Persisted Address
+            </summary>
+        </member>
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Field">
+            <summary>
+            Fields for Persisted Address
+            </summary>
+        </member>
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Filter">
+            <summary>
+            Filters for Persisted Address
+            </summary>
+        </member>
+        <member name="T:Triton.Location.Model.Countries">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Triton.Location.Model.Countries.LoadCountries">
+            <summary>
+            Loads the states from the database and populates singleton
+            </summary>
+        </member>
+        <member name="P:Triton.Location.Model.Countries.Item(System.Int32)">
+            <summary>
+            Indexer to get Country by ID
+            </summary>
+            <param name="id"></param>
         </member>
     </members>
 </doc>
