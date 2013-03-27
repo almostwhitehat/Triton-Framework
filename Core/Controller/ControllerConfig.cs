@@ -27,7 +27,8 @@ namespace Triton.Controller
 		[ConfigurationProperty("contentProviders")]
 		public ContentProviderElementCollection ContentProviders
 		{
-			get {
+			get
+			{
 				return (ContentProviderElementCollection)this["contentProviders"];
 			}
 		}
@@ -39,7 +40,7 @@ namespace Triton.Controller
 	/// </summary>
 	public class ContentProviderElement : ConfigurationElement
 	{
-		public ContentProviderElement() {}
+		public ContentProviderElement() { }
 
 
 		public ContentProviderElement(
@@ -57,8 +58,9 @@ namespace Triton.Controller
 		[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\")]
 		public string Name
 		{
-			get {
-				return (string) this["name"];
+			get
+			{
+				return (string)this["name"];
 			}
 			//set
 			//{
@@ -71,8 +73,9 @@ namespace Triton.Controller
 		[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\")]
 		public string Type
 		{
-			get {
-				return (string) this["type"];
+			get
+			{
+				return (string)this["type"];
 			}
 		}
 
@@ -81,10 +84,21 @@ namespace Triton.Controller
 		[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\")]
 		public string Publisher
 		{
-			get {
-				return (string) this["publisher"];
+			get
+			{
+				return (string)this["publisher"];
 			}
 		}
+
+		[ConfigurationProperty("contentProviderFormatters")]
+		public ContentProviderFormatterElementCollection ContentProviderFormatters
+		{
+			get
+			{
+				return (ContentProviderFormatterElementCollection)this["contentProviderFormatters"];
+			}
+		}
+
 	}
 
 
@@ -95,15 +109,16 @@ namespace Triton.Controller
 	{
 		public ContentProviderElementCollection()
 		{
-			ContentProviderElement contentProvider = (ContentProviderElement) this.CreateNewElement();
-
-			this.Add(contentProvider);
+			ContentProviderElement contentProvider = (ContentProviderElement)this.CreateNewElement();
+			if (this[contentProvider.Name] != null)
+				this.Add(contentProvider);
 		}
 
 
 		public override ConfigurationElementCollectionType CollectionType
 		{
-			get {
+			get
+			{
 				return ConfigurationElementCollectionType.AddRemoveClearMap;
 			}
 		}
@@ -111,10 +126,12 @@ namespace Triton.Controller
 
 		public new string AddElementName
 		{
-			get {
+			get
+			{
 				return base.AddElementName;
 			}
-			set {
+			set
+			{
 				base.AddElementName = value;
 			}
 		}
@@ -122,10 +139,12 @@ namespace Triton.Controller
 
 		public new string ClearElementName
 		{
-			get {
+			get
+			{
 				return base.ClearElementName;
 			}
-			set {
+			set
+			{
 				base.ClearElementName = value;
 			}
 		}
@@ -133,7 +152,8 @@ namespace Triton.Controller
 
 		public new string RemoveElementName
 		{
-			get {
+			get
+			{
 				return base.RemoveElementName;
 			}
 		}
@@ -141,7 +161,8 @@ namespace Triton.Controller
 
 		public new int Count
 		{
-			get {
+			get
+			{
 				return base.Count;
 			}
 		}
@@ -149,10 +170,12 @@ namespace Triton.Controller
 
 		public ContentProviderElement this[int index]
 		{
-			get {
-				return (ContentProviderElement) BaseGet(index);
+			get
+			{
+				return (ContentProviderElement)BaseGet(index);
 			}
-			set {
+			set
+			{
 				if (BaseGet(index) != null) {
 					BaseRemoveAt(index);
 				}
@@ -164,8 +187,9 @@ namespace Triton.Controller
 
 		public new ContentProviderElement this[string Name]
 		{
-			get {
-				return (ContentProviderElement) BaseGet(Name);
+			get
+			{
+				return (ContentProviderElement)BaseGet(Name);
 			}
 		}
 
@@ -240,7 +264,215 @@ namespace Triton.Controller
 		}
 	}
 
+	/// <summary>
+	/// A ConfigurationElement for the elements in controllerSettings/contentProviders.
+	/// </summary>
+	public class ContentProviderFormatterElement : ConfigurationElement
+	{
+		public ContentProviderFormatterElement() { }
 
+
+		public ContentProviderFormatterElement(
+			string name,
+			string type)
+		{
+			this["name"] = name;
+			this["type"] = type;
+		}
+
+
+		[ConfigurationProperty("name", IsRequired = true)]
+		[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\")]
+		public string Name
+		{
+			get
+			{
+				return (string)this["name"];
+			}
+			//set
+			//{
+			//    this["name"] = value;
+			//}
+		}
+
+
+		[ConfigurationProperty("type")]
+		[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\")]
+		public string Type
+		{
+			get
+			{
+				return (string)this["type"];
+			}
+		}
+	}
+
+	/// <summary>
+	/// The collection of <b>ContentProviderElement</b>s.
+	/// </summary>
+	public class ContentProviderFormatterElementCollection : ConfigurationElementCollection
+	{
+		public ContentProviderFormatterElementCollection()
+		{
+			ContentProviderFormatterElement contentProviderFormatter = (ContentProviderFormatterElement)this.CreateNewElement();
+			if (this[contentProviderFormatter.Name] == null) {
+				this.Add(contentProviderFormatter);
+			}
+		}
+
+
+		public override ConfigurationElementCollectionType CollectionType
+		{
+			get
+			{
+				return ConfigurationElementCollectionType.AddRemoveClearMap;
+			}
+		}
+
+
+		public new string AddElementName
+		{
+			get
+			{
+				return base.AddElementName;
+			}
+			set
+			{
+				base.AddElementName = value;
+			}
+		}
+
+
+		public new string ClearElementName
+		{
+			get
+			{
+				return base.ClearElementName;
+			}
+			set
+			{
+				base.ClearElementName = value;
+			}
+		}
+
+
+		public new string RemoveElementName
+		{
+			get
+			{
+				return base.RemoveElementName;
+			}
+		}
+
+
+		public new int Count
+		{
+			get
+			{
+				return base.Count;
+			}
+		}
+
+
+		public ContentProviderFormatterElement this[int index]
+		{
+			get
+			{
+				return (ContentProviderFormatterElement)BaseGet(index);
+			}
+			set
+			{
+				if (BaseGet(index) != null) {
+					BaseRemoveAt(index);
+				}
+
+				BaseAdd(index, value);
+			}
+		}
+
+
+		public new ContentProviderFormatterElement this[string Name]
+		{
+			get
+			{
+				return (ContentProviderFormatterElement)BaseGet(Name);
+			}
+		}
+
+
+		protected override ConfigurationElement CreateNewElement()
+		{
+			return new ContentProviderFormatterElement();
+		}
+
+
+		protected override ConfigurationElement CreateNewElement(
+			string elementName)
+		{
+			return new ContentProviderFormatterElement(elementName, null);
+		}
+
+
+		protected override object GetElementKey(
+			ConfigurationElement element)
+		{
+			return ((ContentProviderFormatterElement)element).Name;
+		}
+
+
+		public int IndexOf(
+			ContentProviderFormatterElement contentProvider)
+		{
+			return BaseIndexOf(contentProvider);
+		}
+
+
+		public void Add(
+			ContentProviderFormatterElement contentProvider)
+		{
+			this.BaseAdd(contentProvider);
+		}
+
+
+		protected override void BaseAdd(
+			ConfigurationElement element)
+		{
+			BaseAdd(element, false);
+		}
+
+
+		public void Remove(
+			ContentProviderFormatterElement contentProvider)
+		{
+			if (BaseIndexOf(contentProvider) >= 0) {
+				BaseRemove(contentProvider.Name);
+			}
+		}
+
+
+		public void RemoveAt(
+			int index)
+		{
+			BaseRemoveAt(index);
+		}
+
+
+		public void Remove(
+			string name)
+		{
+			BaseRemove(name);
+		}
+
+
+		public void Clear()
+		{
+			BaseClear();
+		}
+	}
+
+	/// <summary>
+	/// A ConfigurationElement for the elements in controllerSettings/States.
+	/// </summary>
 	public class StatesConfigHandler : IConfigurationSectionHandler
 	{
 		#region IConfigurationSectionHandler Members
@@ -252,37 +484,37 @@ namespace Triton.Controller
 		{
 			StatesConfig config = new StatesConfig();
 
-					//  get the Type for the states DAO
+			//  get the Type for the states DAO
 			XmlNode node = section.SelectSingleNode("add[@key=\"dao\"]");
 			if (node != null) {
 				config.DaoType = node.Attributes["value"].Value;
 			}
 
-					//  get the connection for the states DAO
+			//  get the connection for the states DAO
 			node = section.SelectSingleNode("add[@key=\"connection\"]");
 			if (node != null) {
 				config.DaoConnectionName = node.Attributes["value"].Value;
 			}
 
-					//  get the default event name
+			//  get the default event name
 			node = section.SelectSingleNode("add[@key=\"defaultEventName\"]");
 			if (node != null) {
 				config.DefaultEventName = node.Attributes["value"].Value;
 			}
 
-					//  get the setting for tracing transitions in TransitionSessionManager
+			//  get the setting for tracing transitions in TransitionSessionManager
 			node = section.SelectSingleNode("add[@key=\"traceManager\"]");
 			if (node != null) {
 				config.ManagerTrace = (node.Attributes["value"].Value.ToLower() == "on");
 			}
 
-					//  get the setting for tracing transitions in a log file
+			//  get the setting for tracing transitions in a log file
 			node = section.SelectSingleNode("add[@key=\"traceLog\"]");
 			if (node != null) {
 				config.LogTrace = (node.Attributes["value"].Value.ToLower() == "on");
 			}
 
-					//  get the mappings for the type from config to the class Type
+			//  get the mappings for the type from config to the class Type
 			node = section.SelectSingleNode("factoryMappings");
 			if (node != null) {
 				Hashtable mappings = new Hashtable();
@@ -290,7 +522,8 @@ namespace Triton.Controller
 					if (XmlNodeType.Element == mapping.NodeType) {
 						try {
 							mappings[mapping.Attributes["name"].Value] = mapping.Attributes["type"].Value;
-						} catch (Exception e) {}
+						}
+						catch (Exception e) { }
 					}
 				}
 
@@ -309,18 +542,20 @@ namespace Triton.Controller
 		{
 			protected string daoConnectionName;
 			protected string daoType;
-			protected string defaultEventName			= null;
+			protected string defaultEventName = null;
 			protected Hashtable typeMappings;
-			protected bool traceTransitionsInManager	= false;
-			protected bool traceTransitionsInLog		= false;
+			protected bool traceTransitionsInManager = false;
+			protected bool traceTransitionsInLog = false;
 
 
 			public string DaoType
 			{
-				get {
+				get
+				{
 					return this.daoType;
 				}
-				internal set {
+				internal set
+				{
 					this.daoType = value;
 				}
 			}
@@ -328,10 +563,12 @@ namespace Triton.Controller
 
 			public string DaoConnectionName
 			{
-				get {
+				get
+				{
 					return this.daoConnectionName;
 				}
-				internal set {
+				internal set
+				{
 					this.daoConnectionName = value;
 				}
 			}
@@ -339,10 +576,12 @@ namespace Triton.Controller
 
 			public string DefaultEventName
 			{
-				get {
+				get
+				{
 					return this.defaultEventName;
 				}
-				internal set {
+				internal set
+				{
 					this.defaultEventName = value;
 				}
 			}
@@ -350,10 +589,12 @@ namespace Triton.Controller
 
 			public Hashtable StateTypes
 			{
-				get {
+				get
+				{
 					return this.typeMappings;
 				}
-				internal set {
+				internal set
+				{
 					this.typeMappings = value;
 				}
 			}
@@ -361,10 +602,12 @@ namespace Triton.Controller
 
 			public bool LogTrace
 			{
-				get {
+				get
+				{
 					return this.traceTransitionsInLog;
 				}
-				internal set {
+				internal set
+				{
 					this.traceTransitionsInLog = value;
 				}
 			}
@@ -372,10 +615,12 @@ namespace Triton.Controller
 
 			public bool ManagerTrace
 			{
-				get {
+				get
+				{
 					return this.traceTransitionsInManager;
 				}
-				internal set {
+				internal set
+				{
 					this.traceTransitionsInManager = value;
 				}
 			}

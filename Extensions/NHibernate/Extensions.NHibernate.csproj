@@ -66,8 +66,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Assemblies\Common.Logging\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=2.0.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\Assemblies\NHibernate\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
