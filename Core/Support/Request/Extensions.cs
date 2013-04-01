@@ -6,6 +6,13 @@ using Triton.Utilities.Reflection;
 
 namespace Triton.Support.Request {
 
+#region History
+
+// History:
+//   3/13/13 - SD -	GetRequestItem - Added check for itemName being null.
+
+#endregion
+
 
 public static class Extensions
 {
@@ -34,7 +41,7 @@ public static class Extensions
 	{
 		T retVal = default (T);
 
-		if (request.Items[itemName] != null) {
+		if ((itemName != null) && (request.Items[itemName] != null)) {
 					//  if the item is in a SearchResult, unwrap it
 			if (request.Items[itemName] is SearchResult<T>) {
 				SearchResult<T> sr = (SearchResult<T>)request.Items[itemName];
@@ -64,7 +71,13 @@ public static class Extensions
 						itemName, request.Items[itemName].GetType().ToString(), typeof(T).ToString()));
 			}
 		} else if (required) {
-			throw new NullReferenceException(string.Format("Request.Items[{0}] is null.", itemName));
+			string msg;
+			if (itemName == null) {
+				msg = "Item name is null.";
+			} else {
+				msg = string.Format("Request.Items[{0}] is null.", itemName);
+			}
+			throw new NullReferenceException(msg);
 		}
 
 		return retVal;
