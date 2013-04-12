@@ -98,6 +98,7 @@
     <Compile Include="Logic\GetAppSettingAction.cs" />
     <Compile Include="Logic\GetObjectPropertyAsItemAction.cs" />
     <Compile Include="Logic\GetObjectPropertyAsParameterAction.cs" />
+    <Compile Include="Logic\ParameterExistsAction.cs" />
     <Compile Include="Logic\ResetSingletonAction.cs" />
     <Compile Include="Logic\RetrieveObjectFromSessionAction.cs" />
     <Compile Include="Logic\SetObjectPropertyAction.cs" />

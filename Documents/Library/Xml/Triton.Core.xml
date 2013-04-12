@@ -750,6 +750,21 @@
             The collection of <b>ContentProviderElement</b>s.
             </summary>
         </member>
+        <member name="T:Triton.Controller.ContentProviderFormatterElement">
+            <summary>
+            A ConfigurationElement for the elements in controllerSettings/contentProviders.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.ContentProviderFormatterElementCollection">
+            <summary>
+            The collection of <b>ContentProviderElement</b>s.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.StatesConfigHandler">
+            <summary>
+            A ConfigurationElement for the elements in controllerSettings/States.
+            </summary>
+        </member>
         <member name="T:Triton.Support.Mail.ServiceMailer">
             <summary>
             Service Mailer does not contact the email server directly. Instead, it 
@@ -6888,6 +6903,39 @@
         <member name="P:Triton.Logic.ResetSingletonAction.ResetMethodNameIn">
             <summary>
             Gets or sets the name of the singleton's reset method.
+            </summary>
+        </member>
+        <member name="T:Triton.Logic.ParameterExistsAction">
+            <summary>
+            Action to determine if a parameter with a given name exists
+            in the request.  By default a parameter with no value is deemed
+            not to exist in the request.  Use 
+            </summary>
+            <author>Scott Dyke</author>
+            <created>1/23/2012</created>
+        </member>
+        <member name="M:Triton.Logic.ParameterExistsAction.IsEmpty(System.String)">
+            <summary>
+            Determines it the given parameter value is considered empty.
+            </summary>
+            <param name="paramValue">The parameter value to check.</param>
+            <returns><c>true</c> if the given value is empty, <c>false</c> if not.</returns>
+        </member>
+        <member name="P:Triton.Logic.ParameterExistsAction.ParamNameIn">
+            <summary>
+            Gets or sets the name of the request parameter to check the existence of.
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.ParameterExistsAction.RequireAll">
+            <summary>
+            Gets or sets the flag indicating whether the check is for any given
+            parameter has a value (false), or all given parametes have a value (true).
+            </summary>
+        </member>
+        <member name="P:Triton.Logic.ParameterExistsAction.CountEmptyStringAsExists">
+            <summary>
+            Gets or sets the flag indicating whether or not a parameter in the request but
+            with no value (empty string) should be deemed to exist.
             </summary>
         </member>
         <member name="T:Triton.Logic.EqualAction">

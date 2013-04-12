@@ -72,23 +72,24 @@ public static class Deserialize
 			address.CountryName = request[ParameterNames.Address.Field.COUNTRY];
 		}
 
+		address.State = null;
         if (!string.IsNullOrEmpty(request[ParameterNames.Address.Field.STATE_ID]))
         {
             int stateId;
             if(int.TryParse(request[ParameterNames.Address.Field.STATE_ID], out stateId))
             {
                 address.State = States.Instance[stateId];
-	            address.StateName = address.State.ShortName;
+	            address.StateName = address.State.Code;
             }
         }
-
+		address.Country = null;
         if (!string.IsNullOrEmpty(request[ParameterNames.Address.Field.COUNTRY_ID]))
         {
             int countryId;
             if (int.TryParse(request[ParameterNames.Address.Field.COUNTRY_ID], out countryId))
             {
                 address.Country = Countries.Instance[countryId];
-	            address.CountryName = address.Country.ShortName;
+	            address.CountryName = address.Country.Code;
             }
         }
 

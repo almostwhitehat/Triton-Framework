@@ -32,7 +32,7 @@
 			<element column="`value`" type="string" length="2000"/>
 		</map>
 
-		<bag name="Roles" table="account_roles" generic="true" cascade="none">
+		<bag name="Roles" table="account_roles" generic="true" cascade="none" lazy="false">
 			<key column="account_id" foreign-key="FK_Account_Account_Roles"/>
 			<many-to-many class="Triton.Membership.Model.Role, Triton.Modules.Membership" column="role_id" foreign-key="FK_Account_Roles_Role"/>
 		</bag>
