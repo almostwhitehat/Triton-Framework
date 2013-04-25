@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Reflection;
 using Common.Logging;
+using Triton.Configuration;
 using Triton.Validator.Model.Rules;
 
 namespace Triton.Validator.Model
@@ -22,9 +23,9 @@ namespace Triton.Validator.Model
 	public class ValidationRuleFactory
 	{
 		/// <summary>
-		/// The "path" of the settings for ValidationRules in web.config
+		/// The config section name of the settings for formatters in web.config
 		/// </summary>
-		private const string CONFIG_PATH = "controllerSettings/validationRules";
+		private const string SECTION_NAME = "validationRules";
 
 		private const string RULE_SUFFIX = "Rule";
 
@@ -48,10 +49,10 @@ namespace Triton.Validator.Model
 
 			try {
 				//  get the namespace and assembly the rules are in
-				NameValueCollection config = (NameValueCollection) ConfigurationManager.GetSection(CONFIG_PATH);
+				NameValueCollection config = (NameValueCollection)ConfigurationManager.GetSection(TritonConfigurationSection.SectionName + "/" + SECTION_NAME);
 
 				if (config == null) {
-					throw new Exception(string.Format("No config settings found for {0}.", CONFIG_PATH));
+					throw new Exception(string.Format("No config settings found for {0}.", TritonConfigurationSection.SectionName + "/" + SECTION_NAME));
 				}
 
 				//  try to get the type for an IValidationRule defined in the namespace/assembly from web.config

@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using Common.Logging;
+using Triton.Configuration;
 
 namespace Triton.Controller.StateMachine {
 
@@ -31,7 +32,10 @@ namespace Triton.Controller.StateMachine {
 ///	<author>Scott Dyke</author>
 public class StateTransitioner
 {
-	private const string STATES_CONFIG_PATH = "controllerSettings/states";
+	/// <summary>
+	/// The config section name of the settings for states in web.config
+	/// </summary>
+	private const string SECTION_NAME = "states";
 
 
 	/// <summary>
@@ -56,7 +60,7 @@ public class StateTransitioner
 
 				//  get the settings from config file
 		StatesConfigHandler.StatesConfig statesConfig =
-			(StatesConfigHandler.StatesConfig)ConfigurationManager.GetSection(STATES_CONFIG_PATH);
+			(StatesConfigHandler.StatesConfig)ConfigurationManager.GetSection(TritonConfigurationSection.SectionName + "/" + SECTION_NAME);
 
 		do {
 			try {

@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Reflection;
 using System.Text;
 using Common.Logging;
+using Triton.Configuration;
 using Triton.Support.Collections;
 
 namespace Triton.Controller.Action
@@ -27,9 +28,9 @@ namespace Triton.Controller.Action
 		private const string ACTION_SUFFIX = "Action";
 
 		/// <summary>
-		/// The "path" of the settings for Actions in web.config
+		/// The config section name of the settings for Actions in web.config
 		/// </summary>
-		private const string CONFIG_PATH = "controllerSettings/actions";
+		private const string SECTION_NAME = "actions";
 
 		/// <summary>
 		/// The <c>Cache</c> that keeps track of found actions.
@@ -56,11 +57,11 @@ namespace Triton.Controller.Action
 
 			} else {
 				//  get the namespace and assembly the actions are in
-				NameValueCollection config = (NameValueCollection)ConfigurationManager.GetSection(CONFIG_PATH);
+				NameValueCollection config = (NameValueCollection)ConfigurationManager.GetSection(TritonConfigurationSection.SectionName + "/" + SECTION_NAME);
 
 				// making sure that the configuration has been defined
 				if (config == null) {
-					throw new ConfigurationErrorsException(string.Format("No config settings found for {0}.", CONFIG_PATH));
+					throw new ConfigurationErrorsException(string.Format("No config settings found for {0}.", TritonConfigurationSection.SectionName + "/" + SECTION_NAME));
 				}
 
 				try {

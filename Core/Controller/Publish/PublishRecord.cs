@@ -49,7 +49,9 @@ namespace Triton.Controller.Publish
 
 		public string Key
 		{
-			get { return this.key; }
+			get {
+				return this.key;
+			}
 		}
 
 
@@ -65,7 +67,9 @@ namespace Triton.Controller.Publish
 
 		public string Event
 		{
-			get { return this.evnt; }
+			get {
+				return this.evnt;
+			}
 		}
 
 
@@ -81,19 +85,37 @@ namespace Triton.Controller.Publish
 
 		public string PublisherName
 		{
-			get { return this.publisherName; }
+			get {
+				return this.publisherName;
+			}
 		}
 
 
-		public string PublishedPath { get; set; }
+		public string PublishedPath
+		{
+			get;
+			set;
+		}
 
 
-		public DateTime? LastPublished { get; set; }
+		public DateTime? LastPublished
+		{
+			get;
+			set;
+		}
 
 
-		public bool Publishing { get; set; }
+		public bool Publishing
+		{
+			get;
+			set;
+		}
 
 
-		public int HitCount { get; set; }
+		public int HitCount
+		{
+			get;
+			set;
+		}
 	}
 }

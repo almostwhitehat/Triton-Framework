@@ -9,6 +9,7 @@ using Common.Logging;
 using Triton.Controller.Config;
 using Triton.Controller.StateMachine;
 using Triton.Support;
+using Triton.Configuration;
 using Triton.Utilities;
 
 namespace Triton.Controller.Publish {
@@ -29,10 +30,11 @@ namespace Triton.Controller.Publish {
 public class HtmlContentPublisher : IContentPublisher
 {
 	/// <summary>
-	/// The name of the configuration setting within controllerSettings/publishing/settings for the
+	/// The name of the configuration setting within triton/publishing/settings for the
 	/// expiration time (in minutes) of published pages.
 	/// </summary>
-	private const string EXPIRATION_SETTING		= "pageExpireTime";
+	private const string EXPIRATION_SETTING			= "pageExpireTime";
+	private const string INCLUDE_TIMESTAMP_SETTING	= "publishedTimestamp";
 
 	private const int DEFAULT_MAX_PATH_LEN		= 259;
 	private const int DEFAULT_PAGE_EXPIRE_TIME	= 120;
@@ -44,7 +46,7 @@ public class HtmlContentPublisher : IContentPublisher
 
 	//  the marker appended to the published file so that it can be
 	//  identified as a publishied page.
-	private const string PUBLISH_MARKER = "<!-- P -->";
+	private const string PUBLISH_MARKER = "P";
 
 	/// <summary>
 	/// The path to the root of the application.
@@ -84,19 +86,19 @@ public class HtmlContentPublisher : IContentPublisher
 			this.maxPathLen = int.Parse(SitesConfig.GetInstance().GetValue("/siteConfiguration/general/maxPathLength"));
 		} catch (Exception ex) {
 			LogManager.GetCurrentClassLogger().Error(
-				errorMessage => errorMessage("PagePublisher : maxPathLength not found in sites.config "), ex);
+					errorMessage => errorMessage("PagePublisher : maxPathLength not found in sites.config "), ex);
 		}
 
 		try {
 			PublishConfigSection config = ConfigurationManager.GetSection(
-					"controllerSettings/publishing") as PublishConfigSection;
+					TritonConfigurationSection.SectionName + "/publishing") as PublishConfigSection;
 			string expireTimeStr = config.Settings[EXPIRATION_SETTING].Value;
 			pageExpireTime = int.Parse(expireTimeStr);
 		} catch {
 			// TODO: log it
 		}
 
-		this.basePath = ConfigurationSettings.AppSettings["rootPath"];
+		this.basePath = ConfigurationManager.AppSettings["rootPath"];
 		this.publishPath = SitesConfig.GetInstance().GetValue("/siteConfiguration/general/publishPath");
 	}
 
@@ -146,10 +148,10 @@ public class HtmlContentPublisher : IContentPublisher
 		string key = context.PublishKey;
 
 		LogManager.GetCurrentClassLogger().Debug(
-			traceMessage => traceMessage("PagePublisher.Publish page {0}: start page = {1}, event = {2}",
-					context.EndState.Id,
-					context.StartState.Id,
-					context.StartEvent));
+				traceMessage => traceMessage("PagePublisher.Publish page {0}: start page = {1}, event = {2}",
+						context.EndState.Id,
+						context.StartState.Id,
+						context.StartEvent));
 
 		PublishRecord pubRec = publisher.GetPublishRecord(key, context, true);
 
@@ -169,7 +171,7 @@ public class HtmlContentPublisher : IContentPublisher
 				filePrefix = this.fileNameRegEx.Replace(filePrefix, this.fileNameEvaluator);
 
 						//  get the publish state -- the one we are publishing
-				PublishableState publishState = (PublishableState) context.EndState;
+				PublishableState publishState = (PublishableState)context.EndState;
 
 //				try {
 //					content = publishState.GetPublishContent(context);
@@ -202,8 +204,21 @@ public class HtmlContentPublisher : IContentPublisher
 				try {
 					writer = new StreamWriter(path.ToLower(), false, Encoding.UTF8);
 
+							//  build comment content to append to published page
+					string append = PUBLISH_MARKER;
+							//  check config for setting to include published timestamp, and include timestamp if indicated
+					PublishConfigSection config = ConfigurationManager.GetSection(
+							TritonConfigurationSection.SectionName + "/publishing") as PublishConfigSection;
+					if (config.Settings[INCLUDE_TIMESTAMP_SETTING] != null) {
+						bool includeTimestamp;
+						if (bool.TryParse(config.Settings[INCLUDE_TIMESTAMP_SETTING].Value, out includeTimestamp) && includeTimestamp) {
+							append += " [" + DateTime.Now.ToString() + "]";
+						}
+					}
+
 							//  write the content received from Execute to the publish file
-					writer.Write(content + Environment.NewLine + PUBLISH_MARKER);
+					writer.Write(content + Environment.NewLine + "<!--" + append + "-->");
+
 				} catch (Exception e) {
 					LogManager.GetCurrentClassLogger().Error(
 							errorMessage => errorMessage("PagePublisher.Publish write: "), e);
@@ -221,10 +236,12 @@ public class HtmlContentPublisher : IContentPublisher
 
 				pubRec.PublishedPath = targetPath;
 				pubRec.LastPublished = DateTime.Now;
+
+				LogManager.GetCurrentClassLogger().DebugFormat("Published {0} with key {1}", pubRec.PublishedPath, pubRec.Key);
 			}
 		} catch (Exception e) {
 			LogManager.GetCurrentClassLogger().Error(
-				errorMessage => errorMessage("PagePublisher.Publish: "), e);
+					errorMessage => errorMessage("PagePublisher.Publish: "), e);
 			content = null;
 		} finally {
 					//  we never want to leave the page in a state of publishing
@@ -295,7 +312,7 @@ public class HtmlContentPublisher : IContentPublisher
 		TransitionContext context)
 	{
 		PublishConfigSection config = ConfigurationManager.GetSection(
-				"controllerSettings/publishing") as PublishConfigSection;
+				TritonConfigurationSection.SectionName + "/publishing") as PublishConfigSection;
 
 				//  is the EndState a PublishableState and is publish set to true
 		return (config.Publish && (context.EndState is PublishableState) && ((PublishableState)context.EndState).Publish);
@@ -311,7 +328,18 @@ public class HtmlContentPublisher : IContentPublisher
 		PublishRecord publishRecord)
 	{
 
-		return ((!publishRecord.LastPublished.HasValue)
+#if (PUBLISH_TRACE)
+		string msg = "Checking " + publishRecord.Key;
+		if (publishRecord.LastPublished.HasValue) {
+			msg += string.Format(" LastPublished: {0}, pageExpireTime: {1}, expired = {2}.",
+					publishRecord.LastPublished.Value, pageExpireTime, (publishRecord.LastPublished.Value.AddMinutes(pageExpireTime) < DateTime.Now));
+		} else {
+			msg += " - no LastPublished time.";
+		}
+		LogManager.GetCurrentClassLogger().Debug(msg);
+#endif
+
+		return (!publishRecord.LastPublished.HasValue
 				|| (publishRecord.LastPublished.Value.AddMinutes(pageExpireTime) < DateTime.Now));
 	}
 

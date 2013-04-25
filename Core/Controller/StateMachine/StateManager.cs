@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Configuration;
 using Common.Logging;
+using Triton.Configuration;
 
 namespace Triton.Controller.StateMachine
 {
@@ -29,7 +30,10 @@ namespace Triton.Controller.StateMachine
 		private const string PUBLISH_ATTRIBUTE = "publish";
 		private const string SECTION_ATTRIBUTE = "section";
 		private const string SITE_ATTRIBUTE = "site";
-		private const string STATES_CONFIG_PATH = "controllerSettings/states";
+		/// <summary>
+		/// The config section name of the settings for states in web.config
+		/// </summary>
+		private const string SECTION_NAME = "states";
 		private const string STATES_CONNECTION = "connection";
 		private const string STATES_DAO = "dao";
 		private const string STATES_SOURCE = "source";
@@ -101,11 +105,11 @@ namespace Triton.Controller.StateMachine
 			//  TODO: check for name from config file -- throw exception if no name?
 			//		string daoClass = config["class"];
 //		NameValueCollection config = ConfigurationManager.GetSection(
-//				"controllerSettings/states") as NameValueCollection;
+//				"triton/states") as NameValueCollection;
 //		string daoClass = config[STATES_DAO];
 //		string connType = config[STATES_CONNECTION];
 			StatesConfigHandler.StatesConfig statesConfig =
-				(StatesConfigHandler.StatesConfig) ConfigurationManager.GetSection(STATES_CONFIG_PATH);
+					(StatesConfigHandler.StatesConfig)ConfigurationManager.GetSection(TritonConfigurationSection.SectionName + "/" + SECTION_NAME);
 
 			IStateMachineStatesDao dao = null;
 			if (statesConfig.DaoConnectionName == null) {
@@ -156,7 +160,7 @@ namespace Triton.Controller.StateMachine
 		{
 			instance = null;
 			LogManager.GetCurrentClassLogger().Info(
-				infoMessage => infoMessage("StateManager reset."));
+					infoMessage => infoMessage("StateManager reset."));
 		}
 	}
 }

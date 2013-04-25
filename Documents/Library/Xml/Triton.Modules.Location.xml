@@ -4,38 +4,20 @@
         <name>Triton.Modules.Location</name>
     </assembly>
     <members>
-        <member name="T:Triton.Location.Logic.GetCountriesAction">
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress">
             <summary>
-            Returns a SearchResult of type Country into the request.
+            Definitions for Fields and Filters of Persisted Address
             </summary>
         </member>
-        <member name="M:Triton.Location.Logic.GetCountriesAction.#ctor">
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Field">
             <summary>
-            Default constructor for GetCountriesAction.
+            Fields for Persisted Address
             </summary>
         </member>
-        <member name="P:Triton.Location.Logic.GetCountriesAction.CountryItemNameOut">
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Filter">
             <summary>
-            Request item name for SearchResult Country output.
+            Filters for Persisted Address
             </summary>
-        </member>
-        <member name="T:Triton.Location.Logic.GetCountriesAction.Events">
-            <summary>
-            Event names to return to the controller.
-            </summary>
-        </member>
-        <member name="T:Triton.Location.Support.Request.Deserialize">
-            <summary>
-            Helper class to take parameters from the request and generate objects to save/update.
-            For use with Triton.Location module.
-            </summary>
-        </member>
-        <member name="M:Triton.Location.Support.Request.Deserialize.CreatePersistedAddress(Triton.Controller.Request.MvcRequest)">
-            <summary>
-            Creates a new <c>PersistedAddress</c> from the request.
-            </summary>
-            <param name="request">Request to create the PersistedAddress from.</param>
-            <returns>A populated PersistedAddress object.</returns>
         </member>
         <member name="T:Triton.Location.Model.States">
             <summary>
@@ -81,6 +63,22 @@
             </summary>
             <returns> The formatted string of the name.
             </returns>
+        </member>
+        <member name="T:Triton.Location.Model.Countries">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Triton.Location.Model.Countries.LoadCountries">
+            <summary>
+            Loads the states from the database and populates singleton
+            </summary>
+        </member>
+        <member name="P:Triton.Location.Model.Countries.Item(System.Int32)">
+            <summary>
+            Indexer to get Country by ID
+            </summary>
+            <param name="id"></param>
         </member>
         <member name="T:Triton.Location.Model.Dao.IPersistedAddressDao">
             <summary>
@@ -131,36 +129,38 @@
             <param name="filter">Filter with the criteria to search</param>
             <returns>SearchResult of PersistedAddress</returns>
         </member>
-        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress">
+        <member name="T:Triton.Location.Logic.GetCountriesAction">
             <summary>
-            Definitions for Fields and Filters of Persisted Address
+            Returns a SearchResult of type Country into the request.
             </summary>
         </member>
-        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Field">
+        <member name="M:Triton.Location.Logic.GetCountriesAction.#ctor">
             <summary>
-            Fields for Persisted Address
+            Default constructor for GetCountriesAction.
             </summary>
         </member>
-        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Filter">
+        <member name="P:Triton.Location.Logic.GetCountriesAction.CountryItemNameOut">
             <summary>
-            Filters for Persisted Address
+            Request item name for SearchResult Country output.
             </summary>
         </member>
-        <member name="T:Triton.Location.Model.Countries">
+        <member name="T:Triton.Location.Logic.GetCountriesAction.Events">
             <summary>
-            
+            Event names to return to the controller.
             </summary>
         </member>
-        <member name="M:Triton.Location.Model.Countries.LoadCountries">
+        <member name="T:Triton.Location.Support.Request.Deserialize">
             <summary>
-            Loads the states from the database and populates singleton
+            Helper class to take parameters from the request and generate objects to save/update.
+            For use with Triton.Location module.
             </summary>
         </member>
-        <member name="P:Triton.Location.Model.Countries.Item(System.Int32)">
+        <member name="M:Triton.Location.Support.Request.Deserialize.CreatePersistedAddress(Triton.Controller.Request.MvcRequest)">
             <summary>
-            Indexer to get Country by ID
+            Creates a new <c>PersistedAddress</c> from the request.
             </summary>
-            <param name="id"></param>
+            <param name="request">Request to create the PersistedAddress from.</param>
+            <returns>A populated PersistedAddress object.</returns>
         </member>
     </members>
 </doc>

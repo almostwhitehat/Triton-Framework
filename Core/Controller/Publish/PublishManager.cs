@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Threading;
 using Common.Logging;
 using Triton.Model.Dao;
+using Triton.Configuration;
 
 namespace Triton.Controller.Publish
 {
@@ -86,7 +87,9 @@ namespace Triton.Controller.Publish
 		/// </summary>
 		public long CheckInterval
 		{
-			get { return this.checkInterval; }
+			get {
+				return this.checkInterval;
+			}
 		}
 
 
@@ -96,14 +99,16 @@ namespace Triton.Controller.Publish
 		/// </summary>
 		public long StoreInterval
 		{
-			get { return this.saveInterval; }
+			get {
+				return this.saveInterval;
+			}
 		}
 
 
 		/// <summary>
 		/// Gets an instance of the <b>PublishManager</b>.
 		/// The <b>PublishManager</b> is an instance of the class identified in the 
-		/// configuration/controllerSettings/publishing section of web.config.
+		/// configuration/triton/publishing section of web.config.
 		/// </summary>
 		/// <returns>An instance of a <b>PublishManager</b>.</returns>
 		internal static PublishManager GetPublishManager()
@@ -121,7 +126,7 @@ namespace Triton.Controller.Publish
 
 						//instance = (PublishManager)System.Activator.CreateInstance(Type.GetType(mgrName));
 						instance = (PublishManager) Activator.CreateInstance(
-						                            	Type.GetType("Triton.Controller.Publish.PublishManager"));
+								Type.GetType("Triton.Controller.Publish.PublishManager"));
 
 						instance.Initialize();
 					}
@@ -218,12 +223,12 @@ namespace Triton.Controller.Publish
 
 			if ((pubRec == null) && addIfNotPresent) {
 				pubRec = new PublishRecord(key,
-				                           context.StartState.Id,
-				                           context.StartEvent,
-				                           context.EndState.Id,
-				                           null,
-				                           null,
-				                           publisher.Name);
+						context.StartState.Id,
+						context.StartEvent,
+						context.EndState.Id,
+						null,
+						null,
+						publisher.Name);
 				this.publishedPages.Add(key, pubRec);
 			}
 
@@ -246,19 +251,23 @@ namespace Triton.Controller.Publish
 			Hashtable publishers = new Hashtable();
 
 #if (PUBLISH_TRACE)
-		MatTimer timer = new MatTimer();
-		timer.Start();
-		Logger.GetLogger(LOGGER).Status("Start CleanUpExpired.");
+			Triton.Utilities.MvcTimer timer = new Triton.Utilities.MvcTimer();
+			timer.Start();
+			LogManager.GetCurrentClassLogger().Debug("Start CleanUpExpired.");
 #endif
 			this.publishedPages.Keys.CopyTo(keys, 0);
 			foreach (string key in keys) {
 				try {
 					PublishRecord pubRec = this.publishedPages[key];
 					bool remove = false;
-					//  skip pages that are in the process of being published
+							//  skip pages that are in the process of being published
 					if (!pubRec.Publishing) {
 						try {
-							Publisher publisher = (Publisher) publishers[pubRec.PublisherName];
+
+							Publisher publisher = null;
+							if (publishers.ContainsKey(pubRec.PublisherName)) {
+								publisher = (Publisher)publishers[pubRec.PublisherName];
+							}
 							if (publisher == null) {
 								publisher = Publisher.GetPublisher(pubRec.PublisherName);
 								publishers[pubRec.PublisherName] = publisher;
@@ -266,26 +275,27 @@ namespace Triton.Controller.Publish
 
 							remove = publisher.IsExpired(pubRec);
 
-							//  if something goes wrong, assume is a bogus record and remove it
+								//  if something goes wrong, assume is a bogus record and remove it
 						} catch (Exception e) {
 							remove = true;
+							LogManager.GetCurrentClassLogger().Error(msg => msg("Error occurred checking page expiration: key= {0}.", key));
 						}
 
 						if (remove) {
 #if (PUBLISH_TRACE)
-						Logger.GetLogger(LOGGER).Status(string.Format(" Removing: {0} [hits: {1}]", key, pubRec.HitCount));
+							LogManager.GetCurrentClassLogger().DebugFormat(" Removing: {0} [hits: {1}, published: {2}]", key, pubRec.HitCount, pubRec.LastPublished);
 #endif
 							this.publishedPages.Remove(key);
 						}
 					}
 				} catch (Exception e) {
 					LogManager.GetCurrentClassLogger().Error(
-						errorMessage => errorMessage("PublishManager.CleanUpExpired: key= {0} : {1}", key, e));
+							errorMessage => errorMessage("PublishManager.CleanUpExpired: key= {0} : {1}", key, e));
 				}
 			}
 #if (PUBLISH_TRACE)
-		timer.Stop();
-		Logger.GetLogger(LOGGER).Status("End CleanUpExpired: time= " + timer.Time + ".  Remaining:  " + publishedPages.Count);
+			timer.Stop();
+			LogManager.GetCurrentClassLogger().Debug("End CleanUpExpired: time= " + timer.Time + ".  Remaining:  " + publishedPages.Count);
 #endif
 		}
 
@@ -301,7 +311,7 @@ namespace Triton.Controller.Publish
 			//  get the intervals for checking the published content list for expired
 			//  content and for saving the list to persistant storage
 			PublishConfigSection config = ConfigurationManager.GetSection(
-			                              	"controllerSettings/publishing") as PublishConfigSection;
+					TritonConfigurationSection.SectionName + "/publishing") as PublishConfigSection;
 
 			if (config.Publish) {
 				try {
@@ -388,7 +398,7 @@ namespace Triton.Controller.Publish
 		private static IPublishDao GetPublishDao()
 		{
 			//PublishConfigSection config = ConfigurationManager.GetSection(
-			//                              	"controllerSettings/publishing") as PublishConfigSection;
+			//                              	"triton/publishing") as PublishConfigSection;
 			//string daoClass = config.Settings[DAO_SETTING].Value;
 
 			IPublishDao dao = DaoFactory.GetDao<IPublishDao>();

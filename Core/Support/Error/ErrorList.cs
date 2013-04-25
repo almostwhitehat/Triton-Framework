@@ -200,24 +200,31 @@ namespace Triton.Support.Error
 */
 
 
-		public bool hasError(long id)
+		public bool hasError(
+			long id)
 		{
 			return this.errNumbers.Contains(id);
 		}
 
 
-		public bool hasError(String formFieldName)
+		public bool hasError(
+			String formFieldName)
 		{
 			return this.errFormFields.Contains(formFieldName);
 		}
 
 
-		public bool hasError(long id, string formFieldName)
+		public bool hasError(
+			long id,
+			string formFieldName)
 		{
 			return this.getOccurrences(id, formFieldName) > 0;
 		}
 
-		public int getOccurrences(long id, string formFieldName)
+
+		public int getOccurrences(
+			long id,
+			string formFieldName)
 		{
 			Error[] errors = (Error[])this.theList.ToArray(typeof(Error));
 

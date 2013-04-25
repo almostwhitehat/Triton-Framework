@@ -3,6 +3,7 @@ using System.Linq;
 using System.Configuration;
 using System.Collections.Generic;
 using Common.Logging;
+using Triton.Configuration;
 
 namespace Triton.Controller.Publish {
 
@@ -229,7 +230,7 @@ public class Publisher : IDisposable
 		Publisher publisher = null;
 
 		PublishConfigSection config = ConfigurationManager.GetSection(
-				"controllerSettings/publishing") as PublishConfigSection;
+				TritonConfigurationSection.SectionName + "/publishing") as PublishConfigSection;
 
 		if (config.Publish) {
 					//  make sure we found the publishing section and publisher definition

@@ -4,11 +4,6 @@
         <name>Triton.Extensions.NHibernate</name>
     </assembly>
     <members>
-        <member name="M:Triton.NHibernate.Model.NHibernateSessionProvider.#ctor">
-            <summary>
-            Initializes a new instance of the NHibernateSessionProvider class.
-            </summary>
-        </member>
         <member name="M:Triton.NHibernate.Model.Dao.NHibernateBaseDao`1.Get(`0)">
             <summary>
             Get a collection of objects that match the specified example.
@@ -40,6 +35,11 @@
             Delete the object.
             </summary>
             <param name="obj">object to delete.</param>
+        </member>
+        <member name="M:Triton.NHibernate.Model.NHibernateSessionProvider.#ctor">
+            <summary>
+            Initializes a new instance of the NHibernateSessionProvider class.
+            </summary>
         </member>
     </members>
 </doc>

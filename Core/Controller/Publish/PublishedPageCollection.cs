@@ -32,7 +32,9 @@ namespace Triton.Controller.Publish
 		/// <summary>
 		/// Constructs an empty <b>PublishedPageCollection</b>.
 		/// </summary>
-		internal PublishedPageCollection() {}
+		internal PublishedPageCollection()
+		{
+		}
 
 
 		/// <summary>
@@ -61,14 +63,15 @@ namespace Triton.Controller.Publish
 					string key = pg.Attributes["key"].Value;
 					string evnt = pg.Attributes["event"].Value;
 					string path = pg.Attributes["path"].Value;
+					string publisher = pg.Attributes["publisher"].Value;
 					int hits = int.Parse(pg.Attributes["hits"].Value);
 					DateTime? publishTime = DateTime.Parse(pg.Attributes["lastPublished"].Value);
 
 					PublishRecord pageRec = new PublishRecord(
-							key, startState, evnt, publishedState, path, publishTime, null);
+							key, startState, evnt, publishedState, path, publishTime, publisher);
 					pageRec.HitCount = hits;
 
-					this.Add(key, pageRec);
+					Add(key, pageRec);
 				}
 			}
 		}
@@ -80,7 +83,9 @@ namespace Triton.Controller.Publish
 		internal PublishRecord this[
 			string key]
 		{
-			get { return (PublishRecord)this.pageHash[key]; }
+			get {
+				return (PublishRecord)this.pageHash[key];
+			}
 		}
 
 
@@ -89,7 +94,9 @@ namespace Triton.Controller.Publish
 		/// </summary>
 		internal int Count
 		{
-			get { return this.pageHash.Count; }
+			get {
+				return this.pageHash.Count;
+			}
 		}
 
 
@@ -98,7 +105,9 @@ namespace Triton.Controller.Publish
 		/// </summary>
 		internal ICollection Keys
 		{
-			get { return this.pageHash.Keys; }
+			get {
+				return this.pageHash.Keys;
+			}
 		}
 
 
@@ -112,7 +121,9 @@ namespace Triton.Controller.Publish
 			string key,
 			PublishRecord pubRec)
 		{
-			this.pageHash.Add(key, pubRec);
+			if (!pageHash.ContainsKey(key)) {
+				pageHash.Add(key, pubRec);
+			}
 		}
 
 
@@ -201,10 +212,14 @@ namespace Triton.Controller.Publish
 						attr.Value = pr.HitCount.ToString();
 						pg.Attributes.Append(attr);
 
+						attr = doc.CreateAttribute("publisher");
+						attr.Value = pr.PublisherName;
+						pg.Attributes.Append(attr);
+
 						publishedPagesNode.AppendChild(pg);
 					} catch (Exception e) {
 						LogManager.GetCurrentClassLogger().Error(
-							errorMessage => errorMessage("PublishedPageCollection.ToXml [{0}] : {1}", pr.Key, e));
+								errorMessage => errorMessage("PublishedPageCollection.ToXml [{0}] : {1}", pr.Key, e));
 					}
 				}
 			}

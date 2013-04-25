@@ -4,10 +4,78 @@
         <name>Triton.Modules.Membership</name>
     </assembly>
     <members>
-        <member name="M:Triton.Membership.Support.EncryptionManager.#ctor">
+        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.ID">
             <summary>
-            Temporary Encryption Manager.
+            Deprecated. Please use the Field or Filter parameter names.
             </summary>
+        </member>
+        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.PASSWORD">
+            <summary>
+            Deprecated. Please use the Field or Filter parameter names.
+            </summary>
+        </member>
+        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.USERNAME">
+            <summary>
+            Deprecated. Please use the Field or Filter parameter names.
+            </summary>
+        </member>
+        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.ATTRIBUTE_VALUE">
+            <summary>
+            Deprecated. Please use the Field or Filter parameter names.
+            </summary>
+        </member>
+        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.AUTHENTICATED_ID">
+            <summary>
+            Deprecated. Please use the Field or Filter parameter names.
+            </summary>
+        </member>
+        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.ATTRIBUTE_IS_CSV">
+            <summary>
+            Deprecated. Please use the Field or Filter parameter names.
+            </summary>
+        </member>
+        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.ProcessValue(System.String,System.String)">
+            <summary>
+            Updates the value of the attribute. Toggles the value if attribute is of type CSV.
+            </summary>
+            <param name="oldValue"></param>
+            <param name="newValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.CreateCsvValue(System.Collections.Generic.List{System.String})">
+            <summary>
+            Compile the delineated value of the attribute
+            </summary>
+            <param name="oldValues"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Triton.Membership.Model.Dao.NhAccountStatusDao">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Triton.Membership.Model.Name.ToString(System.String)">
+            <summary>
+            Formats the Name.
+            the default format is prefix{p} first{f} middle{m} last{l} suffix{s}.
+            </summary>
+            <param name="format">
+            the following formatting directives can be used to create a different result
+            example ToString("{l}, {f} {m}") ==&gt; Smith, Jim R.
+            <b>{p}</b> the Name.PrefixCode value
+            <b>{f}</b> the Name.First value
+            <b>{m}</b> the Name.Middle value
+            <b>{l}</b> the Name.Last value
+            <b>{s}</b> the Name.SuffixCode value
+            </param>
+            <returns>
+            The formatted string of the name.
+            </returns>
+        </member>
+        <member name="M:Triton.Membership.Model.Name.ToString">
+            <summary> Formats the Name in the default format (prefix first middle last suffix).
+            </summary>
+            <returns> The formatted string of the name.
+            </returns>
         </member>
         <member name="T:Triton.Membership.Model.Dao.IAttributeTypeDao">
             <summary>
@@ -65,79 +133,21 @@
             <param name="filter">Filter with the criteria to search</param>
             <returns>SearchResult of AttributeTypes</returns>
         </member>
-        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.String)">
-            <summary>
-            Returns the value of the account attribute with the
-            given attribute code associated with the account.
-            </summary>
-            <param name="attributeCode">The code of the attribute to get the value for.</param>
-            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
-        </member>
-        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.Int32)">
-            <summary>
-            Returns the value of the account attribute with the
-            given attribute ID associated with the account.
-            </summary>
-            <param name="attributeId">The ID of the attribute to get the value for.</param>
-            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
-        </member>
-        <member name="M:Triton.Membership.Model.Name.ToString(System.String)">
-            <summary>
-            Formats the Name.
-            the default format is prefix{p} first{f} middle{m} last{l} suffix{s}.
-            </summary>
-            <param name="format">
-            the following formatting directives can be used to create a different result
-            example ToString("{l}, {f} {m}") ==&gt; Smith, Jim R.
-            <b>{p}</b> the Name.PrefixCode value
-            <b>{f}</b> the Name.First value
-            <b>{m}</b> the Name.Middle value
-            <b>{l}</b> the Name.Last value
-            <b>{s}</b> the Name.SuffixCode value
-            </param>
-            <returns>
-            The formatted string of the name.
-            </returns>
-        </member>
-        <member name="M:Triton.Membership.Model.Name.ToString">
-            <summary> Formats the Name in the default format (prefix first middle last suffix).
-            </summary>
-            <returns> The formatted string of the name.
-            </returns>
-        </member>
-        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.ID">
-            <summary>
-            Deprecated. Please use the Field or Filter parameter names.
-            </summary>
-        </member>
-        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.PASSWORD">
-            <summary>
-            Deprecated. Please use the Field or Filter parameter names.
-            </summary>
-        </member>
-        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.USERNAME">
-            <summary>
-            Deprecated. Please use the Field or Filter parameter names.
-            </summary>
-        </member>
-        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.ATTRIBUTE_VALUE">
-            <summary>
-            Deprecated. Please use the Field or Filter parameter names.
-            </summary>
-        </member>
-        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.AUTHENTICATED_ID">
-            <summary>
-            Deprecated. Please use the Field or Filter parameter names.
-            </summary>
-        </member>
-        <member name="F:Triton.Membership.Support.Request.ParameterNames.Account.ATTRIBUTE_IS_CSV">
-            <summary>
-            Deprecated. Please use the Field or Filter parameter names.
-            </summary>
-        </member>
         <member name="F:Triton.Membership.Model.Dao.Support.FilterExtensions.ACCOUNT_ATTRIBUTE_RELATIONS">
             <summary>
             List of valid relations for use with account attribute criteria for AccountFilter.Fill.
+            </summary>
+        </member>
+        <member name="T:Triton.Membership.Logic.IsMemberOfAction">
+            <remarks>
+            Returned events:<br/>
+            <b>yes</b> - the account/user with the given username is logged in.<br/>
+            <b>no</b> - the account/user with the given username is not logged in.<br/>
+            </remarks>
+        </member>
+        <member name="P:Triton.Membership.Logic.IsMemberOfAction.Roles">
+            <summary>
+            Gets or sets the role names that are to be used to test against.
             </summary>
         </member>
         <member name="T:Triton.Membership.Logic.GetUserAttributeValueAction">
@@ -176,27 +186,89 @@
             Request Param name for the attribute value to be placed into the Request.Params collection.
             </summary>
         </member>
-        <member name="T:Triton.Membership.Logic.IsMemberOfAction">
-            <remarks>
-            Returned events:<br/>
-            <b>yes</b> - the account/user with the given username is logged in.<br/>
-            <b>no</b> - the account/user with the given username is not logged in.<br/>
-            </remarks>
-        </member>
-        <member name="P:Triton.Membership.Logic.IsMemberOfAction.Roles">
-            <summary>
-            Gets or sets the role names that are to be used to test against.
-            </summary>
-        </member>
         <member name="T:Triton.Membership.Model.Role">
             <summary>
             
             </summary>
         </member>
+        <member name="T:Triton.Membership.Support.Request.Deserialize">
+            <summary>
+            Helper class to take parameters from the request and generate objects to save/update.
+            For use with Triton.Membership module.
+            </summary>
+        </member>
+        <member name="M:Triton.Membership.Support.Request.Deserialize.CreateName(Triton.Controller.Request.MvcRequest)">
+            <summary>
+            Creates a new <c>Name</c> from the request.
+            </summary>
+            <param name="request">Request to create the Name from.</param>
+            <returns>A populated Name object.</returns>
+        </member>
+        <member name="M:Triton.Membership.Support.Request.Deserialize.Populate(Triton.Controller.Request.MvcRequest,Triton.Membership.Model.Name)">
+            <summary>
+            Populates the <c>Name</c> with the values from the request.
+            </summary>
+            <param name="request">Request to populate the Name from.</param>
+            <param name="name">Name to populate</param>
+            <returns>Populated from the request Name object.</returns>
+        </member>
+        <member name="M:Triton.Membership.Support.Request.Deserialize.CreateRole(Triton.Controller.Request.MvcRequest)">
+            <summary>
+            Creates a new <c>Role</c> from the request.
+            </summary>
+            <param name="request">Request to create the Role from.</param>
+            <returns>A populated Role object.</returns>
+        </member>
+        <member name="M:Triton.Membership.Support.Request.Deserialize.Populate(Triton.Controller.Request.MvcRequest,Triton.Membership.Model.Role)">
+            <summary>
+            Populates the <c>Role</c> with the values from the request.
+            </summary>
+            <param name="request">Request to populate the Role from.</param>
+            <param name="role">Role to populate</param>
+            <returns>Populated from the request Role object.</returns>
+        </member>
+        <member name="M:Triton.Membership.Support.Request.Deserialize.CreateAttributeType(Triton.Controller.Request.MvcRequest)">
+            <summary>
+            Creates a new <c>AttributeType</c> from the request.
+            </summary>
+            <param name="request">Request to create the AttributeType from.</param>
+            <returns>A populated AttributeType object.</returns>
+        </member>
+        <member name="M:Triton.Membership.Support.Request.Deserialize.Populate(Triton.Controller.Request.MvcRequest,Triton.Membership.Model.AttributeType)">
+            <summary>
+            Populates the <c>AttributeType</c> with the values from the request.
+            </summary>
+            <param name="request">Request to populate the AttributeType from.</param>
+            <param name="attributeType">AttributeType to populate</param>
+            <returns>Populated from the request AttributeType object.</returns>
+        </member>
+        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.String)">
+            <summary>
+            Returns the value of the account attribute with the
+            given attribute code associated with the account.
+            </summary>
+            <param name="attributeCode">The code of the attribute to get the value for.</param>
+            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
+        </member>
+        <member name="M:Triton.Membership.Model.Account.GetAttributeValue(System.Int32)">
+            <summary>
+            Returns the value of the account attribute with the
+            given attribute ID associated with the account.
+            </summary>
+            <param name="attributeId">The ID of the attribute to get the value for.</param>
+            <returns>The value of the specified attribute, or <c>null</c> if the attribute is not found.</returns>
+        </member>
         <member name="P:Triton.Membership.Logic.CreateAccountAction.AccountItemNameOut">
             <summary>
             Overloaded AccountsItemNameOut so that the state's attribute can match the action "Account".
             </summary>
+        </member>
+        <member name="T:Triton.Membership.Logic.IsLoggedInAction">
+            <remarks>
+            Returned events:<br/>
+            <b>yes</b> - the account/user with the given username is logged in.<br/>
+            <b>no</b> - the account/user with the given username is not logged in.<br/>
+            </remarks>
         </member>
         <member name="T:Triton.Membership.Logic.GetAccountIdAction">
             <summary>
@@ -218,15 +290,9 @@
             String parameter name to place the account id in the request.
             </summary>
         </member>
-        <member name="T:Triton.Membership.Logic.IsLoggedInAction">
-            <remarks>
-            Returned events:<br/>
-            <b>yes</b> - the account/user with the given username is logged in.<br/>
-            <b>no</b> - the account/user with the given username is not logged in.<br/>
-            </remarks>
-        </member>
-        <member name="T:Triton.Membership.Model.Dao.NhAccountStatusDao">
+        <member name="M:Triton.Membership.Support.EncryptionManager.#ctor">
             <summary>
+            Temporary Encryption Manager.
             </summary>
         </member>
         <member name="T:Triton.Membership.Model.Dao.AccountFilter">
@@ -285,72 +351,6 @@
             <summary>
             Defines filtering criteria for account attributes.
             </summary>
-        </member>
-        <member name="T:Triton.Membership.Support.Request.Deserialize">
-            <summary>
-            Helper class to take parameters from the request and generate objects to save/update.
-            For use with Triton.Membership module.
-            </summary>
-        </member>
-        <member name="M:Triton.Membership.Support.Request.Deserialize.CreateName(Triton.Controller.Request.MvcRequest)">
-            <summary>
-            Creates a new <c>Name</c> from the request.
-            </summary>
-            <param name="request">Request to create the Name from.</param>
-            <returns>A populated Name object.</returns>
-        </member>
-        <member name="M:Triton.Membership.Support.Request.Deserialize.Populate(Triton.Controller.Request.MvcRequest,Triton.Membership.Model.Name)">
-            <summary>
-            Populates the <c>Name</c> with the values from the request.
-            </summary>
-            <param name="request">Request to populate the Name from.</param>
-            <param name="name">Name to populate</param>
-            <returns>Populated from the request Name object.</returns>
-        </member>
-        <member name="M:Triton.Membership.Support.Request.Deserialize.CreateRole(Triton.Controller.Request.MvcRequest)">
-            <summary>
-            Creates a new <c>Role</c> from the request.
-            </summary>
-            <param name="request">Request to create the Role from.</param>
-            <returns>A populated Role object.</returns>
-        </member>
-        <member name="M:Triton.Membership.Support.Request.Deserialize.Populate(Triton.Controller.Request.MvcRequest,Triton.Membership.Model.Role)">
-            <summary>
-            Populates the <c>Role</c> with the values from the request.
-            </summary>
-            <param name="request">Request to populate the Role from.</param>
-            <param name="role">Role to populate</param>
-            <returns>Populated from the request Role object.</returns>
-        </member>
-        <member name="M:Triton.Membership.Support.Request.Deserialize.CreateAttributeType(Triton.Controller.Request.MvcRequest)">
-            <summary>
-            Creates a new <c>AttributeType</c> from the request.
-            </summary>
-            <param name="request">Request to create the AttributeType from.</param>
-            <returns>A populated AttributeType object.</returns>
-        </member>
-        <member name="M:Triton.Membership.Support.Request.Deserialize.Populate(Triton.Controller.Request.MvcRequest,Triton.Membership.Model.AttributeType)">
-            <summary>
-            Populates the <c>AttributeType</c> with the values from the request.
-            </summary>
-            <param name="request">Request to populate the AttributeType from.</param>
-            <param name="attributeType">AttributeType to populate</param>
-            <returns>Populated from the request AttributeType object.</returns>
-        </member>
-        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.ProcessValue(System.String,System.String)">
-            <summary>
-            Updates the value of the attribute. Toggles the value if attribute is of type CSV.
-            </summary>
-            <param name="oldValue"></param>
-            <param name="newValue"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Triton.Membership.Logic.SaveAccountAttributeValueAction.CreateCsvValue(System.Collections.Generic.List{System.String})">
-            <summary>
-            Compile the delineated value of the attribute
-            </summary>
-            <param name="oldValues"></param>
-            <returns></returns>
         </member>
     </members>
 </doc>

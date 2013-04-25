@@ -42,7 +42,7 @@ namespace Triton.Model.Dao
 		public static IGenericDao GetGenericDao(
 			string connType)
 		{
-			NameValueCollection config = (NameValueCollection) ConfigurationManager.GetSection("daoSettings/IGenericDao");
+			NameValueCollection config = (NameValueCollection)ConfigurationManager.GetSection("daoSettings/IGenericDao");
 			string daoClass = config["class"];
 
 			IGenericDao dao = (IGenericDao) Activator.CreateInstance(Type.GetType(daoClass), new object[]{connType});

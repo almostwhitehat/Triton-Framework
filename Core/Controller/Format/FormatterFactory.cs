@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using Common.Logging;
 using Triton.Controller.Request;
+using Triton.Configuration;
 
 namespace Triton.Controller.Format
 {
@@ -23,9 +24,9 @@ namespace Triton.Controller.Format
 	public class FormatterFactory
 	{
 		/// <summary>
-		/// The "path" of the settings for Formatters in web.config
+		/// The config section name of the settings for formatters in web.config
 		/// </summary>
-		private const string CONFIG_PATH = "controllerSettings/formatters";
+		private const string SECTION_NAME = "formatters";
 
 
 		/// <summary>
@@ -43,7 +44,7 @@ namespace Triton.Controller.Format
 
 			try {
 				//  get the namespace and assembly the actions are in
-				NameValueCollection config = (NameValueCollection) ConfigurationSettings.GetConfig(CONFIG_PATH);
+				NameValueCollection config = (NameValueCollection)ConfigurationManager.GetSection(TritonConfigurationSection.SectionName + "/" + SECTION_NAME);
 				string assemblyName = config["assembly"];
 				string nameSpace = config["namespace"];
 

@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Diagnostics;
 using Common.Logging;
 using Triton.Controller.Publish;
+using Triton.Configuration;
 using Triton.Utilities.Db;
 
 namespace Triton.Model.Dao {
@@ -20,7 +21,7 @@ namespace Triton.Model.Dao {
 public class MsPublishDao : IPublishDao
 {
 	/// <summary>
-	/// The name of the configuration setting within controllerSettings/publishing/settings for the
+	/// The name of the configuration setting within triton/publishing/settings for the
 	/// name of the database connection.
 	/// </summary>
 	private const string				CONNECTION_SETTING	= "publishDaoConnection";
@@ -51,16 +52,16 @@ public class MsPublishDao : IPublishDao
 		SqlCommand		cmd		= null;
 		SqlDataReader	dr		= null;
 		XmlDocument		xml		= new XmlDocument();
-//#if (PUBLISH_TRACE)
+#if (PUBLISH_TRACE)
 		Stopwatch stopWatch = new Stopwatch();
 		stopWatch.Start();
-//#endif
+#endif
 
 		try {
 					//  set up the connection and command
 //			conn = (SqlConnection)ConnectionManager.GetConnection("PublishDAO", connType);
 			PublishConfigSection config = ConfigurationManager.GetSection(
-					"controllerSettings/publishing") as PublishConfigSection;
+					TritonConfigurationSection.SectionName + "/publishing") as PublishConfigSection;
 			string connName = config.Settings[CONNECTION_SETTING].Value;
 			conn = new SqlConnection(ConfigurationManager.ConnectionStrings[connName].ConnectionString);
 
@@ -68,7 +69,7 @@ public class MsPublishDao : IPublishDao
 			cmd.Connection = conn;
 			conn.Open();
 			cmd.CommandText = string.Format("select start_state_id, published_state_id, [key],"
-					+ " event, published_path, last_published_time, hits, server from {0} (nolock)"
+					+ " event, published_path, last_published_time, publisher, hits, server from {0} (nolock)"
 					+ " where server = '{1}'", TABLE_NAME, Environment.MachineName);
 					//  execute the command
 			dr = cmd.ExecuteReader();
@@ -109,6 +110,10 @@ public class MsPublishDao : IPublishDao
 				attr.Value = dr["hits"].ToString();
 				pg.Attributes.Append(attr);
 
+				attr = xml.CreateAttribute("publisher");
+				attr.Value = dr["publisher"].ToString();
+				pg.Attributes.Append(attr);
+
 				publishedPagesNode.AppendChild(pg);
 			}
 
@@ -116,10 +121,10 @@ public class MsPublishDao : IPublishDao
 			LogManager.GetCurrentClassLogger().Error("GetPublishInfo", e);
 
 		} finally {
-//#if (PUBLISH_TRACE)
+#if (PUBLISH_TRACE)
 			stopWatch.Stop();
 			LogManager.GetCurrentClassLogger().Trace(string.Format("GetPublishInfo time (for {0}) = {1}.", Environment.MachineName, stopWatch.Elapsed));
-//#endif
+#endif
 					//  close everything
 			DbUtilities.Close(conn, cmd, dr);
 		}
@@ -141,14 +146,14 @@ public class MsPublishDao : IPublishDao
 		SqlTransaction	trans	= null;
 		XmlDocument		doc		= pageInfo.ToXml();
 
-//#if (PUBLISH_TRACE)
+#if (PUBLISH_TRACE)
 		Stopwatch stopWatch = new Stopwatch();
 		stopWatch.Start();
-//#endif
+#endif
 		try {
 //			conn = (SqlConnection)ConnectionManager.GetConnection("PublishDAO", connType);
 			PublishConfigSection config = ConfigurationManager.GetSection(
-					"controllerSettings/publishing") as PublishConfigSection;
+					TritonConfigurationSection.SectionName + "/publishing") as PublishConfigSection;
 			string connName = config.Settings[CONNECTION_SETTING].Value;
 			conn = new SqlConnection(ConfigurationManager.ConnectionStrings[connName].ConnectionString);
 
@@ -156,11 +161,11 @@ public class MsPublishDao : IPublishDao
 			cmd.Connection = conn;
 			conn.Open();
 
-//#if (PUBLISH_TRACE)
+#if (PUBLISH_TRACE)
 			cmd.CommandText = string.Format("select count(1) from {0} where server = '{1}'",
 					TABLE_NAME, Environment.MachineName);
 			int beforeCnt = (int)cmd.ExecuteScalar();
-//#endif
+#endif
 					//  set up the transaction
 			trans = conn.BeginTransaction("SavePublishInfo");
 			cmd.Transaction = trans;
@@ -168,6 +173,9 @@ public class MsPublishDao : IPublishDao
 					//  ======  remove entries for this server from the publish table  =====
 			cmd.CommandText = string.Format("delete from {0} where server = '{1}'", TABLE_NAME, Environment.MachineName);
 			int rows = cmd.ExecuteNonQuery();
+#if (PUBLISH_TRACE)
+			LogManager.GetCurrentClassLogger().DebugFormat("Deleted {0} records from {1} for server {2}.", rows, TABLE_NAME, Environment.MachineName);
+#endif
 
 					//  get the list of pages to be written
 			XmlNodeList pageNodes = doc.DocumentElement.SelectNodes("Page");
@@ -176,8 +184,8 @@ public class MsPublishDao : IPublishDao
 					//  to save
 			if (pageNodes.Count > 0) {
 				cmd.CommandText = "insert into " + TABLE_NAME
-						+ " (start_state_id, published_state_id, [key], event, published_path, last_published_time, hits, server)"
-						+ " values (@start_state_id, @published_state_id, @key, @event, @published_path, @last_published_time, @hits, @server)";
+						+ " (start_state_id, published_state_id, [key], event, published_path, last_published_time, publisher, hits, server)"
+						+ " values (@start_state_id, @published_state_id, @key, @event, @published_path, @last_published_time, @publisher, @hits, @server)";
 				cmd.Parameters.Add("@start_state_id", SqlDbType.Int);
 				cmd.Parameters.Add("@published_state_id", SqlDbType.Int);
 						// TODO: find better way than hard-coded field lengths
@@ -187,6 +195,7 @@ public class MsPublishDao : IPublishDao
 				cmd.Parameters.Add("@last_published_time", SqlDbType.DateTime);
 				cmd.Parameters.Add("@hits", SqlDbType.Int);
 				cmd.Parameters.Add("@server", SqlDbType.NVarChar, 30);
+				cmd.Parameters.Add("@publisher", SqlDbType.NVarChar, 200);
 
 				cmd.Prepare();
 
@@ -203,6 +212,7 @@ public class MsPublishDao : IPublishDao
 						cmd.Parameters["@published_path"].Value = page.Attributes["path"].Value;
 						cmd.Parameters["@last_published_time"].Value = page.Attributes["lastPublished"].Value;
 						cmd.Parameters["@hits"].Value = int.Parse(page.Attributes["hits"].Value);
+						cmd.Parameters["@publisher"].Value = page.Attributes["publisher"].Value;
 
 						cmd.ExecuteNonQuery();
 					} catch (Exception e) {
@@ -219,11 +229,11 @@ public class MsPublishDao : IPublishDao
 			trans.Commit();
 			cmd.Transaction = null;
 
-//#if (PUBLISH_TRACE)
+#if (PUBLISH_TRACE)
 			cmd.CommandText = string.Format("select count(1) from {0} where server = '{1}'", TABLE_NAME, Environment.MachineName);
 			int afterCnt = (int)cmd.ExecuteScalar();
 			LogManager.GetCurrentClassLogger().Trace(string.Format("SavePublishInfo - {0}:  before: {1}, after {2}.", Environment.MachineName, beforeCnt, afterCnt));
-//#endif
+#endif
 
 		} catch (Exception e) {
 			if (trans != null) {
@@ -232,10 +242,10 @@ public class MsPublishDao : IPublishDao
 			LogManager.GetCurrentClassLogger().Error("SavePublishInfo", e);
 
 		} finally {
-//#if (PUBLISH_TRACE)
+#if (PUBLISH_TRACE)
 			stopWatch.Stop();
 			LogManager.GetCurrentClassLogger().Trace(string.Format("SavePublishInfo time (for {0}) = {1}.", Environment.MachineName, stopWatch.Elapsed));
-//#endif
+#endif
 					//  close everything
 			DbUtilities.Close(conn, cmd, null);
 		}

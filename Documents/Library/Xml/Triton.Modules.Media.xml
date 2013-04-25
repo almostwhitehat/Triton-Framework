@@ -33,6 +33,9 @@
             <param name="suffix"></param>
             <returns></returns>
         </member>
+        <member name="P:Triton.Media.Model.FileRecord.Path">
+            Pending further investigation this will be much too inefficient for regular use.
+        </member>
         <member name="T:Triton.Media.Model.Dao.NhMediaDao">
             <summary>
             Media DAO Class
@@ -68,9 +71,6 @@
             <param name="maxHeight"></param>
             <returns></returns>
             <remarks>http://absolutecobblers.blogspot.com/2008/02/aspnet-image-upload-and-resize-in-c-net.html</remarks>
-        </member>
-        <member name="P:Triton.Media.Model.FileRecord.Path">
-            Pending further investigation this will be much too inefficient for regular use.
         </member>
         <member name="T:Triton.Media.Model.Dao.Support.FilterExtensions">
             <summary>

@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.IO;
 using Common.Logging;
+using Triton.Configuration;
 using Triton.Controller.Publish;
 using Triton.Controller.StateMachine;
 using Triton.Support.Request;
@@ -194,11 +195,11 @@ public class HtmlContentProvider : ContentProvider
 		if (this.publisher == null) {
 					//  get the settings from config file
 			ControllerConfigSection config = ConfigurationManager.GetSection(
-					"controllerSettings/content") as ControllerConfigSection;
+					TritonConfigurationSection.SectionName + "/content") as ControllerConfigSection;
 
 					//  make sure we have the proper config info
 			if (config == null) {
-				throw new ConfigurationErrorsException("Load of controllerSettings/content config section failed.");
+				throw new ConfigurationErrorsException("Load of triton/content config section failed.");
 			}
 			if (config.ContentProviders[name] == null) {
 				throw new ConfigurationErrorsException(

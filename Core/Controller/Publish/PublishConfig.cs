@@ -60,7 +60,7 @@ public class PublishConfigSection : ConfigurationSection
 
 
 /// <summary>
-/// A ConfigurationElement for the elements in controllerSettings/publishing/settings.
+/// A ConfigurationElement for the elements in triton/publishing/settings.
 /// </summary>
 public class SettingsElement : ConfigurationElement
 {
@@ -101,7 +101,7 @@ public class SettingsElement : ConfigurationElement
 
 
 /// <summary>
-/// A ConfigurationElement for the elements in controllerSettings/publishing/publishers.
+/// A ConfigurationElement for the elements in triton/publishing/publishers.
 /// </summary>
 public class PublisherElement : ConfigurationElement
 {
@@ -304,7 +304,7 @@ public class PublisherElementCollection : ConfigurationElementCollection
 
 
 /// <summary>
-/// A ConfigurationElement for the elements in controllerSettings/publishing/publishers.
+/// A ConfigurationElement for the elements in triton/publishing/publishers.
 /// </summary>
 public class PublisherRule : ConfigurationElement
 {

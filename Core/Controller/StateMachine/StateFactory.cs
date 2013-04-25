@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using Triton.Utilities.Reflection;
+using Triton.Configuration;
 
 namespace Triton.Controller.StateMachine
 {
@@ -21,7 +22,10 @@ namespace Triton.Controller.StateMachine
 	public class StateFactory
 	{
 		private const string	NAME_ATTRIBUTE = "name";
-		private const string	STATES_CONFIG_PATH = "controllerSettings/states";
+		/// <summary>
+		/// The config section name of the settings for states in web.config
+		/// </summary>
+		private const string	SECTION_NAME = "states";
 		private const char		PREREQUISITE_VALUES_DELIMITOR = '|';
 		private const char		PREREQUISITE_PARTS_DELIMITOR = ',';
 		private const int		PREREQUISITE_PART_STATE_ID = 0;
@@ -53,7 +57,7 @@ namespace Triton.Controller.StateMachine
 			NameValueCollection attributes)
 		{
 			StatesConfigHandler.StatesConfig statesConfig =
-					(StatesConfigHandler.StatesConfig)ConfigurationManager.GetSection(STATES_CONFIG_PATH);
+					(StatesConfigHandler.StatesConfig)ConfigurationManager.GetSection(TritonConfigurationSection.SectionName + "/" + SECTION_NAME);
 
 			string typeName = (string)statesConfig.StateTypes[stateType];
 

@@ -4,38 +4,6 @@
         <name>Triton.Extensions.Web</name>
     </assembly>
     <members>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-        </member>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            You set the section name, but site is automaticaly set.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-            <param name="section"></param>
-        </member>
-        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String,System.String)">
-            <summary>
-            Sets the master page according to the file name (without the extension) argument.
-            Specify the section name and site.
-            This must be called in the Page_PreInit override method at the child masterpage level.
-            </summary>
-            <param name="masterPageName"></param>
-            <param name="section"></param>
-            <param name="site"></param>
-        </member>
-        <member name="P:Triton.Web.View.WebMasterPage.MasterPageSection">
-            <summary>
-            Gets the masterpage section name, since the masterpage could be in a different section.
-            </summary>
-        </member>
         <member name="M:Triton.Web.View.Controls.BaseControl.GetPath(Triton.Web.View.Controls.BaseControl.PathType,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
             <summary>
             Standard way of creating file paths in the Framework 
@@ -51,16 +19,6 @@
         <member name="T:Triton.Web.View.Controls.BaseControl.PathType">
             <summary>
             Path Type of the control.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.Img">
-            <summary>
-            Renders an image tag.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.ImgBase">
-            <summary>
-            Renders an image-based tag using a combination of the page's xml and tag properties from the page.
             </summary>
         </member>
         <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor">
@@ -98,6 +56,105 @@
             The xml node that contains all the information about the control.
             </summary>
         </member>
+        <member name="F:Triton.Web.View.Controls.Navigation.attributesToExclude">
+            <summary>
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net control 
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Navigation.#ctor">
+            <summary>
+            Public Default Constructor
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Navigation.OnLoad(System.EventArgs)">
+            <summary>
+            Using OnLoad because the XML file will not be availiable till this time.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.Name">
+            <summary>
+            If you have more then one Navigation node in your xml, use this to target it.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.NoLinkTag">
+            <summary>
+            Use this property to overwrite the default EM html tag of the items that have no link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.ActivePageTag">
+            <summary>
+            Use this property to overwrite the default SPAN html tag of the items for the page being viewed.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Errors">
+            <summary> Creates markup for errors if they exists. wraps each error in a tag supplied by the control definition
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.Errors.minLevel">
+            <summary>
+            The minimum error level to display.
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.Errors.maxLevel">
+            <summary>
+            The maximum error level to display.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Errors.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Triton.Web.View.Controls.Errors"/> class.  Creates a default error control with standard initializers
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.ErrorList">
+            <summary>
+            Gets or sets ErrorList.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.Class">
+            <summary>
+            Gets or sets the name of the CSS class used for rendering
+            the errors.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.ErrorTag">
+            <summary>
+            Gets or sets the delimiter to be used to separate error messages.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.IncludeId">
+            <summary>
+            Gets or sets the flag indicating whether or not the error ID is
+            to be included with the error message.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.IncludeFieldName">
+            <summary>
+            Gets or sets the flag indicating whether or not the field name is
+            to be appended to the error message.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.MinLevel">
+            <summary>
+            Gets or sets the minimum error level to be displayed.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.MaxLevel">
+            <summary>
+            Gets or sets the maximum error level to be displayed.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.ImgInput">
+            <summary>
+            Renders an input tag of type image drawing tag values from Content xml .
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.ImgBase">
+            <summary>
+            Renders an image-based tag using a combination of the page's xml and tag properties from the page.
+            </summary>
+        </member>
         <member name="F:Triton.Web.View.Controls.ImgBase.attributesToExclude">
             <summary>
             List of attribute names NOT to be copied from the 
@@ -122,6 +179,179 @@
         <member name="P:Triton.Web.View.Controls.ImgBase.Name">
             <summary>
             The name attribute of the Image node in the page's content xml file to use.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.#ctor">
+            <summary>
+            Calls base to render the input tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Calls base to render the standard attributes then adds image input tag attributes.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Pagination">
+            <summary>
+            Paging control to use on search result thumbnails.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Pagination.#ctor">
+            <summary>
+            Default constructor takes zero arguments.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Pagination.IncludeParameter(System.String)">
+            <summary>
+            Determines if the parameter is should be included in the rendered tag.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.DisplayOptions">
+            <summary>
+            Display Options are set on the control by comma separated list and will render in the order
+            they are given.
+            Options are: Numbers,Next,Prev,First,Last
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.Title">
+            <summary>
+            The title tag to be rendered on all links
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.LinkClass">
+            <summary>
+            Class name to be rendered on the anchor items for styling.
+            Defaults to pageLink
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.NextRenderName">
+            <summary>
+            Text to render for the "next" link.
+            Defaults to "Next"
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.NextClass">
+            <summary>
+            The name of the class to render on the "next" link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PrevClass">
+            <summary>
+            The name of the class to render on the "prev" link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PrevRenderName">
+            <summary>
+            Text to render for the "prev" link.
+            Defaults to "Prev"
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.CurrentLinkClass">
+            <summary>
+            Class name to be rendered on the currently selected link
+            Defaults to currentPageLink
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.RequestItemName">
+            <summary>
+            Name of the item in the request that contains the paged search results.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.TransitionName">
+            <summary>
+            Transition event for each page link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageParameterPrefix">
+            <summary>
+            Prefix added to pagesize and page for sorting a particulate item type.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageParameterName">
+            <summary>
+            Gets or sets the name of the request parameter for the page number.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageSizeParameterName">
+            <summary>
+            Gets or sets the name of the request parameter for the page size.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageNumberDisplaySize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageNumberDisplayStyle">
+            <summary>
+            Takes a string: "Center", "Right", or "Left" and denotes which side of the
+            page control the currently selected page is placed at.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.Page">
+            <summary>
+            The current WebPage.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.AdditionalParameters">
+            <summary>
+            Additional Parameters to append in search criteria
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.ResetUrlParameters">
+            <summary>
+            Boolean value that, if set to true, will set the baseUrl to "/"
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.RenderPageSizeSelection">
+            <summary>
+            Boolean value that determines if a page size control is rendered on the page.
+            The values for the control are listed in the page's content copy under
+            "PageSizeSelectorCopy".  Choices are defaulted to increment from 0 to 5.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.ParametersToExclude">
+            <summary>
+            Comma seperated list of request Parameters to be removed from the url
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            You set the section name, but site is automaticaly set.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Specify the section name and site.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+            <param name="site"></param>
+        </member>
+        <member name="P:Triton.Web.View.WebMasterPage.MasterPageSection">
+            <summary>
+            Gets the masterpage section name, since the masterpage could be in a different section.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Img">
+            <summary>
+            Renders an image tag.
             </summary>
         </member>
         <member name="M:Triton.Web.View.Controls.Img.#ctor">
@@ -153,6 +383,34 @@
             Needed to override the span tag rendering of the web control, with nothing.
             </summary>
             <param name="writer"></param>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Copy">
+            <summary>
+            Renders a piece of Copy from a matched node in the ContentXml file.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Finds the Copy in the xml file and renders it to the page.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Copy.Name">
+            <summary>
+            The name of the Copy element from the xml the control is to process.
+            </summary>
         </member>
         <member name="T:Triton.Web.Support.WebInfo">
             <summary>
@@ -198,34 +456,6 @@
         <member name="P:Triton.Web.Support.WebInfo.ApplicationVariables">
             <summary>
             Represents application-level variables, that would typically be stored in Application["key"].
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.Copy">
-            <summary>
-            Renders a piece of Copy from a matched node in the ContentXml file.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderContents(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Finds the Copy in the xml file and renders it to the page.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Copy.RenderEndTag(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Needed to override the span tag rendering of the web control, with nothing.
-            </summary>
-            <param name="writer"></param>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Copy.Name">
-            <summary>
-            The name of the Copy element from the xml the control is to process.
             </summary>
         </member>
         <member name="T:Triton.Web.View.WebPage">
@@ -400,236 +630,6 @@
         <member name="P:Triton.Web.View.WebPage.SecureController">
             <summary>
             
-            </summary>
-        </member>
-        <member name="F:Triton.Web.View.Controls.Navigation.attributesToExclude">
-            <summary>
-            List of attribute names NOT to be copied from the 
-            definition in the XML file into the .net control 
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Navigation.#ctor">
-            <summary>
-            Public Default Constructor
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Navigation.OnLoad(System.EventArgs)">
-            <summary>
-            Using OnLoad because the XML file will not be availiable till this time.
-            </summary>
-            <param name="e"></param>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Navigation.Name">
-            <summary>
-            If you have more then one Navigation node in your xml, use this to target it.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Navigation.NoLinkTag">
-            <summary>
-            Use this property to overwrite the default EM html tag of the items that have no link.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Navigation.ActivePageTag">
-            <summary>
-            Use this property to overwrite the default SPAN html tag of the items for the page being viewed.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.ImgInput">
-            <summary>
-            Renders an input tag of type image drawing tag values from Content xml .
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ImgInput.#ctor">
-            <summary>
-            Calls base to render the input tag.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.ImgInput.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
-            <summary>
-            Calls base to render the standard attributes then adds image input tag attributes.
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.Pagination">
-            <summary>
-            Paging control to use on search result thumbnails.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Pagination.#ctor">
-            <summary>
-            Default constructor takes zero arguments.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Pagination.IncludeParameter(System.String)">
-            <summary>
-            Determines if the parameter is should be included in the rendered tag.
-            </summary>
-            <param name="key"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.DisplayOptions">
-            <summary>
-            Display Options are set on the control by comma separated list and will render in the order
-            they are given.
-            Options are: Numbers,Next,Prev,First,Last
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.Title">
-            <summary>
-            The title tag to be rendered on all links
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.LinkClass">
-            <summary>
-            Class name to be rendered on the anchor items for styling.
-            Defaults to pageLink
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.NextRenderName">
-            <summary>
-            Text to render for the "next" link.
-            Defaults to "Next"
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.NextClass">
-            <summary>
-            The name of the class to render on the "next" link.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.PrevClass">
-            <summary>
-            The name of the class to render on the "prev" link.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.PrevRenderName">
-            <summary>
-            Text to render for the "prev" link.
-            Defaults to "Prev"
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.CurrentLinkClass">
-            <summary>
-            Class name to be rendered on the currently selected link
-            Defaults to currentPageLink
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.RequestItemName">
-            <summary>
-            Name of the item in the request that contains the paged search results.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.TransitionName">
-            <summary>
-            Transition event for each page link.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.PageParameterPrefix">
-            <summary>
-            Prefix added to pagesize and page for sorting a particulate item type.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.PageParameterName">
-            <summary>
-            Gets or sets the name of the request parameter for the page number.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.PageSizeParameterName">
-            <summary>
-            Gets or sets the name of the request parameter for the page size.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.PageNumberDisplaySize">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.PageNumberDisplayStyle">
-            <summary>
-            Takes a string: "Center", "Right", or "Left" and denotes which side of the
-            page control the currently selected page is placed at.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.Page">
-            <summary>
-            The current WebPage.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.AdditionalParameters">
-            <summary>
-            Additional Parameters to append in search criteria
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.ResetUrlParameters">
-            <summary>
-            Boolean value that, if set to true, will set the baseUrl to "/"
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.RenderPageSizeSelection">
-            <summary>
-            Boolean value that determines if a page size control is rendered on the page.
-            The values for the control are listed in the page's content copy under
-            "PageSizeSelectorCopy".  Choices are defaulted to increment from 0 to 5.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Pagination.ParametersToExclude">
-            <summary>
-            Comma seperated list of request Parameters to be removed from the url
-            </summary>
-        </member>
-        <member name="T:Triton.Web.View.Controls.Errors">
-            <summary> Creates markup for errors if they exists. wraps each error in a tag supplied by the control definition
-            </summary>
-        </member>
-        <member name="F:Triton.Web.View.Controls.Errors.minLevel">
-            <summary>
-            The minimum error level to display.
-            </summary>
-        </member>
-        <member name="F:Triton.Web.View.Controls.Errors.maxLevel">
-            <summary>
-            The maximum error level to display.
-            </summary>
-        </member>
-        <member name="M:Triton.Web.View.Controls.Errors.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Triton.Web.View.Controls.Errors"/> class.  Creates a default error control with standard initializers
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.ErrorList">
-            <summary>
-            Gets or sets ErrorList.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.Class">
-            <summary>
-            Gets or sets the name of the CSS class used for rendering
-            the errors.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.ErrorTag">
-            <summary>
-            Gets or sets the delimiter to be used to separate error messages.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.IncludeId">
-            <summary>
-            Gets or sets the flag indicating whether or not the error ID is
-            to be included with the error message.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.IncludeFieldName">
-            <summary>
-            Gets or sets the flag indicating whether or not the field name is
-            to be appended to the error message.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.MinLevel">
-            <summary>
-            Gets or sets the minimum error level to be displayed.
-            </summary>
-        </member>
-        <member name="P:Triton.Web.View.Controls.Errors.MaxLevel">
-            <summary>
-            Gets or sets the maximum error level to be displayed.
             </summary>
         </member>
     </members>

@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using Triton.Controller.Request;
 using Triton.Controller.StateMachine;
+using Triton.Configuration;
 
 namespace Triton.Controller
 {
@@ -77,11 +78,11 @@ namespace Triton.Controller
 
 			//  get the settings from config file
 			ControllerConfigSection config = ConfigurationManager.GetSection(
-					"controllerSettings/content") as ControllerConfigSection;
+					TritonConfigurationSection.SectionName + "/content") as ControllerConfigSection;
 
 			//  make sure we have the proper config info
 			if (config == null) {
-				throw new ConfigurationErrorsException("Load of controllerSettings/content config section failed.");
+				throw new ConfigurationErrorsException("Load of triton/content config section failed.");
 			}
 			if (config.ContentProviders[name] == null) {
 				throw new ConfigurationErrorsException(

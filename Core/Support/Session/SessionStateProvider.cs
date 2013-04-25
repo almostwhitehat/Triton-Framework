@@ -16,11 +16,11 @@ namespace Triton.Support.Session
 			if (sessionState == null) { 
 				// find the implementation from a configuration entry
 				//  get the settings from configuration file
-				//ControllerConfigSection config = ConfigurationManager.GetSection("controllerSettings/content") as ControllerConfigSection;
+				//ControllerConfigSection config = ConfigurationManager.GetSection("triton/content") as ControllerConfigSection;
 
 				////  make sure we have the proper configuration info
 				//if (config == null) {
-				//    throw new ConfigurationErrorsException("Load of controllerSettings/content configuration section failed.");
+				//    throw new ConfigurationErrorsException("Load of triton/content configuration section failed.");
 				//}
 				string typeName = "Triton.Web.Support.Session.HttpSessionState, Triton.Extensions.Web";
 				if (ConfigurationManager.AppSettings["sessionProvider"] != null) {

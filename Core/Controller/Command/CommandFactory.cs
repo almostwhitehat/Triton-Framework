@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Reflection;
 using Common.Logging;
+using Triton.Configuration;
 using Triton.Controller.Request;
 
 namespace Triton.Controller.Command
@@ -24,10 +25,13 @@ namespace Triton.Controller.Command
 	{
 		private const string ACTION_PARAM = "a";
 
+		private const string COMMAND_SECTION_NAME = "commands";
 		/// <summary>
 		/// The "path" of the settings for Commands in web.config
 		/// </summary>
-		private const string CONFIG_PATH = "controllerSettings/commands";
+		//private const string CONFIG_PATH = TritonConfigurationSection.SECTION_NAME + "/commands";
+		//        //  for backward compatibility (for now)
+		//private const string ALT_CONFIG_PATH = "triton/commands";
 
 		private const string THING_PARAM = "t";
 
@@ -87,10 +91,10 @@ namespace Triton.Controller.Command
 
 			try {
 				//  get the namespace and assembly the Commands are in from web.config
-				NameValueCollection config = (NameValueCollection) ConfigurationSettings.GetConfig(CONFIG_PATH);
+				NameValueCollection config = (NameValueCollection)ConfigurationManager.GetSection(TritonConfigurationSection.SectionName + "/" + COMMAND_SECTION_NAME);
 
 				if (config == null) {
-					throw new Exception(string.Format("No config settings found for {0}.", CONFIG_PATH));
+					throw new Exception(string.Format("No config settings found for {0}.", TritonConfigurationSection.SectionName + "/" + COMMAND_SECTION_NAME));
 				}
 
 				//  try to get the type for the Command based on the sources
