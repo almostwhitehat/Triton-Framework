@@ -120,14 +120,9 @@ namespace Triton.Media.Logic
 			MediaType type;
 			IMediaTypeDao dao = DaoFactory.GetDao<IMediaTypeDao>();
 
-			IList<MediaType> types = dao.Get(new MediaType {
-				FileTypes = new List<string> { this.GetFileType(fileName) }
-			});
+			type = dao.Get(this.GetFileType(fileName));
 
-			if (types.Count > 0) {
-				type = types[0];
-			}
-			else {
+			if (type == null) {
 				type = dao.Get("misc_docs");
 			}
 
