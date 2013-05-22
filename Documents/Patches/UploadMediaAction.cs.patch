@@ -1,0 +1,21 @@
+Index: Modules/Media/Logic/UploadMediaAction.cs
+===================================================================
+--- Modules/Media/Logic/UploadMediaAction.cs	(revision 143)
++++ Modules/Media/Logic/UploadMediaAction.cs	(working copy)
+@@ -120,14 +120,9 @@
+ 			MediaType type;
+ 			IMediaTypeDao dao = DaoFactory.GetDao<IMediaTypeDao>();
+ 
+-			IList<MediaType> types = dao.Get(new MediaType {
+-				FileTypes = new List<string> { this.GetFileType(fileName) }
+-			});
++			type = dao.Get(this.GetFileType(fileName));
+ 
+-			if (types.Count > 0) {
+-				type = types[0];
+-			}
+-			else {
++			if (type == null) {
+ 				type = dao.Get("misc_docs");
+ 			}
+ 

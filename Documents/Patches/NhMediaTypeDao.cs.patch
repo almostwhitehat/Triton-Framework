@@ -1,0 +1,29 @@
+Index: NhMediaTypeDao.cs
+===================================================================
+--- NhMediaTypeDao.cs	(revision 143)
++++ NhMediaTypeDao.cs	(working copy)
+@@ -1,4 +1,5 @@
+ using Triton.NHibernate.Model.Dao;
++using System.Collections.Generic;
+ 
+ namespace Triton.Media.Model.Dao
+ {
+@@ -14,9 +15,15 @@
+ 
+ 		public MediaType Get(string code)
+ 		{
+-			return base.Get(new MediaType{
+-			                             	Code = code
+-			                             })[0];
++			MediaType result = null;
++			
++			IList<MediaType> results = base.Get(new MediaType{ Code = code });
++
++			if (results.Count == 1){
++				result = results[0];
++			}
++
++			return result;
+ 		}
+ 
+ 		#endregion
