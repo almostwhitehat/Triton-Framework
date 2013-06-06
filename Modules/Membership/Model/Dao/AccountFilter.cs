@@ -103,5 +103,12 @@ namespace Triton.Membership.Model.Dao {
 
 		public string Radius { get; set; }
 
+        public class StringRelationType
+        {
+            public const string EQUALS = "eq";
+            public const string ENDS_WITH = "ends";
+            public const string STARTS_WITH = "starts";
+            public const string IN = "in";
+        }
 	}
 }

@@ -176,12 +176,17 @@ namespace Triton.Membership.Model.Dao
 					criteria = criteria.Add(Expression.In("Id", filter.Ids));
 				}
 
-				if ((filter.Usernames != null) && (filter.Usernames.Length > 0)) {
+                if ((filter.Usernames != null) && (filter.Usernames.Length == 1))
+                {
+                    criteria =
+                        criteria.CreateAlias("Usernames", "usernames").Add(Expression.Like("usernames.Value", filter.Usernames[0]));
+                }
+				else if ((filter.Usernames != null) && (filter.Usernames.Length > 1)) {
 					//figure out what the criteria is for searching in a list of values.
 					criteria = criteria.CreateAlias("Usernames", "usernames")
 						.Add(Expression.In("usernames.Value", filter.Usernames));
 
-				}
+				} 
 
 				if (filter.RoleNames != null && filter.RoleNames.Length > 0) {
 					criteria = criteria.CreateAlias("Roles", "roles")

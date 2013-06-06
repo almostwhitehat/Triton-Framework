@@ -37,6 +37,16 @@ namespace Triton.Membership.Model.Dao.Support
 			if (!string.IsNullOrEmpty(request[ParameterNames.Account.Filter.USERNAME])) {
 				filter.Usernames = request[ParameterNames.Account.Filter.USERNAME].ToStringArray();
 			}
+            else if ( Array.FindAll<string>(request.Params.AllKeys, key => (key != null) && key.StartsWith(ParameterNames.Account.Filter.USERNAME)).Length == 1 )
+            {
+                // Perform more specific like filtering on attributes, append wildcards as needed.  Only allowed for sinlge username search
+                string usernameParam = Array.FindAll<string>(request.Params.AllKeys,
+                                                             key =>
+                                                             (key != null) &&
+                                                             key.StartsWith(ParameterNames.Account.Filter.USERNAME))[0];
+                string relation = usernameParam.Substring(ParameterNames.Account.Filter.USERNAME.Length + 1, usernameParam.Length - (ParameterNames.Account.Filter.USERNAME.Length + 1) );
+                filter.Usernames = GenerateUsernameRelationType(request[usernameParam].ToStringArray(), relation);
+            }
 			else if (!string.IsNullOrEmpty(request[ParameterNames.Account.USERNAME])) {
 				filter.Usernames = request[ParameterNames.Account.USERNAME].ToStringArray();
 			}
@@ -189,5 +199,41 @@ namespace Triton.Membership.Model.Dao.Support
 
 			return relation;
 		}
+
+        private static string[] GenerateUsernameRelationType(string[] values, string relationType)
+        {
+            string[] generatedValues = values;
+            switch (relationType)
+            {
+                case AccountFilter.StringRelationType.EQUALS:
+                    break;
+                case AccountFilter.StringRelationType.ENDS_WITH:
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        string newValue = "%" + values[i];
+                        generatedValues[i] = newValue;
+                    }
+                    break;
+                case AccountFilter.StringRelationType.STARTS_WITH:
+                    for (int i = 0; i < values.Length; i++)
+                    {            
+                        string newValue = values[i] + "%";
+                        generatedValues[i] = newValue;
+                    }
+                    break;
+                case AccountFilter.StringRelationType.IN:
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        string newValue = "%" + values[i] + "%";
+                        generatedValues[i] = newValue;
+                    }
+                    break;
+                default:
+                    break;
+                    
+            }
+
+            return generatedValues;
+        }
 	}
 }

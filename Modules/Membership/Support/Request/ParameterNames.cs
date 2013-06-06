@@ -98,6 +98,13 @@
 				public const string RADIUS = "filter_account_radius";
 
 				public const string STATUS = "filter_account_status";
+
+                // Suffixs for Account Username like % filtering
+                // es: filter_account_username_ends
+                // In Form: ParameterNames.Account.Filter.USERNAME + RELATION_TYPE_ENDS
+			    public const string RELATION_TYPE_ENDS = "_ends";
+                public const string RELATION_TYPE_STARTS = "_starts";
+			    public const string RELATION_TYPE_IN = "_in";
 			}
 
 			#endregion
