@@ -22,7 +22,8 @@ namespace Triton.Logic
 	// 09/20/2009	GV	Moved to Logic namespace
 	// 09/29/2009	KP	Changed logging methods to GetClassLogger
 	// 11/12/2009	GV	Added the static class for Events to be returned
-	// 10/09/2008 - MC - Added the ability to specify a range of parameters to remove by using a regex
+	// 10/09/2008   MC  Added the ability to specify a range of parameters to remove by using a regex
+	// 07/15/2013   MC  Added null check on parameter when doing regex clearing.
 	#endregion
 
 	/// <summary>
@@ -58,7 +59,7 @@ namespace Triton.Logic
 						} else {
 							List<String> removalList = new List<String>();
 							foreach (string param in req.Params) {
-								if (Regex.Matches(param, paramName).Count > 0) {
+								if (!string.IsNullOrEmpty(param) && Regex.Matches(param, paramName).Count > 0) {
 									removalList.Add(param);
 								}
 							}
