@@ -58,7 +58,16 @@ namespace Triton.Model
 			int page,
 			int pageSize,
 			int totalMatches) :
-				this(items, filter, page, pageSize, totalMatches, pageSize) 
+			this(items, filter, page, pageSize, totalMatches, pageSize)
+		{
+		}
+		public SearchResult(
+			T[] items,
+			object filter,
+			int page,
+			int pageSize,
+			long totalMatches) :
+			this(items, filter, page, pageSize, totalMatches, pageSize)
 		{
 		}
 
@@ -79,6 +88,24 @@ namespace Triton.Model
 			int page,
 			int pageSize,
 			int totalMatches,
+			int firstPageSize)
+		{
+			this.Items = items;
+			Filter = filter;
+			Page = page;
+			PageSize = pageSize;
+			TotalMatches = totalMatches;
+			FirstPageSize = firstPageSize;
+			NumberReturned = items.Length;
+
+			this.CalculatePaging();
+		}
+		public SearchResult(
+			T[] items,
+			object filter,
+			int page,
+			int pageSize,
+			long totalMatches,
 			int firstPageSize)
 		{
 			this.Items = items;
