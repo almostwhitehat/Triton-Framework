@@ -11,10 +11,10 @@ namespace Triton.Web.View.Controls {
 	#region History
 
 	// History:
-    //   4/20/2011	SD	Added PageParameterName and PageSizeParameterName properties to allow the
-    //					control to work with type-safe paging parameters.
-    //   11/15/2011	MSC	Added AdditionalParameters to allow the control 
-    //                  to append additional parameters to request url.
+	//   4/20/2011	SD	Added PageParameterName and PageSizeParameterName properties to allow the
+	//					control to work with type-safe paging parameters.
+	//   11/15/2011	MSC	Added AdditionalParameters to allow the control 
+	//                  to append additional parameters to request url.
 
 	#endregion
 
@@ -227,10 +227,10 @@ namespace Triton.Web.View.Controls {
 		}
 
 
-        /// <summary>
-        /// Additional Parameters to append in search criteria
-        /// </summary>
-        public string AdditionalParameters { get; set; }
+		/// <summary>
+		/// Additional Parameters to append in search criteria
+		/// </summary>
+		public string AdditionalParameters { get; set; }
 
 
 		/// <summary>
@@ -312,10 +312,10 @@ namespace Triton.Web.View.Controls {
 					baseUrl += string.Format("&{0}={1}", key, Page.Request.Params[key]);
 				}
 			}
-            if (!string.IsNullOrEmpty(AdditionalParameters)) {
-                baseUrl += string.Format("&{0}", AdditionalParameters);
-            }
-        }
+			if (!string.IsNullOrEmpty(AdditionalParameters)) {
+				baseUrl += string.Format("&{0}", AdditionalParameters);
+			}
+		}
 
 
 		public override void RenderBeginTag(
@@ -425,70 +425,74 @@ namespace Triton.Web.View.Controls {
 		public void Last(
 			HtmlTextWriter output)
 		{
-			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
-			output.AddAttribute(HtmlTextWriterAttribute.Id, "last");
-			output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.TotalPages - 1));
-			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.TotalPages - 1)));
-			output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
-
 			if (searchResult.TotalPages > 0) {
-				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.TotalPages - 1));
-			} else {
-				output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
-			}
+				output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
+				output.AddAttribute(HtmlTextWriterAttribute.Id, "last");
+				output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.TotalPages - 1));
+				output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.TotalPages - 1)));
+				output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
 
-			output.RenderBeginTag(HtmlTextWriterTag.A); // A
-			output.Write("last", true);
-			output.RenderEndTag(); // A or SPAN
-			output.RenderEndTag(); // LI
+				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.TotalPages - 1));
+
+				output.RenderBeginTag(HtmlTextWriterTag.A); // A
+				output.Write("last", true);
+				output.RenderEndTag(); // A or SPAN
+				output.RenderEndTag(); // LI
+			} 
+			//else {
+			//    output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
+			//}
 		}
 
 
 		public void Prev(
 			HtmlTextWriter output)
 		{
-			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
-			output.AddAttribute(HtmlTextWriterAttribute.Id, "prevpage");
-			output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.Page - 1));
-			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page - 1)));
-			output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
-
 			if (searchResult.Page != FIRST_PAGE) {
+				output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
+				output.AddAttribute(HtmlTextWriterAttribute.Id, "prevpage");
+				output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.Page - 1));
+				output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page - 1)));
+				output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
+
 				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.Page - 1));
 				output.AddAttribute(HtmlTextWriterAttribute.Class, PrevClass);
 				output.RenderBeginTag(HtmlTextWriterTag.A); // A
 				output.Write(PrevRenderName);
-			} else {
-				output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
-			}
 
-			output.RenderEndTag(); // A or SPAN
-			output.RenderEndTag(); // LI
+				output.RenderEndTag(); // A or SPAN
+				output.RenderEndTag(); // LI
+			}
+			//else {
+			//    output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
+			//}
+
 		}
 
 
 		public void Next(
 			HtmlTextWriter output)
 		{
-			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
-			output.RenderEndTag(); // LI
-			output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
-			output.AddAttribute(HtmlTextWriterAttribute.Id, "nextpage");
-			output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.Page + 1));
-			output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page + 1)));
-			output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
-
 			if (searchResult.Page != searchResult.TotalPages) {
+				//output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
+				//output.RenderEndTag(); // LI
+				output.RenderBeginTag(HtmlTextWriterTag.Li); // LI
+				output.AddAttribute(HtmlTextWriterAttribute.Id, "nextpage");
+				output.AddAttribute(HtmlTextWriterAttribute.Rel, string.Format("{{page:{0}}}", searchResult.Page + 1));
+				output.AddAttribute(HtmlTextWriterAttribute.Title, GetTitle(string.Format("page {0}", searchResult.Page + 1)));
+				output.AddAttribute(HtmlTextWriterAttribute.Class, LinkClass);
+
 				output.AddAttribute(HtmlTextWriterAttribute.Href, GeneratePageLink(searchResult.Page + 1));
 				output.AddAttribute(HtmlTextWriterAttribute.Class, NextClass);
 				output.RenderBeginTag(HtmlTextWriterTag.A); // A
 				output.Write(NextRenderName);
-			} else {
-				output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
-			}
 
-			output.RenderEndTag(); // A
-			output.RenderEndTag(); // LI
+				output.RenderEndTag(); // A
+				output.RenderEndTag(); // LI
+			} 
+			//else {
+			//    output.RenderBeginTag(HtmlTextWriterTag.Span); // Span
+			//}
 		}
 
 
