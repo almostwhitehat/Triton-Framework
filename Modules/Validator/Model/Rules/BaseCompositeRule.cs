@@ -22,12 +22,15 @@ namespace Triton.Validator.Model.Rules
 		/// </summary>
 		protected List<IValidationRule> children;
 
+
 		/// <summary>
 		/// Gets the child rules of the rule, or <c>null</c> if there are no child rules.
 		/// </summary>
 		public override IValidationRule[] Children
 		{
-			get { return this.children != null ? this.children.ToArray() : null; }
+			get {
+				return this.children != null ? this.children.ToArray() : null;
+			}
 		}
 
 
@@ -38,11 +41,11 @@ namespace Triton.Validator.Model.Rules
 		public override void Add(
 			IValidationRule rule)
 		{
-			if (this.children == null) {
-				this.children = new List<IValidationRule>();
+			if (children == null) {
+				children = new List<IValidationRule>();
 			}
 
-			this.children.Add(rule);
+			children.Add(rule);
 		}
 
 

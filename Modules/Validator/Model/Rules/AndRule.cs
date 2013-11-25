@@ -6,6 +6,8 @@ namespace Triton.Validator.Model.Rules
 	#region History
 
 	// History:
+	//  11/22/13 - SD -	Added support for new StopOnFail property - to cease rule processing
+	//					if a rule with that property set fails.
 
 	#endregion
 
@@ -31,13 +33,18 @@ namespace Triton.Validator.Model.Rules
 			ValidationResult result = new ValidationResult();
 
 			foreach (IValidationRule rule in children) {
-				//  evaluate the child rule
+						//  evaluate the child rule
 				ValidationResult childResult = rule.Evaluate(request);
-				//  if the child rule failed, set this rule to failure and add the
-				//  error(s) from the child
+						//  if the child rule failed, set this rule to failure and add the
+						//  error(s) from the child
 				if (!childResult.Passed) {
 					result.Passed = false;
 					result.AddErrors(childResult.Errors);
+
+					if (rule.StopOnFail || childResult.StopProcessing) {
+						result.StopProcessing = true;
+						break;
+					}
 				}
 			}
 

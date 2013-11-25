@@ -6,6 +6,8 @@ namespace Triton.Validator.Model.Rules
 	#region History
 
 	// History:
+	//  11/22/13 - SD -	Added support for new StopOnFail property - to cease rule processing
+	//					if a rule with that property set fails.
 
 	#endregion
 
@@ -27,30 +29,33 @@ namespace Triton.Validator.Model.Rules
 		public override ValidationResult Evaluate(
 			MvcRequest request)
 		{
-			ValidationResult result = new ValidationResult {
-			                                               	Passed = false
-			                                               };
+			ValidationResult result = new ValidationResult { Passed = false };
 
 // TODO: if cnt is 0 should we return true or false??
 			int cnt = children.Count;
 			for (int k = 0; k < cnt && !result.Passed; k++) {
 				IValidationRule rule = children[k];
-				//  evaluate the child rule
+						//  evaluate the child rule
 				ValidationResult childResult = rule.Evaluate(request);
-				//  clear out any previous validation errors
+						//  clear out any previous validation errors
 				result.ClearErrors();
-				//  if the child rule passed, set this rule to passed,
-				//  if not, add the errors from the child to the OrRule's result
+						//  if the child rule passed, set this rule to passed,
+						//  if not, add the errors from the child to the OrRule's result
 				if (childResult.Passed) {
 					result.Passed = true;
 				} else {
 					result.AddErrors(childResult.Errors);
+
+					if (rule.StopOnFail || childResult.StopProcessing) {
+						result.StopProcessing = true;
+						break;
+					}
 				}
 			}
 
-			//  if the OrRule did not pass and the is a specific error identified
-			//  for the OrRule, replace any errors from the children with the one
-			//  for the OrRule
+					//  if the OrRule did not pass and the is a specific error identified
+					//  for the OrRule, replace any errors from the children with the one
+					//  for the OrRule
 			if (!result.Passed && (ErrorId != 0)) {
 				result.ClearErrors();
 				result.AddError(Field, ErrorId);

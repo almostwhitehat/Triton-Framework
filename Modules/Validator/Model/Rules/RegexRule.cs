@@ -24,7 +24,11 @@ namespace Triton.Validator.Model.Rules
 		/// <summary>
 		/// Gets or sets the regular expression pattern to apply to the field value.
 		/// </summary>
-		public string Pattern { get; set; }
+		public string Pattern
+		{
+			get;
+			set;
+		}
 
 
 		/// <summary>

@@ -26,14 +26,18 @@ namespace Triton.Validator.Model.Rules
 		internal Validator(
 			string name)
 		{
-			this.Name = name;
+			Name = name;
 		}
 
 
 		/// <summary>
 		/// Gets the name of the Validator.
 		/// </summary>
-		public string Name { get; private set; }
+		public string Name
+		{
+			get;
+			private set;
+		}
 
 
 		/// <summary>

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -84,60 +85,48 @@ namespace Triton.Validator.Model
 			
 			string validatorsConfigPath = System.Configuration.ConfigurationManager.AppSettings["validatorsConfigPath"];
 
-			logger.Debug(
-				debugMessage => debugMessage("ValidatorManager - starting load."));
+			logger.Debug(debugMessage => debugMessage("ValidatorManager - starting load."));
 
-			if (validatorsConfigPath != "")
+			if (validatorsConfigPath != "") {
 				LoadValidatorConfigFile(rootPath + validatorsConfigPath);
+			}
 
-			try
-			{
+			try {
 				String[] files = System.IO.Directory.GetFiles(rootPath + System.Configuration.ConfigurationManager.AppSettings["validatorsBasePath"], "*.validators.config");
-				foreach (string file in files)
-				{
+				foreach (string file in files) {
 					LoadValidatorConfigFile(file);
 				}
 
-				logger.Debug(
-					debugMessage => debugMessage("ValidatorManager - load completed."));
-			}
-			catch (Exception e)
-			{
-				logger.Error(
-					errorMessage => errorMessage("ValidatorManager - error loading validators: "), e);
+				logger.Debug(debugMessage => debugMessage("ValidatorManager - load completed."));
+			} catch (Exception e) {
+				logger.Error(errorMessage => errorMessage("ValidatorManager - error loading validators: "), e);
 			}
 		}
 
-		private void LoadValidatorConfigFile(string filename)
+
+		private void LoadValidatorConfigFile(
+			string filename)
 		{
 			XmlDocument doc = new XmlDocument();
 
-			try
-			{
-				logger.Debug(
-					debugMessage => debugMessage("ValidatorManager - starting load of config file ({0}).", filename));
+			try {
+				logger.Debug(debugMessage => debugMessage("ValidatorManager - starting load of config file ({0}).", filename));
 
 				//  load the xml from the config file
 				doc.Load(filename);
 
 				XmlNodeList validatorsXml = doc.DocumentElement.SelectNodes("/validators/validator");
 
-				foreach (XmlNode validatorNode in validatorsXml)
-				{
+				foreach (XmlNode validatorNode in validatorsXml) {
 					Rules.Validator validator = BuildValidator(validatorNode);
 
 					validatorHash.Add(validator.Name, validator);
 				}
 
-				logger.Debug(
-					debugMessage => debugMessage("ValidatorManager - load of config file({0}) completed.", filename));
+				logger.Debug(debugMessage => debugMessage("ValidatorManager - load of config file({0}) completed.", filename));
+			} catch (Exception e) {
+				logger.Error(errorMessage => errorMessage("ValidatorManager - error loading validator config file({0}): ", filename), e);
 			}
-			catch (Exception e)
-			{
-				logger.Error(
-					errorMessage => errorMessage("ValidatorManager - error loading validator config file({0}): ", filename), e);
-			}
-
 		}
 
 
@@ -153,7 +142,7 @@ namespace Triton.Validator.Model
 			string name = validatorNode.Attributes["name"].Value;
 			Rules.Validator validator = new Rules.Validator(name);
 
-			this.GetChildren(validator, validatorNode);
+			GetChildren(validator, validatorNode);
 
 			return validator;
 		}
@@ -186,27 +175,38 @@ namespace Triton.Validator.Model
 					IValidationRule rule = ValidationRuleFactory.Make(StringUtilities.Capitalize(nodeName));
 
 					if (rule != null) {
-						//  if there are any attributes on the rule node, try setting
-						//  the corresponding property of the rule object
-						foreach (XmlAttribute attr in ruleNode.Attributes) {
-							string attrName = StringUtilities.Capitalize(attr.Name);
-
-							//  this is really hokey, but it works for now
-							if ((attrName == "ErrorId") && ReflectionUtilities.HasProperty(rule, "ErrorId")) {
-								try {
-//								ReflectionUtilities.SetPropertyValue(rule, "ErrorId", long.Parse(attr.Value));
-									((BaseRule) rule).ErrorId = long.Parse(attr.Value);
-								} catch {
-									// TODO: log the failure?
-								}
-							} else if (ReflectionUtilities.HasProperty(rule, attrName)) {
-								ReflectionUtilities.SetPropertyValue(rule, attrName, attr.Value);
+						if ((ruleNode.Attributes != null) && (ruleNode.Attributes.Count > 0)) {
+							NameValueCollection attributes = new NameValueCollection();
+							foreach (XmlAttribute attr in ruleNode.Attributes) {
+								attributes.Add(attr.Name, attr.Value);
 							}
+
+							ReflectionUtilities.Deserialize(rule, attributes);
 						}
-						//  get the children of the rule
-						this.GetChildren(rule, ruleNode);
-						//  add the rule to the parent's list of children
-						parent.Add(rule);
+
+
+					//if (rule != null) {
+					//    //  if there are any attributes on the rule node, try setting
+					//    //  the corresponding property of the rule object
+					//    foreach (XmlAttribute attr in ruleNode.Attributes) {
+					//        string attrName = StringUtilities.Capitalize(attr.Name);
+
+					//        //  this is really hokey, but it works for now
+					//        if ((attrName == "ErrorId") && ReflectionUtilities.HasProperty(rule, "ErrorId")) {
+					//            try {
+					//                //								ReflectionUtilities.SetPropertyValue(rule, "ErrorId", long.Parse(attr.Value));
+					//                ((BaseRule)rule).ErrorId = long.Parse(attr.Value);
+					//            } catch {
+					//                // TODO: log the failure?
+					//            }
+					//        } else if (ReflectionUtilities.HasProperty(rule, attrName)) {
+					//            ReflectionUtilities.SetPropertyValue(rule, attrName, attr.Value);
+					//        }
+					//    }
+								//  get the children of the rule
+					    GetChildren(rule, ruleNode);
+								//  add the rule to the parent's list of children
+					    parent.Add(rule);
 					}
 					//  TODO: else log it?
 				}
