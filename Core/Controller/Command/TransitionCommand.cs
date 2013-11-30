@@ -2,11 +2,12 @@ using System;
 using System.Configuration;
 using System.Threading;
 using System.Web;
-using System.Web.SessionState;
+//using System.Web.SessionState;
 using Common.Logging;
 using Triton.Controller.Publish;
 using Triton.Controller.Request;
 using Triton.Controller.StateMachine;
+using Triton.Support.Session;
 
 namespace Triton.Controller.Command {
 
@@ -109,17 +110,19 @@ public class TransitionCommand : Command
 						             string.IsNullOrEmpty(targetState.Name) ? "" : " [" + targetState.Name + "]"));
 				}
 
-						//  save the ending state to the session and cookie
+				//  save the ending state to the session and cookie
 				try {
-					HttpSessionState session = HttpContext.Current.Session;
-					if (session != null) {
-						session[CUR_STATE_NAME] = targetState.Id;
+					//HttpSessionState session = HttpContext.Current.Session;
+					if (SessionStateProvider.GetSessionState() != null) {
+						SessionStateProvider.GetSessionState()[CUR_STATE_NAME] = targetState.Id;
 					}
-				} catch {}
+				}
+				catch { }
 
 				try {
-					request.SetResponseCookie(new MvcCookie(CUR_STATE_NAME, targetState.Id.ToString()));
-				} catch {}
+					//request.SetResponseCookie(new MvcCookie(CUR_STATE_NAME, targetState.Id.ToString()));
+				}
+				catch { }
 
 						//  determine if the content generated to fulfill the request should
 						//  be published for use by future requests
@@ -208,7 +211,7 @@ public class TransitionCommand : Command
 		if (!curStateId.HasValue) {
 			try {
 				// TODO: this should NOT reference HttpContext!
-				curStateId = long.Parse((string)HttpContext.Current.Session[CUR_STATE_NAME]);
+				curStateId = long.Parse((string)SessionStateProvider.GetSessionState()[CUR_STATE_NAME]);
 			} catch {}
 		}
 

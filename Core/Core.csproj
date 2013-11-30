@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Triton</RootNamespace>
     <AssemblyName>Triton.Core</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -39,6 +39,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Documents\Library\Xml\Triton.Core.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -61,6 +63,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\Documents\Library\Xml\Triton.Core.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=2.0.11.3384, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -72,7 +75,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -87,12 +89,16 @@
     <Compile Include="Configuration\TritonConfiguration.cs" />
     <Compile Include="Controller\Action\ActionFactory.cs" />
     <Compile Include="Controller\Action\IAction.cs" />
+    <Compile Include="Controller\Command\TransitionCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controller\Config\SitesConfig.cs" />
     <Compile Include="Controller\ControllerConfig.cs" />
     <Compile Include="Controller\Publish\DynamicPublisherRule.cs" />
     <Compile Include="Controller\Publish\IPublisherRule.cs" />
     <Compile Include="Controller\Publish\PublisherRuleFactory.cs" />
     <Compile Include="Controller\Publish\RepublishPublisherRule.cs" />
+    <Compile Include="Controller\Request\IMvcCookie.cs" />
     <Compile Include="Controller\StateMachine\StateInfo.cs" />
     <Compile Include="Controller\StateMachine\StatePrerequisite.cs" />
     <Compile Include="Logic\CompareAction.cs" />
@@ -124,17 +130,14 @@
     <Compile Include="Controller\Command\CommandFactory.cs" />
     <Compile Include="Controller\Command\GoPageCommand.cs" />
     <Compile Include="Controller\Command\RedirectingCommand.cs" />
-    <Compile Include="Controller\Command\TransitionCommand.cs" />
     <Compile Include="Controller\Command\UnknownCommand.cs" />
     <Compile Include="Controller\ContentProvider.cs" />
     <Compile Include="Controller\ContentProviderFactory.cs" />
     <Compile Include="Controller\Format\Formatter.cs" />
     <Compile Include="Controller\Format\FormatterFactory.cs" />
-    <Compile Include="Controller\FrontController.cs" />
     <Compile Include="Controller\HtmlContentProvider.cs" />
     <Compile Include="Controller\PageFinder.cs" />
     <Compile Include="Controller\Publish\IContentPublisher.cs" />
-    <Compile Include="Controller\Publish\HtmlContentPublisher.cs" />
     <Compile Include="Controller\Publish\PublishConfig.cs" />
     <Compile Include="Controller\Publish\IPublishDao.cs" />
     <Compile Include="Controller\Publish\PublishedPageCollection.cs" />
@@ -142,15 +145,10 @@
     <Compile Include="Controller\Publish\PublishException.cs" />
     <Compile Include="Controller\Publish\PublishManager.cs" />
     <Compile Include="Controller\Publish\PublishRecord.cs" />
-    <Compile Include="Controller\Request\MvcCookie.cs" />
     <Compile Include="Controller\Request\MvcCoreRequest.cs" />
-    <Compile Include="Controller\Request\MvcHttpPostedFile.cs" />
-    <Compile Include="Controller\Request\MvcHttpRequest.cs" />
     <Compile Include="Controller\Request\MvcPostedFile.cs" />
     <Compile Include="Controller\Request\MvcPostedFileCollection.cs" />
     <Compile Include="Controller\Request\MvcRequest.cs" />
-    <Compile Include="Controller\Request\MvcXmlRequest.cs" />
-    <Compile Include="Controller\Request\RequestFactory.cs" />
     <Compile Include="Controller\SimpleContentProvider.cs" />
     <Compile Include="Controller\StateMachine\ActionState.cs" />
     <Compile Include="Controller\StateMachine\BaseState.cs" />
@@ -166,14 +164,11 @@
     <Compile Include="Controller\StateMachine\StateTransitioner.cs" />
     <Compile Include="Controller\StateMachine\StopState.cs" />
     <Compile Include="Controller\StateMachine\Transition.cs" />
-    <Compile Include="Controller\TimerModule.cs" />
     <Compile Include="Controller\TransitionContext.cs" />
     <Compile Include="Controller\TransitionSession.cs" />
     <Compile Include="Controller\TransitionSessionManager.cs" />
     <Compile Include="Controller\Utilities\LanguageUtilities.cs" />
-    <Compile Include="Controller\Utilities\WebUtilities.cs" />
     <Compile Include="Controller\XmlActionMap.cs" />
-    <Compile Include="Controller\XmlController.cs" />
     <Compile Include="Logging\DBLogHandler.cs" />
     <Compile Include="Logging\FileLogHandler.cs" />
     <Compile Include="Logging\ILogFilter.cs" />
@@ -215,7 +210,6 @@
     <Compile Include="Support\IO.cs" />
     <Compile Include="Support\Mail\Mailer.cs" />
     <Compile Include="Support\Mail\MissingParamException.cs" />
-    <Compile Include="Support\Mail\ServiceMailer.cs" />
     <Compile Include="Support\Request\CoreItemNames.cs" />
     <Compile Include="Utilities\BaseList.cs" />
     <Compile Include="Utilities\Configuration\XmlConfiguration.cs" />

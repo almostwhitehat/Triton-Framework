@@ -1,5 +1,6 @@
 using System.Web;
 using Triton.Controller.Config;
+using Triton.Controller.Request;
 using Triton.Utilities.Configuration;
 
 namespace Triton.Controller.Utilities
@@ -25,15 +26,16 @@ namespace Triton.Controller.Utilities
 
 
 		public static string GetLanguage(
+			MvcRequest request,
 			string site)
 		{
-			HttpRequest request = HttpContext.Current.Request;
+			//HttpRequest request = HttpContext.Current.Request;
 			string lang = null;
 
 			//  try to get language setting from cookie
 			try {
-				if (request.Cookies[MVC_COOKIE_COLLECTION] != null) {
-					lang = request.Cookies[MVC_COOKIE_COLLECTION][LANGUAGE_COOKIE];
+				if (request.GetCookie(MVC_COOKIE_COLLECTION) != null) {
+					lang = request.GetCookie(MVC_COOKIE_COLLECTION)[LANGUAGE_COOKIE];
 				}
 
 				//  try to get language setting from request's UserLanguages
@@ -56,7 +58,8 @@ namespace Triton.Controller.Utilities
 				}
 			}
 
-			HttpContext.Current.Response.Cookies[MVC_COOKIE_COLLECTION][LANGUAGE_COOKIE] = lang;
+			// TODO: determine how to put language back in as a cookie
+			//request.[MVC_COOKIE_COLLECTION][LANGUAGE_COOKIE] = lang;
 
 
 			return lang;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Web;
 using Triton.Utilities;
@@ -17,22 +17,22 @@ namespace Triton.Controller.Request
 	/// for use with <b>MvcRequest</b>.
 	/// </summary>
 	///	<author>Scott Dyke</author>
-	public class MvcCookie
+	public class MvcHttpCookie : IMvcCookie
 	{
-		private readonly IMvcCookie httpCookie;
+		private readonly HttpCookie httpCookie;
 
 
 		///<summary>
 		///</summary>
 		///<param name="name"></param>
-		public MvcCookie(
+		public MvcHttpCookie(
 			string name)
 		{
 			this.httpCookie = new HttpCookie(name);
 		}
 
 
-		public MvcCookie(
+		public MvcHttpCookie(
 			string name,
 			string val)
 		{
@@ -40,7 +40,7 @@ namespace Triton.Controller.Request
 		}
 
 
-		public MvcCookie(
+		public MvcHttpCookie(
 			HttpCookie httpCookie)
 		{
 			this.httpCookie = httpCookie;

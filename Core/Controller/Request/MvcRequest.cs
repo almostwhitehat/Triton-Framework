@@ -75,7 +75,7 @@ namespace Triton.Controller.Request
 		/// <param name="name">The name of the cookie to get.</param>
 		/// <returns>A <b>MvcCookie</b> with the given name, or null if no 
 		///		cookie with that name exists.</returns>
-		MvcCookie GetCookie(string name);
+		IMvcCookie GetCookie(string name);
 
 
 		/// <summary>
@@ -85,7 +85,7 @@ namespace Triton.Controller.Request
 		/// <param name="name">The name of the response cookie to get.</param>
 		/// <returns>A <b>MvcCookie</b> with the given name, or null if no 
 		///		cookie with that name exists in the response.</returns>
-		MvcCookie GetResponseCookie(string name);
+		IMvcCookie GetResponseCookie(string name);
 
 
 		/// <summary>
@@ -93,7 +93,7 @@ namespace Triton.Controller.Request
 		/// exists, its information is updated, if not, it is created.
 		/// </summary>
 		/// <param name="cookie">The <b>MvcCookie</b> to set in the response.</param>
-		void SetResponseCookie(MvcCookie cookie);
+		void SetResponseCookie(IMvcCookie cookie);
 
 
 		/// <summary>

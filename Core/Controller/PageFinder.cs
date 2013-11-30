@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using Common.Logging;
 using Triton.Controller.Config;
+using Triton.Controller.Request;
 using Triton.Controller.Utilities;
 using Triton.Utilities.Configuration;
 
@@ -217,16 +218,18 @@ namespace Triton.Controller
 		/// <summary>
 		/// Finds the page (aspx file) for the given page name, section, and site.
 		/// </summary>
+		/// <param name="request">The Request Object</param>
 		/// <param name="pageName">The base name of the page to find, excluding ".aspx".</param>
 		/// <param name="section">The name of the section the page is for.</param>
 		/// <param name="site">The site code for the site the page is for.</param>
 		/// <returns>A <b>FileRecord</b> containing the information on the page's location.</returns>
 		public FileRecord FindPage(
+			MvcRequest request,
 			string pageName,
 			string section,
 			string site)
 		{
-			return this.FindPage(pageName, section, site, PAGE_EXTENSTION);
+			return this.FindPage(request, pageName, section, site, PAGE_EXTENSTION);
 		}
 
 
@@ -238,6 +241,7 @@ namespace Triton.Controller
 		/// <param name="site">The site code for the site the page is for.</param>
 		/// <returns>A <b>FileRecord</b> containing the information on the master page's location.</returns>
 		public FileRecord FindMasterPage(
+			MvcRequest request,
 			string pageName,
 			string section,
 			string site)
@@ -252,19 +256,21 @@ namespace Triton.Controller
 				}
 			}
 
-			return this.FindPage(pageName, section + this.masterPagesPath, site, MASTER_EXTENSTION);
+			return this.FindPage(request, pageName, section + this.masterPagesPath, site, MASTER_EXTENSTION);
 		}
 
 
 		/// <summary>
 		/// Finds the page (aspx file) for the given page name, section, and site.
 		/// </summary>
+		/// <param name="request">The Request Object</param>
 		/// <param name="pageName">The base name of the page to find, excluding ".aspx".</param>
 		/// <param name="section">The name of the section the page is for.</param>
 		/// <param name="site">The site code for the site the page is for.</param>
 		/// <param name="extension">The file extension of the file to find (including ".").</param>
 		/// <returns>A <b>FileRecord</b> containing the information on the page's location.</returns>
 		public FileRecord FindPage(
+			MvcRequest request,
 			string pageName,
 			string section,
 			string site,
@@ -280,7 +286,7 @@ namespace Triton.Controller
 				int version = SitesConfig.GetInstance().GetSiteVersion(site);
 
 				//  attempt to find the appropriate aspx file
-				pageFileRec = this.FindFile(pageName + extension, section, site, version, this.pagesPath, FileType.PAGE);
+				pageFileRec = this.FindFile(request, pageName + extension, section, site, version, this.pagesPath, FileType.PAGE);
 
 				//  if we successfully found a path to the target page,
 				//  put it in page cache.
@@ -306,6 +312,7 @@ namespace Triton.Controller
 // change to internal for 2.0
 //	internal FileRecord FindXml(
 		public FileRecord FindXml(
+			MvcRequest request,
 			string pageName,
 			string section,
 			string site)
@@ -316,7 +323,7 @@ namespace Triton.Controller
 			if (xmlFileRec == null) {
 				int version = SitesConfig.GetInstance().GetSiteVersion(site);
 
-				xmlFileRec = this.FindFile(pageName + XML_EXTENSTION, section, site, version, this.contentPath, FileType.CONTENT);
+				xmlFileRec = this.FindFile(request, pageName + XML_EXTENSTION, section, site, version, this.contentPath, FileType.CONTENT);
 
 				//  if we successfully found a path to the target page,
 				//  put it in page cache.
@@ -329,22 +336,24 @@ namespace Triton.Controller
 		}
 
 
-		/// <summary>
-		/// Finds the appropriate file based on version, site, and section.
-		/// </summary>
-		/// <remarks>
-		/// 
-		/// </remarks>
+		///  <summary>
+		///  Finds the appropriate file based on version, site, and section.
+		///  </summary>
+		///  <remarks>
+		///  
+		///  </remarks>
+		/// <param name="request">The request object</param>
 		/// <param name="fileName">The name of the file to find, including extension.</param>
-		/// <param name="section">The section of the site the file is for.</param>
-		/// <param name="site">The site the file is for.</param>
-		/// <param name="version">The version of the site the file is for.</param>
-		/// <param name="rootPath">The relative path from the application root to
-		///			the directory to search for the file.</param>
-		/// <param name="type">The<c>FileType</c> of the file.</param>
-		/// <returns>A <c>FileRecord</c> containing the information on the file located,
-		///			or <c>null</c> if no file was found.</returns>
+		///  <param name="section">The section of the site the file is for.</param>
+		///  <param name="site">The site the file is for.</param>
+		///  <param name="version">The version of the site the file is for.</param>
+		///  <param name="rootPath">The relative path from the application root to
+		/// 			the directory to search for the file.</param>
+		///  <param name="type">The<c>FileType</c> of the file.</param>
+		///  <returns>A <c>FileRecord</c> containing the information on the file located,
+		/// 			or <c>null</c> if no file was found.</returns>
 		private FileRecord FindFile(
+			MvcRequest request,
 			String fileName,
 			String section,
 			String site,
@@ -382,7 +391,7 @@ namespace Triton.Controller
 					case FileType.CONTENT:
 						//  check for <version>/<site>/<language>/<section>/<file>
 						//  (NOTE: this is only applicable for content)
-						fileRec.language = LanguageUtilities.GetLanguage(site);
+						fileRec.language = LanguageUtilities.GetLanguage(request, site);
 						if (this.FileExists(fileRec)) {
 							fileRec.fullPath = "/" + fileRec.BuildPath();
 							found = true;
@@ -401,7 +410,7 @@ namespace Triton.Controller
 						//  the previous version(s), recursively call FindFile
 						//  with the next lower version
 						if (SEARCH_METHOD_PREVIOUS_VER.Equals(searchMethod) && (version > 1)) {
-							fileRec = this.FindFile(fileName, section, site, version - 1, rootPath, type);
+							fileRec = this.FindFile(request, fileName, section, site, version - 1, rootPath, type);
 							found = this.FileExists(fileRec);
 
 							//  check for <version>/[configuration["defaultDirName"]/<file>

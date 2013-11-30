@@ -1,4 +1,5 @@
 using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace Triton.Controller.Request
 {
@@ -20,8 +21,12 @@ namespace Triton.Controller.Request
 	/// interface provide access to the contents and properties of each file.
 	/// </remarks>
 	///	<author>Scott Dyke</author>
-	public class MvcPostedFileCollection : NameObjectCollectionBase
+	public class MvcPostedFileCollection : Dictionary<string, MvcPostedFile>
 	{
+
+		//private  filesByName = new Dictionary<string, MvcPostedFile>();
+		private List<MvcPostedFile> filesByIndex = new List<MvcPostedFile>();
+
 		/// <summary>
 		/// Indexer to get an individual <b>MvcPostedFile</b> object from the file 
 		/// collection. This property is overloaded to allow retrieval of objects 
@@ -29,7 +34,7 @@ namespace Triton.Controller.Request
 		/// </summary>
 		public MvcPostedFile this[int index]
 		{
-			get { return (MvcPostedFile) base.BaseGet(index); }
+			get { return (MvcPostedFile)filesByIndex[index]; }
 		}
 
 
@@ -40,7 +45,7 @@ namespace Triton.Controller.Request
 		/// </summary>
 		public MvcPostedFile this[string name]
 		{
-			get { return (MvcPostedFile) base.BaseGet(name); }
+			get { return (MvcPostedFile)base[name]; }
 		}
 
 
@@ -54,7 +59,8 @@ namespace Triton.Controller.Request
 			string key,
 			MvcPostedFile file)
 		{
-			base.BaseAdd(key, file);
+			base.Add(key, file);
+			filesByIndex.Add(file);
 		}
 	}
 }

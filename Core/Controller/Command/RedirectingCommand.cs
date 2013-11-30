@@ -149,7 +149,7 @@ namespace Triton.Controller.Command
 		{
 			string url = null;
 
-			PageFinder.FileRecord fileRec = PageFinder.GetInstance().FindPage(this.targetPage, request["s"], request["site"]);
+			PageFinder.FileRecord fileRec = PageFinder.GetInstance().FindPage(request, this.targetPage, request["s"], request["site"]);
 
 			if (fileRec != null) {
 				request.Version = fileRec.version;
@@ -176,7 +176,7 @@ namespace Triton.Controller.Command
 		protected virtual PageFinder.FileRecord GetXmlPath(
 			MvcRequest request)
 		{
-			return (PageFinder.GetInstance().FindXml(this.targetPage, request["s"], request["site"]));
+			return (PageFinder.GetInstance().FindXml(request, this.targetPage, request["s"], request["site"]));
 		}
 	}
 }

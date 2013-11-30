@@ -144,7 +144,7 @@ namespace Triton.Controller.Request
 		/// <remarks>
 		/// Unimplemented for MvcCoreRequest.
 		/// </remarks>
-		public MvcCookie GetCookie(
+		public IMvcCookie GetCookie(
 			string name)
 		{
 			return null;
@@ -161,7 +161,7 @@ namespace Triton.Controller.Request
 		/// <remarks>
 		/// Unimplemented for MvcCoreRequest.
 		/// </remarks>
-		public MvcCookie GetResponseCookie(
+		public IMvcCookie GetResponseCookie(
 			string name)
 		{
 			return null;
@@ -177,7 +177,7 @@ namespace Triton.Controller.Request
 		/// Unimplemented for MvcCoreRequest.
 		/// </remarks>
 		public void SetResponseCookie(
-			MvcCookie cookie) {}
+			IMvcCookie cookie) {}
 
 
 		/// <summary>

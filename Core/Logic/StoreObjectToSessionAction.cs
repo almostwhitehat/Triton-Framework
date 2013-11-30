@@ -8,6 +8,7 @@ using Triton.Logic.Support;
 using Triton.Support.Request;
 using Triton.Utilities.Reflection;
 using Triton.CodeContracts;
+using Triton.Support.Session;
 
 namespace Triton.Logic {
 
@@ -80,10 +81,8 @@ public class StoreObjectToSessionAction : IAction
 		MvcRequest request = context.Request;
 
 		try {
-			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(ObjectItemNameIn),
-					"No item name given in the ObjectItemNameIn attribute.");
-			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(SessionName),
-					"No name to store the object in given in the SessionName attribute.");
+			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(ObjectItemNameIn), "No item name given in the ObjectItemNameIn attribute.");
+			ActionContract.Requires<ApplicationException>(!string.IsNullOrEmpty(SessionName), "No name to store the object in given in the SessionName attribute.");
 
 			object obj = null;
 			if (ExtractFromSearchResult) {
@@ -97,7 +96,7 @@ public class StoreObjectToSessionAction : IAction
 			}
 
 			if (obj != null) {
-				System.Web.HttpContext.Current.Session[SessionName] = obj;
+				SessionStateProvider.GetSessionState()[SessionName] = obj;
 				retEvent = Events.Ok;
 			} else {
 				retEvent = Events.NoValue;

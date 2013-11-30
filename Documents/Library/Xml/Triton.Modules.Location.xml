@@ -4,37 +4,25 @@
         <name>Triton.Modules.Location</name>
     </assembly>
     <members>
-        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress">
+        <member name="T:Triton.Location.Logic.GetCountriesAction">
             <summary>
-            Definitions for Fields and Filters of Persisted Address
+            Returns a SearchResult of type Country into the request.
             </summary>
         </member>
-        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Field">
+        <member name="M:Triton.Location.Logic.GetCountriesAction.#ctor">
             <summary>
-            Fields for Persisted Address
+            Default constructor for GetCountriesAction.
             </summary>
         </member>
-        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Filter">
+        <member name="P:Triton.Location.Logic.GetCountriesAction.CountryItemNameOut">
             <summary>
-            Filters for Persisted Address
+            Request item name for SearchResult Country output.
             </summary>
         </member>
-        <member name="T:Triton.Location.Model.States">
+        <member name="T:Triton.Location.Logic.GetCountriesAction.Events">
             <summary>
-            Singleton for storing location states for use in the deserialize address
+            Event names to return to the controller.
             </summary>
-        </member>
-        <member name="M:Triton.Location.Model.States.LoadStates">
-            <summary>
-            Loads the states from the database and populates singleton
-            </summary>
-        </member>
-        <member name="P:Triton.Location.Model.States.Item(System.Int32)">
-            <summary>
-            Indexer to get a State by ID
-            </summary>
-            <param name="id">The ID of the state to get</param>
-            <returns>The State with the given ID</returns>
         </member>
         <member name="M:Triton.Location.Model.Address.ToString(System.String)">
             <summary>
@@ -129,25 +117,22 @@
             <param name="filter">Filter with the criteria to search</param>
             <returns>SearchResult of PersistedAddress</returns>
         </member>
-        <member name="T:Triton.Location.Logic.GetCountriesAction">
+        <member name="T:Triton.Location.Model.States">
             <summary>
-            Returns a SearchResult of type Country into the request.
+            Singleton for storing location states for use in the deserialize address
             </summary>
         </member>
-        <member name="M:Triton.Location.Logic.GetCountriesAction.#ctor">
+        <member name="M:Triton.Location.Model.States.LoadStates">
             <summary>
-            Default constructor for GetCountriesAction.
+            Loads the states from the database and populates singleton
             </summary>
         </member>
-        <member name="P:Triton.Location.Logic.GetCountriesAction.CountryItemNameOut">
+        <member name="P:Triton.Location.Model.States.Item(System.Int32)">
             <summary>
-            Request item name for SearchResult Country output.
+            Indexer to get a State by ID
             </summary>
-        </member>
-        <member name="T:Triton.Location.Logic.GetCountriesAction.Events">
-            <summary>
-            Event names to return to the controller.
-            </summary>
+            <param name="id">The ID of the state to get</param>
+            <returns>The State with the given ID</returns>
         </member>
         <member name="T:Triton.Location.Support.Request.Deserialize">
             <summary>
@@ -161,6 +146,21 @@
             </summary>
             <param name="request">Request to create the PersistedAddress from.</param>
             <returns>A populated PersistedAddress object.</returns>
+        </member>
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress">
+            <summary>
+            Definitions for Fields and Filters of Persisted Address
+            </summary>
+        </member>
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Field">
+            <summary>
+            Fields for Persisted Address
+            </summary>
+        </member>
+        <member name="T:Triton.Location.Support.Request.ParameterNames.PersistedAddress.Filter">
+            <summary>
+            Filters for Persisted Address
+            </summary>
         </member>
     </members>
 </doc>

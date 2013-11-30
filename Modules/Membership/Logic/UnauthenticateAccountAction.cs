@@ -26,7 +26,7 @@ namespace Triton.Membership.Logic
 
 					// expire the cookie if it exists
 					if (context.Request.GetCookie(MembershipConstants.COOKIE_USER_ACCOUNT).Value != "") {
-						MvcCookie cookie = context.Request.GetCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
+						MvcHttpCookie cookie = (MvcHttpCookie)context.Request.GetCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
 						cookie.Expires = DateTime.Now.AddDays(-1);
 						context.Request.SetResponseCookie(cookie);
 					}

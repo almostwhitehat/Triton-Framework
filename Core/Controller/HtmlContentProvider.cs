@@ -119,10 +119,10 @@ public class HtmlContentProvider : ContentProvider
 		}
 
 				//  find the aspx file for the target page
-		PageFinder.FileRecord fileRec = pageFinder.FindPage(target.Page, target.Section, target.Site);
+		PageFinder.FileRecord fileRec = pageFinder.FindPage(context.Request, target.Page, target.Section, target.Site);
 
 				//  find the xml file for the target page
-		PageFinder.FileRecord xmlRec = pageFinder.FindXml(target.Page, target.Section, target.Site);
+		PageFinder.FileRecord xmlRec = pageFinder.FindXml(context.Request, target.Page, target.Section, target.Site);
 
 				//  put the XML file info into the request so the page can get it
 		if (xmlRec != null) {

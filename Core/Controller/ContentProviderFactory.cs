@@ -62,16 +62,17 @@ namespace Triton.Controller
 			if (name == null) {
 						//  NOTE: state based ContentProvider declaration is depricated.
 						//  This remains only for backward compatibility.
+						//  if a specific ContentProvider is not specifid, determine it from the request type
 				if ((context.StartState is BaseState)
 						&& (((BaseState)context.StartState)[CONTENT_PROVIDER_ATTRIBUTE] != null)) {
 					name = ((BaseState)context.StartState)[CONTENT_PROVIDER_ATTRIBUTE];
 
 					//  if a specific ContentProvider is not specifid, determine it from the request type
-				} else if (context.Request is MvcHttpRequest) {
+				} else if (context.Request.ToString().Contains("MvcHttpRequest")) {
 					name = "html";
-				} else if (context.Request is MvcXmlRequest) {
+				} else if (context.Request.ToString().Contains("MvcXmlRequest")) {
 					name = "xml";
-				} else if (context.Request is MvcCoreRequest) {
+				} else if (context.Request.ToString().Contains("MvcCoreRequest")) {
 					name = "simple";
 				}
 			}

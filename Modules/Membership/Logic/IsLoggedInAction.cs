@@ -47,12 +47,12 @@ namespace Triton.Membership.Logic
 					this.logger.Debug(debug => debug("Found Authentication cookie {0}.", MembershipConstants.COOKIE_USER_ACCOUNT));
 
 					byte[] bytes = ASCIIEncoding.ASCII.GetBytes(MembershipConstants.INIT_VECTOR);
-					MvcCookie authcookie = context.Request.GetCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
+					MvcHttpCookie authcookie = (MvcHttpCookie)context.Request.GetCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
 
 					// decode the cookie value to include the dnsname and accountid
 					// check to see if coockie has been expired
 					// this does not work as the expires is never set properly
-					this.logger.Debug(debug => debug("Cookie found. Cookie expires: {0}", authcookie.Expires.ToShortTimeString()));
+					this.logger.Debug(string.Format("Cookie found. Cookie expires: {0}", authcookie.Expires.ToShortTimeString()));
 
 					if (acct == null) {
 						this.logger.Info(info => info("Could not find the account in the session. Processing Cookie. Retrieving authentication information."));

@@ -280,7 +280,7 @@ namespace Triton.Web.View
 			string section,
 			string site)
 		{
-			PageFinder.FileRecord xmlRec = PageFinder.GetInstance().FindXml(path, section, site);
+			PageFinder.FileRecord xmlRec = PageFinder.GetInstance().FindXml(Request, path, section, site);
 
 			this.LoadControlXml(xmlRec);
 		}
@@ -373,11 +373,12 @@ namespace Triton.Web.View
 			string section,
 			string site)
 		{
-			return PageFinder.GetInstance().FindMasterPage(masterPageName, section, site)
+			return PageFinder.GetInstance().FindMasterPage(Request, masterPageName, section, site)
 			       ??
-			       PageFinder.GetInstance().FindMasterPage(masterPageName,
+			       PageFinder.GetInstance().FindMasterPage(Request,
+				                                           masterPageName,
 			                                               section,
-			                                               PageFinder.DEFAULT_LANGUAGE_DIR_NAME);
+														   PageFinder.DEFAULT_LANGUAGE_DIR_NAME);
 		}
 
 

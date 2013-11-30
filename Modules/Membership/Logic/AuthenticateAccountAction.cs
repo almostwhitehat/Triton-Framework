@@ -81,7 +81,7 @@ namespace Triton.Membership.Logic
 									this.logger.Debug(debug => debug("Looking for authentication cookie."));
 
 
-									MvcCookie authcookie = context.Request.GetCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
+									MvcHttpCookie authcookie = (MvcHttpCookie)context.Request.GetCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
 
 									// encrypt the cookie value - include the dnsname and accountid
 									byte[] bytes = ASCIIEncoding.ASCII.GetBytes(MembershipConstants.INIT_VECTOR);
@@ -102,7 +102,7 @@ namespace Triton.Membership.Logic
 										int.TryParse(ConfigurationManager.AppSettings["authenticationtimespan"], out hours);
 									}
 									if (authcookie == null) {
-										authcookie = new MvcCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
+										authcookie = new MvcHttpCookie(MembershipConstants.COOKIE_USER_ACCOUNT);
 
 										this.logger.Debug(debug => debug("Creating a new Authentication Cookie."));
 									}
