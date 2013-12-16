@@ -73,6 +73,7 @@ namespace Triton.Controller
 		
 
 		private const string PAGE_EXTENSTION = ".aspx";
+		private const string RAZOR_EXTENSION = ".cshtml";
 
 		private const string SEARCH_METHOD_DEFAULT = "defaultDir";
 		private const string SEARCH_METHOD_PREVIOUS_VER = "prevVersion";
@@ -232,6 +233,14 @@ namespace Triton.Controller
 			return this.FindPage(request, pageName, section, site, PAGE_EXTENSTION);
 		}
 
+		public FileRecord FindRazorPage(
+			MvcRequest request,
+			string pageName,
+			string section,
+			string site)
+		{
+			return this.FindPage(request, pageName, section, site, RAZOR_EXTENSION);
+		}
 
 		/// <summary>
 		/// Finds the master page (.master file) for the given name, section, and site.
