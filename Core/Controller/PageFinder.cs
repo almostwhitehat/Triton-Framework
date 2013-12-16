@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using Common.Logging;
@@ -17,8 +18,8 @@ namespace Triton.Controller
 	// History:
 	// 6/2/2009		KP  Changing the logging to Common.logging.
 	// 09/29/2009	KP	Renamed logging methods to use GetCurrentClassLogger method
-    // 08/11/2011   MSC Made private method for FindPage public, 
-    //                  so external contentproviders and contentpublishers can utilize it.
+	// 08/11/2011   MSC Made private method for FindPage public, 
+	//                  so external contentproviders and contentpublishers can utilize it.
 
 	#endregion
 
@@ -210,9 +211,9 @@ namespace Triton.Controller
 
 			LogManager.GetCurrentClassLogger().Info(
 					infoMessage => infoMessage("PageFinder - reset site '{0}', section '{1}', type '{2}'.",
-                             site,
-                             section,
-                             cache));
+							 site,
+							 section,
+							 cache));
 		}
 
 
@@ -372,12 +373,12 @@ namespace Triton.Controller
 		{
 			bool found = false;
 			FileRecord fileRec = new FileRecord {
-			                                    	rootPath = rootPath,
-			                                    	version = version.ToString(),
-			                                    	site = site,
-			                                    	section = section,
-			                                    	subPath = fileName
-			                                    };
+													rootPath = rootPath,
+													version = version.ToString(CultureInfo.InvariantCulture),
+													site = site,
+													section = section,
+													subPath = fileName
+												};
 
 			if (this.FileExists(fileRec)) {
 				fileRec.fullPath = "/" + fileRec.BuildPath();
@@ -411,7 +412,7 @@ namespace Triton.Controller
 				if (!found) {
 					try {
 						//  get the configuration section for the specified site
-						XmlConfiguration config = SitesConfig.GetInstance().GetConfig("sites", site);
+						XmlConfiguration config = SitesConfig.GetInstance().GetConfig("sites", site.ToUpper());
 						//  get the value of the defaultPageSearchMethod setting for the site
 						String searchMethod = config.GetValue("//defaultPageSearchMethod");
 
@@ -448,10 +449,10 @@ namespace Triton.Controller
 				if (pieces.Length == 2) {
 					LogManager.GetCurrentClassLogger().Warn(
 						warnMessage => warnMessage("PageFinder.FindFile: file not found: file = '{0}', section = '{1}', site = '{2}', version = {3}",
-						                           	fileName,
-						                           	section,
-						                           	site,
-						                           	version));
+													fileName,
+													section,
+													site,
+													version));
 				}
 				fileRec = null;
 			}
