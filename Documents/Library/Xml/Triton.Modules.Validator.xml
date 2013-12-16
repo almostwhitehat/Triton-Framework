@@ -103,6 +103,11 @@
             Gets the child rules of the rule.
             </summary>
         </member>
+        <member name="P:Triton.Validator.Model.Rules.IValidationRule.StopOnFail">
+            <summary>
+            Gets or sets a flag indicating if processing should stop if the rule fails.
+            </summary>
+        </member>
         <member name="M:Triton.Validator.Model.Rules.BaseRule.Evaluate(Triton.Controller.Request.MvcRequest)">
             <summary>
             Evaluates the rule to determine if the given request passes the rule or not.
@@ -137,6 +142,11 @@
         <member name="P:Triton.Validator.Model.Rules.BaseRule.Children">
             <summary>
             Gets the child rules of the rule.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Model.Rules.BaseRule.StopOnFail">
+            <summary>
+            Gets or sets a flag indicating if processing should stop if the rule fails.
             </summary>
         </member>
         <member name="F:Triton.Validator.Model.Rules.BaseCompositeRule.children">
@@ -479,6 +489,11 @@
             <summary>
             Gets the collection of errors that occurred during vaidation if the
             validation did not pass.
+            </summary>
+        </member>
+        <member name="P:Triton.Validator.Model.ValidationResult.StopProcessing">
+            <summary>
+            Gets or sets a flag indicating if processing should stop.
             </summary>
         </member>
         <member name="T:Triton.Validator.Model.ValidationRuleFactory">
