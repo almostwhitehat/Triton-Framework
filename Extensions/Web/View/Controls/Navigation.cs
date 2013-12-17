@@ -239,6 +239,10 @@ namespace Triton.Web.View.Controls
 					list.Attributes.Add("class", childNode.Attributes["class"].Value);
 				}
 
+				if (childNode.Attributes["link-class"] != null) {
+					surroundingTag.Attributes.Add("class", childNode.Attributes["link-class"].Value);
+				}
+
 				list.Controls.Add(surroundingTag);
 			}
 
@@ -246,6 +250,9 @@ namespace Triton.Web.View.Controls
 			if (items != null && items.HasChildNodes) {
 				//create the surrounding UL
 				HtmlGenericControl ul = new HtmlGenericControl("ul");
+				if (items.Attributes["class"] != null) {
+					ul.Attributes.Add("class", items.Attributes["class"].Value);
+				}
 				//create the items
 				foreach (XmlNode child in items) {
 					ul.Controls.Add(this.CreateListItem(child));
