@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Triton.Controller.Config;
+using Triton.Support;
 
 namespace Triton.Web.Support
 {
@@ -18,14 +19,6 @@ namespace Triton.Web.Support
 	///	<author>Scott Dyke</author>
 	public class WebInfo
 	{
-		/// <summary>
-		/// Represents application-level variables typically referenced by Application["key"].
-		/// This exists due to the need to reference HttpContext.Current in global.asax.cs' 
-		/// Application_Start method, which does not exist at that time if a page hasn't been
-		/// referenced yet.
-		/// </summary>
-		private static readonly Hashtable applicationVariables = Hashtable.Synchronized(new Hashtable());
-
 
 		protected WebInfo() {}
 
@@ -35,7 +28,7 @@ namespace Triton.Web.Support
 		/// </summary>
 		public static string BasePath
 		{
-			get { return (String)applicationVariables["BasePath"]; }
+			get { return AppInfo.BasePath; }
 		}
 
 
@@ -44,7 +37,7 @@ namespace Triton.Web.Support
 		/// </summary>
 		public static string Controller
 		{
-			get { return (String)applicationVariables["Controller"]; }
+			get { return (String) AppInfo.ApplicationVariables["Controller"]; }
 		}
 
 
@@ -81,7 +74,7 @@ namespace Triton.Web.Support
 		/// </summary>
 		public static Hashtable ApplicationVariables
 		{
-			get { return applicationVariables; }
+			get { return AppInfo.ApplicationVariables; }
 		}
 	}
 }

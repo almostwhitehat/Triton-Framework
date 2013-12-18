@@ -8,6 +8,7 @@ using Common.Logging;
 using Triton.Controller.Config;
 using Triton.Controller.Request;
 using Triton.Controller.Utilities;
+using Triton.Support;
 using Triton.Utilities.Configuration;
 
 namespace Triton.Controller
@@ -104,7 +105,7 @@ namespace Triton.Controller
 		{
 			//  get the base file path for the root directory
 			//basePath = Info.BasePath;
-			this.basePath = ConfigurationManager.AppSettings["rootPath"];
+			this.basePath = AppInfo.BasePath;
 			//  initialize the caches (for the file paths)
 			this.InitCache();
 

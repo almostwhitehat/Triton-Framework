@@ -20,6 +20,7 @@ namespace Triton.NHibernate.Model.Dao.Support
 			criteria = AddPagingCriteria(criteria, filter);
 
 			IList retValues = session.CreateMultiCriteria()
+				.SetCacheable(true)
 				.Add(criteria)
 				.Add(rowCount)
 				.List();

@@ -774,6 +774,35 @@
             Default is <c>false</c>, keeping the SearchResult if present.
             </summary>
         </member>
+        <member name="T:Triton.Support.AppInfo">
+            <summary>
+            <c>AppInfo</c> is a convenience class for getting information about the environment.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Support.AppInfo.applicationVariables">
+            <summary>
+            Represents application-level variables typically referenced by Application["key"].
+            This exists due to the need to reference HttpContext.Current in global.asax.cs' 
+            Application_Start method, which does not exist at that time if a page hasn't been
+            referenced yet.
+            </summary>
+        </member>
+        <member name="P:Triton.Support.AppInfo.BasePath">
+            <summary>
+            Gets the file system path to the application root directory.
+            </summary>
+        </member>
+        <member name="P:Triton.Support.AppInfo.Controller">
+            <summary>
+            Gets the relative URL to the HTTP controller.
+            </summary>
+        </member>
+        <member name="P:Triton.Support.AppInfo.ApplicationVariables">
+            <summary>
+            Represents application-level variables, that would typically be stored in Application["key"].
+            </summary>
+        </member>
         <member name="T:Triton.Support.Error.ErrorDictionary">
             <summary>
             <c>ErrorDictionary</c> is an abstract base class for implementing concrete

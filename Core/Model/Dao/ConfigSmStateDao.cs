@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Xml;
 using Triton.Controller.StateMachine;
 using Common.Logging;
+using Triton.Support;
 
 namespace Triton.Model.Dao
 {
@@ -63,7 +64,7 @@ namespace Triton.Model.Dao
 
 				//  make the XmlDocument object for the states.config file & load it
 				XmlDocument stateSettings = new XmlDocument();
-				stateSettings.Load(ConfigurationManager.AppSettings["rootPath"] + statesConfigPath);
+				stateSettings.Load(AppInfo.BasePath + statesConfigPath);
 
 				//======================================================
 				//  load the transition groups

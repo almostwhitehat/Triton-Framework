@@ -766,14 +766,6 @@
             </summary>
             <author>Scott Dyke</author>
         </member>
-        <member name="F:Triton.Web.Support.WebInfo.applicationVariables">
-            <summary>
-            Represents application-level variables typically referenced by Application["key"].
-            This exists due to the need to reference HttpContext.Current in global.asax.cs' 
-            Application_Start method, which does not exist at that time if a page hasn't been
-            referenced yet.
-            </summary>
-        </member>
         <member name="P:Triton.Web.Support.WebInfo.BasePath">
             <summary>
             Gets the file system path to the application root directory.

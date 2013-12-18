@@ -81,7 +81,7 @@ namespace Triton.Validator.Model
 		{
 			XmlDocument doc = new XmlDocument();
 
-			string rootPath = System.Configuration.ConfigurationManager.AppSettings["rootPath"];
+			string rootPath = AppInfo.BasePath;
 			
 			string validatorsConfigPath = System.Configuration.ConfigurationManager.AppSettings["validatorsConfigPath"];
 

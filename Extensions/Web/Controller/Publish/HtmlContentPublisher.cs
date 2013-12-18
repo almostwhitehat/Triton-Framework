@@ -98,7 +98,7 @@ public class HtmlContentPublisher : IContentPublisher
 			// TODO: log it
 		}
 
-		this.basePath = ConfigurationManager.AppSettings["rootPath"];
+		this.basePath = AppInfo.BasePath;
 		this.publishPath = SitesConfig.GetInstance().GetValue("/siteConfiguration/general/publishPath");
 	}
 

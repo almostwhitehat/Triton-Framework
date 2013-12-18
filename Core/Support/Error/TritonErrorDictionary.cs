@@ -36,7 +36,7 @@ namespace Triton.Support.Error
 				XmlConfiguration siteConfig = SitesConfig.GetInstance().GetConfig("sites", this.site);
 				String errorDictionaryConfigPath = siteConfig.GetValue("//validationErrorDictionaryPath");
 
-				xmlDoc.Load(ConfigurationManager.AppSettings["rootPath"] + errorDictionaryConfigPath);
+				xmlDoc.Load(AppInfo.BasePath + errorDictionaryConfigPath);
 				rootNode = xmlDoc.DocumentElement;
 				if (rootNode != null) {
 					XmlNodeList errors = rootNode.SelectNodes("//Error");

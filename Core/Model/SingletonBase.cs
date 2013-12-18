@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Text;
 using System.Xml;
 using System.Data;
+using Triton.Support;
 using Triton.Utilities.Configuration;
 using Triton.Utilities.Reflection;
 using Triton.Model.Dao;
@@ -221,7 +222,7 @@ public class SingletonBase<TSingleton, TElement, TKey> : IEnumerable
 	protected virtual XmlConfiguration GetConfiguration()
 	{
 		XmlConfiguration config = new XmlConfiguration();
-		string rootPath = ConfigurationManager.AppSettings["rootPath"];
+		string rootPath = AppInfo.BasePath;
 		string configPath = ConfigurationManager.AppSettings["singletonsConfigPath"];
 
 		config.Load(rootPath + configPath);

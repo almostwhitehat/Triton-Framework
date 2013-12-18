@@ -111,6 +111,7 @@
     <Compile Include="Logic\RetrieveObjectFromSessionAction.cs" />
     <Compile Include="Logic\SetObjectPropertyAction.cs" />
     <Compile Include="Logic\StoreObjectToSessionAction.cs" />
+    <Compile Include="Support\AppInfo.cs" />
     <Compile Include="Support\Error\TritonErrorDictionary.cs" />
     <Compile Include="Support\Request\Extensions.cs" />
     <Compile Include="Support\Session\ISessionState.cs" />

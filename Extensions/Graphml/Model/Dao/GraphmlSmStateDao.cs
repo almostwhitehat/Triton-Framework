@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Common.Logging;
 using Triton.Controller.StateMachine;
+using Triton.Support;
 using Triton.Web.Support;
 
 namespace Triton.Graphml.Model.Dao
@@ -64,8 +65,7 @@ namespace Triton.Graphml.Model.Dao
 
 			try {
 				// get the path to the states.config directory from web.config
-				string statesConfigPath = WebInfo.BasePath
-				                          + ConfigurationManager.AppSettings["statesDiagramPath"];
+				string statesConfigPath = AppInfo.BasePath + ConfigurationManager.AppSettings["statesDiagramPath"];
 
 				if (statesConfigPath == null) {
 					throw new ApplicationException("No states.config path in config file.");

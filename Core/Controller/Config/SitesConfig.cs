@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using Common.Logging;
+using Triton.Support;
 using Triton.Utilities.Configuration;
 
 namespace Triton.Controller.Config
@@ -50,7 +51,7 @@ namespace Triton.Controller.Config
 							//  make the XmlConfiguration object for the sites.config file
 							instance = new SitesConfig();
 							//instance.Load(Info.BasePath + sitesConfigPath);
-							instance.Load(ConfigurationSettings.AppSettings["rootPath"] + sitesConfigPath);
+							instance.Load(AppInfo.BasePath + sitesConfigPath);
 							LogManager.GetCurrentClassLogger().Info(
 								infoMessage => infoMessage("SitesConfig - load completed."));
 						} catch (Exception e) {
