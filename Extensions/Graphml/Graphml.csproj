@@ -91,6 +91,10 @@
       <Project>{0B6862F8-503C-4BC6-91E5-B51E8DF5A18D}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Web\Web.csproj">
+      <Project>{9e7d4cdf-ced0-4414-bfe8-fecb637fc1f0}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
