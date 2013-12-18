@@ -412,7 +412,7 @@ namespace Triton.Controller
 				if (!found) {
 					try {
 						//  get the configuration section for the specified site
-						XmlConfiguration config = SitesConfig.GetInstance().GetConfig("sites", site.ToUpper());
+						XmlConfiguration config = SitesConfig.GetInstance().GetConfig("sites", site);
 						//  get the value of the defaultPageSearchMethod setting for the site
 						String searchMethod = config.GetValue("//defaultPageSearchMethod");
 
