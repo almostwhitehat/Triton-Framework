@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using Triton.Utilities;
+using System.Diagnostics;
 
 namespace Triton.Controller
 {
@@ -61,7 +62,7 @@ namespace Triton.Controller
 			object s,
 			EventArgs e)
 		{
-			MvcTimer timer = new MvcTimer();
+			Stopwatch timer = new Stopwatch();
 			timer.Start();
 			HttpContext.Current.Items[TIMER_NAME] = timer;
 		}
@@ -80,14 +81,14 @@ namespace Triton.Controller
 			HttpApplication app = s as HttpApplication;
 
 			try {
-				MvcTimer timer = HttpContext.Current.Items[TIMER_NAME] as MvcTimer;
+				Stopwatch timer = HttpContext.Current.Items[TIMER_NAME] as Stopwatch;
 				timer.Stop();
 
 				string ip = HttpContext.Current.Request.ServerVariables["LOCAL_ADDR"];
 
 				app.Context.Response.Write(string.Format("{0}<!--/* {1} [{2}] */-->",
 				                                         Environment.NewLine,
-				                                         timer.Time,
+				                                         timer.ElapsedMilliseconds,
 				                                         ip));
 			} catch {}
 		}
