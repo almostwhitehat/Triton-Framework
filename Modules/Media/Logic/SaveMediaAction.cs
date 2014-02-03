@@ -42,20 +42,32 @@ namespace Triton.Media.Logic
 		private string requestItemName = "uploaded_media";
 		//private string savePathSuffix;
 
-		public string RequestItemName
-		{
-			get { return this.requestItemName; }
-			set { this.requestItemName = value; }
-		}
-
-		public string MediaRequestName { get; set; }
 
 		public SaveMediaAction()
 		{
-			this.MediaRequestName = "media_file_path";
+			MediaRequestName = "media_file_path";
 		}
 
-		#region BizAction Members
+
+		public string RequestItemName
+		{
+			get {
+				return requestItemName;
+			}
+			set {
+				requestItemName = value;
+			}
+		}
+
+
+		public string MediaRequestName
+		{
+			get;
+			set;
+		}
+
+
+		#region IAction Members
 
 		public override string Execute(
 			TransitionContext context)
@@ -63,28 +75,27 @@ namespace Triton.Media.Logic
 			string retEvent = EVENT_ERROR;
 
 			try {
-				this.request = context.Request;
+				request = context.Request;
 				//idk how we got here and no files are in the request, and technically not an error
 
 				IList<Model.Media> media = new List<Model.Media>();
-				string[] files = context.Request[MediaRequestName].Split(',');
+				string[] files = request[MediaRequestName].Split(',');
 				foreach (string file in files) {
-					media.Add(this.ProcessFile(file));
+					media.Add(ProcessFile(file));
 				}
 
-				context.Request.Items["size"] = "Successfully uploaded: ";
+				request.Items["size"] = "Successfully uploaded: ";
 
 				foreach (Model.Media m in media) {
-					context.Request.Items["size"] += string.Format("{0}, ", m.Name);
+					request.Items["size"] += string.Format("{0}, ", m.Name);
 				}
 
-				context.Request.Items[this.RequestItemName] = media;
+				request.Items[this.RequestItemName] = media;
 
 
-				context.Request.Items["result"] = "success";
+				request.Items["result"] = "success";
 				retEvent = EVENT_OK;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				LogManager.GetLogger(typeof(UploadMediaAction)).Error(
 							errorMessage => errorMessage("Error occured in UploadMediaAction.", ex));
 				context.Request.Items["result"] = "error";
@@ -102,7 +113,7 @@ namespace Triton.Media.Logic
 		{
 			Model.Media retMedia = new Model.Media();
 
-			string originalFileName = this.GetFileName(file);
+			string originalFileName = GetFileName(file);
 			string fileName = originalFileName;
 
 			MediaType type;
@@ -110,13 +121,12 @@ namespace Triton.Media.Logic
 			IMediaDao mdao = DaoFactory.GetDao<IMediaDao>();
 
 			IList<MediaType> types = dao.Get(new MediaType {
-				FileTypes = new List<string> { this.GetFileType(fileName) }
+				FileTypes = new List<string> { GetFileType(fileName) }
 			});
 
 			if (types.Count > 0) {
 				type = types[0];
-			}
-			else {
+			} else {
 				type = dao.Get("misc_docs");
 			}
 
