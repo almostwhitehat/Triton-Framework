@@ -1,0 +1,6 @@
+E:\TritonFramework\Bin\Debug\Triton.Core.dll
+E:\TritonFramework\Bin\Debug\Triton.Core.pdb
+E:\TritonFramework\Bin\Debug\Triton.Core.xml
+E:\TritonFramework\Core\obj\Debug\Core.csprojResolveAssemblyReference.cache
+E:\TritonFramework\Core\obj\Debug\Triton.Core.dll
+E:\TritonFramework\Core\obj\Debug\Triton.Core.pdb

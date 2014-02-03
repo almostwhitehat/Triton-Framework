@@ -1,0 +1,6 @@
+E:\TritonFramework\Modules\Location\obj\Debug\Location.csprojResolveAssemblyReference.cache
+E:\TritonFramework\Bin\Debug\Triton.Modules.Location.dll
+E:\TritonFramework\Bin\Debug\Triton.Modules.Location.pdb
+E:\TritonFramework\Bin\Debug\Triton.Modules.Location.xml
+E:\TritonFramework\Modules\Location\obj\Debug\Triton.Modules.Location.dll
+E:\TritonFramework\Modules\Location\obj\Debug\Triton.Modules.Location.pdb

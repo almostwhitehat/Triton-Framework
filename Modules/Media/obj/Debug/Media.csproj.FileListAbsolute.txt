@@ -1,0 +1,6 @@
+E:\TritonFramework\Bin\Debug\Triton.Modules.Media.dll
+E:\TritonFramework\Bin\Debug\Triton.Modules.Media.pdb
+E:\TritonFramework\Bin\Debug\Triton.Modules.Media.xml
+E:\TritonFramework\Modules\Media\obj\Debug\Media.csprojResolveAssemblyReference.cache
+E:\TritonFramework\Modules\Media\obj\Debug\Triton.Modules.Media.dll
+E:\TritonFramework\Modules\Media\obj\Debug\Triton.Modules.Media.pdb

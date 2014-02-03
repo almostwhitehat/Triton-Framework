@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Triton.Modules.Media</name>
+    </assembly>
+    <members>
+        <member name="P:Triton.Media.Logic.DeleteMediaAction.MediaItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing
+            the Media to delete.
+            </summary>
+        </member>
+        <member name="P:Triton.Media.Logic.DeleteMediaAction.MediaRequestName">
+            <summary>
+            Derpicated. Use MediaItemNameIn instead.
+            </summary>
+        </member>
+        <member name="P:Triton.Media.Logic.DeleteMediaAction.DeleteFile">
+            <summary>
+            Gets or sets flag indicating whether or not the actions should
+            also delete the file referenced by the media record.
+            </summary>
+        </member>
+        <member name="M:Triton.Media.Logic.UploadMediaAction.GetFileName(System.String)">
+            <summary>
+            Strips any directory info and leaves only the file name.
+            </summary>
+            <param name="filePath">File path returned by the <code>WebPostedFile.Name</code></param>
+            <returns>File name of the file.</returns>
+        </member>
+        <member name="M:Triton.Media.Logic.UploadMediaAction.ProportionallyResizeBitmap(System.Drawing.Bitmap,System.Double,System.Double)">
+            <summary>
+            
+            </summary>
+            <param name="src"></param>
+            <param name="maxWidth"></param>
+            <param name="maxHeight"></param>
+            <returns></returns>
+            <remarks>http://absolutecobblers.blogspot.com/2008/02/aspnet-image-upload-and-resize-in-c-net.html</remarks>
+        </member>
+        <member name="M:Triton.Media.Support.Request.Deserialize.CreateMedia(Triton.Controller.Request.MvcRequest)">
+            <summary>
+            Creates a new <c>Media</c> from the request.
+            </summary>
+            <param name="request">Request to create the Media from.</param>
+            <returns>A populated Media object.</returns>
+        </member>
+        <member name="M:Triton.Media.Support.Request.Deserialize.Populate(Triton.Controller.Request.MvcRequest,Triton.Media.Model.Media)">
+            <summary>
+            Populates the <c>Media</c> with the values from the request.
+            </summary>
+            <param name="request">Request to populate the Media from.</param>
+            <param name="media">Media to populate</param>
+            <returns>Populated from the request Media object.</returns>
+        </member>
+        <member name="M:Triton.Media.Support.Request.Deserialize.GetFileName(System.String)">
+            <summary>
+            Strips any directory info and leaves only the file name.
+            </summary>
+            <param name="filePath">File path returned by the <code>WebPostedFile.Name</code></param>
+            <returns>File name of the file.</returns>
+        </member>
+        <member name="M:Triton.Media.Support.Request.Deserialize.GetFileType(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="suffix"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Triton.Media.Model.Dao.NhMediaDao">
+            <summary>
+            Media DAO Class
+            </summary>
+        </member>
+        <member name="M:Triton.Media.Model.Dao.NhMediaDao.Get(System.Int32)">
+            <summary>
+            summary
+            </summary>
+            <param name="id">integer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Triton.Media.Model.Dao.NhMediaDao.Find(Triton.Media.Model.Dao.MediaFilter)">
+            <summary>
+            summary
+            </summary>
+            <param name="filter">byexample</param>
+            <returns></returns>
+        </member>
+        <member name="T:Triton.Media.Model.Dao.Support.FilterExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Triton.Media.Model.Dao.Support.FilterExtensions.Fill(Triton.Media.Model.Dao.MediaFilter,Triton.Controller.Request.MvcRequest)">
+            <summary>
+            
+            </summary>
+            <param name="filter"></param>
+            <param name="request"></param>
+        </member>
+        <member name="P:Triton.Media.Model.FileRecord.Path">
+            Pending further investigation this will be much too inefficient for regular use.
+        </member>
+    </members>
+</doc>

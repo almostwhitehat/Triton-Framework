@@ -69,10 +69,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Assemblies\Common.Logging\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Assemblies\NHibernate\NHibernate.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -99,9 +95,6 @@
     <Compile Include="Model\Dao\ICountryDao.cs" />
     <Compile Include="Model\Dao\IPersistedAddressDao.cs" />
     <Compile Include="Model\Dao\IStateDao.cs" />
-    <Compile Include="Model\Dao\NhCountryDao.cs" />
-    <Compile Include="Model\Dao\NhPersistedAddressDao.cs" />
-    <Compile Include="Model\Dao\NhStateDao.cs" />
     <Compile Include="Model\Dao\PersistedAddressFilter.cs" />
     <Compile Include="Model\Dao\Support\FilterExtensions.cs" />
     <Compile Include="Model\GeoLocation.cs" />
@@ -121,22 +114,9 @@
     <None Include="Model\Location.cd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Model\Dao\NHibernate\City.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\Country.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\PersistedAddress.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\PostalCode.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\State.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{0B6862F8-503C-4BC6-91E5-B51E8DF5A18D}</Project>
       <Name>Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Extensions\NHibernate\Extensions.NHibernate.csproj">
-      <Project>{BD329E03-0C13-4A35-8790-A593A693D8AE}</Project>
-      <Name>Extensions.NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Extensions\Web\Web.csproj">
       <Project>{9E7D4CDF-CED0-4414-BFE8-FECB637FC1F0}</Project>

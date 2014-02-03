@@ -1,0 +1,6 @@
+E:\TritonFramework\Bin\Debug\Triton.Modules.Membership.dll
+E:\TritonFramework\Bin\Debug\Triton.Modules.Membership.pdb
+E:\TritonFramework\Bin\Debug\Triton.Modules.Membership.xml
+E:\TritonFramework\Modules\Membership\obj\Debug\Membership.csprojResolveAssemblyReference.cache
+E:\TritonFramework\Modules\Membership\obj\Debug\Triton.Modules.Membership.dll
+E:\TritonFramework\Modules\Membership\obj\Debug\Triton.Modules.Membership.pdb

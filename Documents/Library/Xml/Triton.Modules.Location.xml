@@ -134,6 +134,13 @@
             <param name="id">The ID of the state to get</param>
             <returns>The State with the given ID</returns>
         </member>
+        <member name="P:Triton.Location.Model.States.Item(System.String)">
+            <summary>
+            Indexer to get a State by Code
+            </summary>
+            <param name="code">The ID of the state to get</param>
+            <returns>The State with the given Code</returns>
+        </member>
         <member name="T:Triton.Location.Support.Request.Deserialize">
             <summary>
             Helper class to take parameters from the request and generate objects to save/update.

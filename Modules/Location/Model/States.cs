@@ -53,6 +53,17 @@ namespace Triton.Location.Model
             get { return states.FirstOrDefault(s => s.Id.Value == id); }
         }
 
+	/// <summary>
+        /// Indexer to get a State by Code
+        /// </summary>
+        /// <param name="code">The ID of the state to get</param>
+        /// <returns>The State with the given Code</returns>
+        public State this[string code]
+        {
+            get { return states.FirstOrDefault(s => s.Code == code); }
+        }
+
+
         /// <summary>
         /// Loads the states from the database and populates singleton
         /// </summary>

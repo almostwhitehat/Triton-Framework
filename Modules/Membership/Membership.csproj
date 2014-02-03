@@ -119,8 +119,6 @@
     <Compile Include="Model\Dao\AttributeTypeFilter.cs" />
     <Compile Include="Model\Dao\IAttributeTypeDao.cs" />
     <Compile Include="Model\Dao\IMemberContextDao.cs" />
-    <Compile Include="Model\Dao\NhAttributeTypeDao.cs" />
-    <Compile Include="Model\Dao\NhMemberContextDao.cs" />
     <Compile Include="Model\Dao\RoleFilter.cs" />
     <Compile Include="Model\Dao\Support\FilterExtensions.cs" />
     <Compile Include="Model\Username.cs" />
@@ -134,10 +132,6 @@
     <Compile Include="Model\Dao\IAccountStatusDao.cs" />
     <Compile Include="Model\Dao\INameSuffixDao.cs" />
     <Compile Include="Model\Dao\IRoleDao.cs" />
-    <Compile Include="Model\Dao\NhAccountDao.cs" />
-    <Compile Include="Model\Dao\NhAccountStatusDao.cs" />
-    <Compile Include="Model\Dao\NhNameSuffixDao.cs" />
-    <Compile Include="Model\Dao\NhRoleDao.cs" />
     <Compile Include="Model\MemberContext.cs" />
     <Compile Include="Support\MembershipConstants.cs" />
     <Compile Include="Model\Role.cs" />
@@ -149,14 +143,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Web\Controls\AttributeTypeSelect.cs" />
     <Compile Include="View\Web\WebPageExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Model\Dao\NHibernate\Account.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\AccountStatus.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\MemberContext.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\NameSuffix.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\Person.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\Role.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Model\Membership.cd" />
@@ -182,12 +168,6 @@
       <Project>{4D2A808E-5096-4FAA-AC04-1A75287A572C}</Project>
       <Name>Validator</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Model\Dao\NHibernate\AttributeType.hbm.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Model\Dao\NHibernate\Username.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic\Support\" />

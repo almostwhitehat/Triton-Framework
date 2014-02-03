@@ -1,0 +1,6 @@
+E:\TritonFramework\Bin\Debug\Triton.Modules.Validator.dll
+E:\TritonFramework\Bin\Debug\Triton.Modules.Validator.pdb
+E:\TritonFramework\Bin\Debug\Triton.Modules.Validator.xml
+E:\TritonFramework\Modules\Validator\obj\Debug\Validator.csprojResolveAssemblyReference.cache
+E:\TritonFramework\Modules\Validator\obj\Debug\Triton.Modules.Validator.dll
+E:\TritonFramework\Modules\Validator\obj\Debug\Triton.Modules.Validator.pdb

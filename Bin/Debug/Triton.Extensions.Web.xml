@@ -1,0 +1,1384 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Triton.Extensions.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Triton.Controller.FrontController">
+            <summary>
+            <b>FrontController</b> gets incoming requests from IIS and delegates processing
+            to the appropriate Command.
+            </summary>
+            <remarks>
+            IDEAS:
+            In the DAOs, rather than always retrieving all fields, specify fields to
+            be retrieved by each DAO in config file.
+            </remarks>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Controller.FrontController.ProcessRequest(System.Web.HttpContext)">
+            <summary>
+            Processes an HTTP Web request.
+            </summary>
+            <param name="context">An <c>HttpContext</c> object that provides
+            		references to the intrinsic server objects (for example, 
+            		Request, Response, Session, and Server) used to service 
+            		HTTP requests.</param>
+        </member>
+        <member name="P:Triton.Controller.FrontController.IsReusable">
+            <summary>
+            Returns <c>true</c> if the instance is reusable, <c>false</c> otherwise.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.Publish.HtmlContentPublisher">
+            <summary>
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Controller.Publish.HtmlContentPublisher.EXPIRATION_SETTING">
+            <summary>
+            The name of the configuration setting within triton/publishing/settings for the
+            expiration time (in minutes) of published pages.
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Publish.HtmlContentPublisher.PARAMS_TO_IGNORE">
+            <summary>
+            The request parameters to exclude from the publisher key.
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Publish.HtmlContentPublisher.basePath">
+            <summary>
+            The path to the root of the application.
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Publish.HtmlContentPublisher.publishPath">
+            <summary>
+            The relative (to basePath) path to the publish directory.
+            </summary>
+        </member>
+        <member name="M:Triton.Controller.Publish.HtmlContentPublisher.Publish(System.Object,Triton.Controller.TransitionContext,Triton.Controller.Publish.Publisher)">
+            <summary>
+            Publishes the content contained in the publishParam.
+            </summary>
+            <param name="publishParam">Contains the content to be published.</param>
+            <param name="context">The Context of the request the content is being published for.</param>
+            <param name="publisher">The publisher </param>
+            <returns></returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.HtmlContentPublisher.GetPublishKey(Triton.Controller.TransitionContext)">
+            <summary>
+            Gets the publish key for the given context.
+            </summary>
+            <param name="context">The context to get the publish key for.</param>
+            <returns>The publish key for the given context.</returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.HtmlContentPublisher.ShouldBePublished(Triton.Controller.TransitionContext)">
+            <summary>
+            Determines if the content fulfilling the given context's request should be published.
+            </summary>
+            <param name="context">The context of the request the content is for.</param>
+            <returns><b>True</b> if the content should be published, <b>false</b> if not.</returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.HtmlContentPublisher.IsExpired(Triton.Controller.Publish.PublishRecord)">
+            <summary>
+            Determines if the published content referenced by the given PublishRecord is expired.
+            </summary>
+            <param name="publishRecord">The PublishRecord to determine the expiration of.</param>
+            <returns><b>True</b> if the given PublishRecord is expired, <b>false</b> if not.</returns>
+        </member>
+        <member name="M:Triton.Controller.Publish.HtmlContentPublisher.GetUnicodeSequence(System.Text.RegularExpressions.Match)">
+            <summary>
+            This is the delegate function that is called each time a regular expression match
+            is found during a Replace operation.
+            </summary>
+            <param name="match">The <c>Match</c> resulting from a single regular expression match during a Replace.</param>
+            <returns>A <c>string</c> consisting of unicodes (represented by 2-digit fixed-length hex numbers) of the input value.</returns>
+        </member>
+        <member name="P:Triton.Controller.Publish.HtmlContentPublisher.Name">
+            <summary>
+            Gets the name of the Publisher.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.Request.MvcHttpCookie">
+            <summary>
+            <b>MvcCookie</b> is an adaptor for the underlying cookie implementation to adapt it
+            for use with <b>MvcRequest</b>.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpCookie.#ctor(System.String)">
+            <summary>
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.Domain">
+            <summary>
+            Gets or sets the domain to associate the cookie with. 
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.Expires">
+            <summary>
+            Gets or sets the expiration date and time for the cookie.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.HasKeys">
+            <summary>
+            Gets a value indicating whether a cookie has subkeys.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.Name">
+            <summary>
+            Gets or sets the name of a cookie.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.Path">
+            <summary>
+            Gets or sets the virtual path to transmit with the current cookie.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.Secure">
+            <summary>
+            Gets or sets a value indicating whether to transmit the 
+            cookie using SSL (that is, over HTTPS only).
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.Value">
+            <summary>
+            Gets or sets an individual cookie value.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpCookie.Values">
+            <summary>
+            Gets a collection of key-and-value value pairs that are 
+            contained within a single cookie object.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.Request.MvcHttpPostedFile">
+            <summary>
+            <b>MvcHttpPostedFile</b> provides a way to access individual files that 
+            have been uploaded by a client.  This is an Adapter class for HttpPostedFile.
+            </summary>
+            <remarks>
+            The <c>MvcPostedFileCollection</c> class provides access to all the files uploaded 
+            from a client as a file collection. <b>MvcHttpPostedFile</b> provides properties and 
+            methods to get information on an individual file and to read and save the 
+            file. Files are uploaded in MIME multipart/form-data format and are buffered 
+            in server memory until explicitly saved to disk.
+            </remarks>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcHttpPostedFile.baseFile">
+            <summary>
+            Reference to the underlying HttpPostedFile object.
+            </summary>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpPostedFile.#ctor(System.Web.HttpPostedFile)">
+            <summary>
+            Constructs a new <b>MvcHttpPostedFile</b> adapter for the given <b>HttpPostedFile</b>.
+            </summary>
+            <param name="httpFile"></param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpPostedFile.SaveAs(System.String)">
+            <summary>
+            Saves the contents of an uploaded file.
+            </summary>
+            <param name="fileName">The name of the saved file.</param>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpPostedFile.Length">
+            <summary>
+            Gets the size in bytes of an uploaded file.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpPostedFile.Name">
+            <summary>
+            Gets the fully-qualified name of the file on the client's computer 
+            (for example "C:\MyFiles\Test.txt").
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpPostedFile.Type">
+            <summary>
+            Gets the MIME content type of a file sent by a client.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpPostedFile.InputStream">
+            <summary>
+            Gets a <c>Stream</c> object which points to an uploaded file to prepare 
+            for reading the contents of the file.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.Request.MvcHttpRequest">
+            <summary>
+            <b>MvcHttpRequest</b> is an <i>adaptor</i> class that adapts a .net request
+            (represented by a HttpContext) to the MvcRequest interface.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcHttpRequest.httpContext">
+            <summary>
+            The underlying .net request HttpContext this 
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcHttpRequest.localParams">
+            <summary>
+            The local collection of parameters.
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcHttpRequest.postedFiles">
+            <summary>
+            The collection of client uploaded files.
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcHttpRequest.useLocal">
+            <summary>
+            Flag to indicate whether or not we should use the local collection,
+            or the underlying HttpContext collection.
+            </summary>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.#ctor(System.Web.HttpContext)">
+            <summary>
+            Constructs a new MvcHttpRequest from the given HttpContext.
+            </summary>
+            <param name="httpContext"></param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.GetItem``1(System.Object)">
+            <summary>
+             Retrieves the specific Type of object from the Items Dictionary.
+            </summary>
+            <param name="key">Object key.</param>
+            <typeparam name="T">Type of object to return.</typeparam>
+            <returns>The corresponding key value.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.GetCookie(System.String)">
+            <summary>
+            Returns a <b>MvcCookie</b> from the request with the given name, 
+            or null if no cookie with that name exists.
+            </summary>
+            <param name="name">The name of the cookie to get.</param>
+            <returns>A <b>MvcCookie</b> with the given name, or null if no 
+            	cookie with that name exists.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.GetResponseCookie(System.String)">
+            <summary>
+            Returns a <b>MvcCookie</b> from the response with the given name, 
+            or null if no cookie with that name exists.
+            </summary>
+            <param name="name">The name of the response cookie to get.</param>
+            <returns>A <b>MvcCookie</b> with the given name, or null if no 
+            	cookie with that name exists in the response.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.SetResponseCookie(Triton.Controller.Request.IMvcCookie)">
+            <summary>
+            Sets a <b>MvcCookie</b> in the response.  If the cookie already
+            exists, its information is updated, if not, it is created.
+            </summary>
+            <param name="cookie">The <b>MvcCookie</b> to set in the response.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.WriteResponse(System.String,System.Boolean)">
+            <summary>
+            Writes the given content to the request's response.
+            </summary>
+            <param name="content">The content to write to the response.</param>
+            <param name="endResponse"><b>True</b> if the response is to be ended,
+            	<b>false</b> if not.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.Execute(System.String)">
+            <summary>
+            Executes the given URL and returns the content returned by the URL.
+            </summary>
+            <param name="url">The URL to execute.</param>
+            <returns>The content returned from the given URL.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.Transfer(System.String)">
+            <summary>
+            Transfers processing of the request to the given URL.
+            </summary>
+            <param name="url">The URL to transfer processing to.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.Redirect(System.String)">
+            <summary>
+            Redirects a client to a new URL and specifies the new URL.
+            </summary>
+            <param name="url">The target location.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.ValidateInput">
+            <summary>
+            Validates data submitted by a client and raises an exception 
+            if potentially dangerous data is present.
+            </summary>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcHttpRequest.MakeLocalCollection">
+            <summary>
+            Builds the local collection of parameters.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.Item(System.String)">
+            <summary>
+            Indexer for a <b>MvcRequest</b>.  Gets or Sets the parameter 
+            with the given name.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.Params">
+            <summary>
+            Gets a collection of the parameters of the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.Items">
+            <summary>
+            Gets a collection of objects used internally for the processing of the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.Version">
+            <summary>
+            Gets the version of the target "page" for rendering the response.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.IP">
+            <summary>
+            Gets the IP address of the origin of the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.UserName">
+            <summary>
+            Gets the logon user of the client request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.Files">
+            <summary>
+            Gets the collection of client-uploaded files (Multipart MIME format).
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.Url">
+            <summary>
+            Gets the URL of the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.RawUrl">
+            <summary>
+            Gets the RawUrl of the request (url before any rewriting or redirect)
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcHttpRequest.LocalParams">
+            <summary>
+            Gets the local collection of parameters.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.Request.MvcXmlRequest">
+            <summary>
+            <b>MvcXmlRequest</b> is the implementation of the <b>MvcRequest</b> interface
+            for XML requests.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcXmlRequest.REQUEST_XML">
+            <summary>
+            The name in the <i>Items</i> property of the XmlDocument containing the initial request.
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcXmlRequest.RESPONSE_XML">
+            <summary>
+            The name in the <i>Items</i> property of the XmlDocument containing the initial request.
+            </summary>
+        </member>
+        <member name="F:Triton.Controller.Request.MvcXmlRequest.parameters">
+            <summary>
+            Represents custom parameters.
+            </summary>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.#ctor(System.Web.HttpContext)">
+            <summary>
+            Constructs a <b>MvcXmlRequest</b> from the given HttpContext.
+            </summary>
+            <param name="httpContext">The <b>HttpContext</b> to construct the MvcXmlRequest from.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.#ctor(System.Web.HttpContext,System.String)">
+            <summary>
+            Overloaded contstuctor that receives an additional string parameter 
+            which is the string representation of the HttpContext so we don't have 
+            to load it twice.
+            </summary>
+            <param name="httpContext">The <b>HttpContext</b> to construct the MvcXmlRequest from.</param>
+            <param name="contextStreamData"><b>HttpContext.Request.InputStream</b>'s full content.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.GetItem``1(System.Object)">
+            <summary>
+             Retrieves the specific Type of object from the Items Dictionary.
+            </summary>
+            <param name="key">Object key.</param>
+            <typeparam name="T">Type of object to return.</typeparam>
+            <returns>The corresponding key value.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.GetCookie(System.String)">
+            <summary>
+            Returns a <b>MvcCookie</b> from the request with the given name, 
+            or null if no cookie with that name exists.
+            </summary>
+            <param name="name">The name of the cookie to get.</param>
+            <returns>A <b>MvcCookie</b> with the given name, or null if no 
+            	cookie with that name exists.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.GetResponseCookie(System.String)">
+            <summary>
+            Returns a <b>MvcCookie</b> from the response with the given name, 
+            or null if no cookie with that name exists.
+            </summary>
+            <param name="name">The name of the response cookie to get.</param>
+            <returns>A <b>MvcCookie</b> with the given name, or null if no 
+            	cookie with that name exists in the response.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.SetResponseCookie(Triton.Controller.Request.IMvcCookie)">
+            <summary>
+            Sets a <b>MvcCookie</b> in the response.  If the cookie already
+            exists, its information is updated, if not, it is created.
+            </summary>
+            <param name="cookie">The <b>MvcCookie</b> to set in the response.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.WriteResponse(System.String,System.Boolean)">
+            <summary>
+            Writes the given content to the request's response.
+            </summary>
+            <param name="content">The content to write to the response.</param>
+            <param name="endResponse"><b>True</b> if the response is to be ended,
+            	<b>false</b> if not.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.Execute(System.String)">
+            <summary>
+            Executes the given URL and returns the content returned by the URL.
+            </summary>
+            <param name="url">The URL to execute.</param>
+            <returns>The content returned from the given URL.</returns>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.Transfer(System.String)">
+            <summary>
+            Transfers processing of the request to the given URL.
+            </summary>
+            <param name="url">The URL to transfer processing to.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.Redirect(System.String)">
+            <summary>
+            Redirects a client to a new URL and specifies the new URL.
+            </summary>
+            <param name="url">The target location.</param>
+        </member>
+        <member name="M:Triton.Controller.Request.MvcXmlRequest.LoadXml(System.String)">
+            <summary>
+            Loads the information into the request from the given XML string.
+            </summary>
+            <param name="xmlData">An XML string containing the inforamtion to load
+            	into the request.</param>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcXmlRequest.Item(System.String)">
+            <summary>
+            Gets or Sets the parameter with the given name.
+            Indexer for a <b>MvcXmlRequest</b>.  
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcXmlRequest.Params">
+            <summary>
+            Returns a <b>NameValueCollection</b> of all parameters in the request, including custom ones.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcXmlRequest.Items">
+            <summary>
+            Gets a collection of objects used internally for the processing of the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcXmlRequest.Version">
+            <summary>
+            Gets the version of the target "page" for rendering the response.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcXmlRequest.IP">
+            <summary>
+            Gets the IP address of the origin of the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcXmlRequest.UserName">
+            <summary>
+            Gets the logon user of the client request.
+            </summary>
+        </member>
+        <member name="P:Triton.Controller.Request.MvcXmlRequest.Files">
+            <summary>
+            Gets the collection of client-uploaded files.
+            </summary>
+        </member>
+        <member name="T:Triton.Controller.Request.RequestFactory">
+            <summary>
+            <b>RequestFactory</b> is the factory class for constructing requests that
+            implement the MvcRequest interface.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Controller.Request.RequestFactory.Make(System.Web.HttpContext)">
+            <summary>
+            Constructs a MvcRequest of the appropriate type based on the information
+            provided in the given HttpContext.
+            </summary>
+            <param name="httpContext">An <b>HttpContext</b> to construct a MvcRequest for.</param>
+            <returns>A <b>MvcRequest</b> for the given context.</returns>
+        </member>
+        <member name="T:Triton.Controller.TimerModule">
+            <summary>
+            <b>TimerModule</b> is an HttpModule that tracks the amount of time a request
+            takes to process.
+            </summary>
+            <remarks>
+            <b>TimerModule</b> attaches to the application BeginRequest and EndRequest
+            events.  On BeginRequest, it creates and starts a MvcTimer and attaches it
+            to the request.  On EndRequest, it retrieves the MvcTimer from the request
+            and includes the elapsed time in the request response.
+            </remarks>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Controller.TimerModule.TIMER_NAME">
+            <summary>
+            The name of the request Item to store the timer as.
+            </summary>
+        </member>
+        <member name="M:Triton.Controller.TimerModule.Init(System.Web.HttpApplication)">
+            <summary>
+            Implementation of IHttpModule.Init.  Sets the event handlers for BeginRequest
+            and EndRequest to start and stop the timer.
+            </summary>
+            <param name="app">The HttpApplication processing the request.</param>
+        </member>
+        <member name="M:Triton.Controller.TimerModule.Dispose">
+            <summary>
+            Implementation of IHttpModule.Dispose.  No unmanaged code that needs disposing.
+            </summary>
+        </member>
+        <member name="M:Triton.Controller.TimerModule.StartTimer(System.Object,System.EventArgs)">
+            <summary>
+            The event handler for the BeginRequest event. Creates a new MvcTimer, 
+            starts it, and attaches it to the current request.
+            </summary>
+            <param name="s">The application the event is for.</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:Triton.Controller.TimerModule.StopTimer(System.Object,System.EventArgs)">
+            <summary>
+            The event handler for the EndRequest event. Gets the MvcTimer from the
+            request, stops it, and write the elapsed time to the response.
+            </summary>
+            <param name="s">The application the event is for.</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="T:Triton.Controller.Utilities.WebUtilities">
+            <summary>
+            Utility/helper class for web/http support.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Controller.Utilities.WebUtilities.GetIP(System.Web.HttpRequest)">
+            <summary>
+            Gets the IP address of the client from which the given request originated.
+            </summary>
+            <remarks>
+            This is basically to handle the problem introduced by Netscaler where it
+            alters the REMOTE_ADDR header (Request's UserHostAddress property), and
+            places the IP address in the HTTP_CLIENT_IP header.
+            </remarks>
+            <param name="request">The <b>HttpRequest</b> to get the origin IP of.</param>
+            <returns>The IP address of the client from which the given request originated</returns>
+        </member>
+        <member name="M:Triton.Controller.Utilities.WebUtilities.GetIP(Triton.Controller.Request.MvcRequest)">
+            <summary>
+            Gets the IP address of the client from which the given request originated.
+            </summary>
+            <remarks>
+            This is basically to handle the problem introduced by Netscaler where it
+            alters the REMOTE_ADDR header (Request's UserHostAddress property), and
+            places the IP address in the HTTP_CLIENT_IP header.
+            </remarks>
+            <param name="request">The <b>MvcRequest</b> to get the origin IP of.</param>
+            <returns>The IP address of the client from which the given request originated</returns>
+        </member>
+        <member name="M:Triton.Controller.Utilities.WebUtilities.GetUserName(System.Web.HttpRequest)">
+            <summary>
+            Gets the logon user of the client request.
+            </summary>
+            <param name="request">The <c>HttpRequest</c> to get the user name from.</param>
+            <returns><c>string</c> The logon user of the client request.</returns>
+        </member>
+        <member name="M:Triton.Controller.Utilities.WebUtilities.HasValue(System.Web.HttpRequest,System.String)">
+            <summary>
+            Determines if the <c>fieldName</c> item in <c>request</c> has a value or not. The item has a
+            value if it is not <c>NULL</c> and a length > 0.
+            </summary>
+            <param name="request"><c>HttpRequest</c> object containing the item to check</param>
+            <param name="fieldName"><c>String</c> containing the item name to check</param>
+            <returns><c>True</c> if the item specified by <c>fieldName</c> is not <c>NULL</c> and has a
+            length > 0, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Triton.Controller.Utilities.WebUtilities.HasValue(Triton.Controller.Request.MvcRequest,System.String)">
+            <summary>
+            Determines if the <c>fieldName</c> item in <c>request</c> has a value or not. The item has a
+            value if it is not <c>NULL</c> and a length > 0.
+            </summary>
+            <param name="request"><c>HttpRequest</c> object containing the item to check</param>
+            <param name="fieldName"><c>String</c> containing the item name to check</param>
+            <returns><c>True</c> if the item specified by <c>fieldName</c> is not <c>NULL</c> and has a
+            length > 0, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="T:Triton.Controller.XmlController">
+            <summary>
+            <b>XmlController</b> gets incoming XML requests from IIS and delegates processing
+            to the appropriate Command.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Controller.XmlController.ProcessRequest(System.Web.HttpContext)">
+            <summary>
+            Processes an HTTP XML request.
+            </summary>
+            <param name="context">An <c>HttpContext</c> object that provides
+            		references to the intrinsic server objects (for example, 
+            		Request, Response, Session, and Server) used to service 
+            		HTTP requests.</param>
+        </member>
+        <member name="M:Triton.Controller.XmlController.GetCommandName(System.Xml.XmlDocument)">
+            <summary>
+            Gets the name of the <c>Command</c> for carrying out the given request.
+            </summary>
+            <param name="xml">The XML request to get the command for.</param>
+            <returns>The name of the <c>Command</c> for carrying out the given request.</returns>
+        </member>
+        <member name="P:Triton.Controller.XmlController.IsReusable">
+            <summary>
+            Returns <c>true</c> if the instance is reusable, <c>false</c> otherwise.
+            </summary>
+        </member>
+        <member name="T:Triton.Support.Mail.ServiceMailer">
+            <summary>
+            Service Mailer does not contact the email server directly. Instead, it 
+            uses the service of another application to send out emails. It passes 
+            information to the service provider by issuing http requests and queues 
+            the requests if any error occurs.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="F:Triton.Support.Mail.ServiceMailer.failedDir">
+            <summary>
+            The directory to move queued messages to that have been retried the max
+            # of times.
+            </summary>
+        </member>
+        <member name="F:Triton.Support.Mail.ServiceMailer.queue">
+            <summary>
+            The <c>FileQueue</c> that manages the queue of failed sends.
+            </summary>
+        </member>
+        <member name="F:Triton.Support.Mail.ServiceMailer.queueCheckTime">
+            <summary>
+            The interval, in minutes, to check and process the queue
+            </summary>
+        </member>
+        <member name="F:Triton.Support.Mail.ServiceMailer.queueDir">
+            <summary>
+            The directory to use to queue message that fail to go thru.
+            </summary>
+        </member>
+        <member name="F:Triton.Support.Mail.ServiceMailer.ignoreParams">
+            <summary>
+            Indicates request parameters which are to ignored from being added to the service.  The initial 
+            defaults (to, emailtemplate) are set because otherwise they would be duplicated in the service
+            send.
+            </summary>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.Send">
+            <summary>
+            Sends out email
+            </summary>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.ProcessQueueEntry(Triton.Support.Collections.FileQueueEntry)">
+            <summary>
+            Processes an entry from the queue.
+            </summary>
+            <param name="entry">A file queue entry.</param>
+            <returns>A boolean value that specifies if the queue entry has been 
+            		processed successfully.</returns>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.MaxedOutQueueEntry(Triton.Support.Collections.FileQueueEntry)">
+            <summary>
+            Implements the <c>MaxAttemptsProcessor</c> delegate for the
+            <c>FileQueue</c>.  This is called by the <c>FileQueue</c> when
+            a queued message is retried the max number of times.
+            This method just moves the queue entry to another directory.
+            </summary>
+            <param name="entry">The queue entry that has been attempted
+            		the max # of times.</param>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.SendRequest(System.String,System.Boolean)">
+            <summary>
+            Attempts to send the request to the email service.  It first tries sending
+            to the primary server, and if that fails and a secondary server is specified
+            in the config file, attempts the secondary server.  If all attempts
+            to send the request fail, the request is queued, and attempted again later.
+            </summary>
+            <param name="queryString">The query string containing the parameters to
+            		send to the email service.</param>
+            <param name="queued"><c>True</c> if the request is from a queue entry,
+            		<c>false</c> if not.</param>
+            <returns><c>True</c> if the request was successfully sent, <c>false</c>
+            		if the send failed.</returns>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.SendThreaded">
+            <summary>
+            Creates a separate thread to call the method to perform the connection
+            to the email service and send the email.
+            </summary>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.SendToServiceThread">
+            <summary>
+            Wrapper call to <c>SendToService</c> with <c>void</c> return type
+            to allow for use as the delegate to be called from the thread in
+            <c>SendThreaded</c>.
+            </summary>
+        </member>
+        <member name="M:Triton.Support.Mail.ServiceMailer.SendToService">
+            <summary>
+            Makes the connection to the email service and sends the request.
+            </summary>
+        </member>
+        <member name="P:Triton.Support.Mail.ServiceMailer.EmailTemplate">
+            <summary>
+            Specifies the email to be sent out (file name of the template file)
+            </summary>
+        </member>
+        <member name="P:Triton.Support.Mail.ServiceMailer.Parameters">
+            <summary>
+            Contains other information needed by the email.
+            </summary>
+        </member>
+        <member name="P:Triton.Support.Mail.ServiceMailer.IgnoreParams">
+            <summary>
+            Allows the addition of parameter names to ignore from being added to the service request.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.Support.WebInfo">
+            <summary>
+            <c>WebInfo</c> is a convenience class for getting information about the environment.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.BasePath">
+            <summary>
+            Gets the file system path to the application root directory.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.Controller">
+            <summary>
+            Gets the relative URL to the HTTP controller.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.PagesPath">
+            <summary>
+            Gets the relative path from the application root to the directory
+            containing the pages.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.ContentPath">
+            <summary>
+            Gets the relative path from the application root to the directory
+            containing the page content files.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.DefaultLanguagePath">
+            <summary>
+            Gets the directory name of the default language.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.Support.WebInfo.ApplicationVariables">
+            <summary>
+            Represents application-level variables, that would typically be stored in Application["key"].
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.BaseControl.GetPath(Triton.Web.View.Controls.BaseControl.PathType,System.String,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Standard way of creating file paths in the Framework 
+            </summary>
+            <param name="type">Use ConfigurableControl.PathType enum</param>
+            <param name="filePath">path to process</param>
+            <param name="global">non-site specific path</param>
+            <param name="useSite">site specific path</param>
+            <param name="useDefault"></param>
+            <param name="useSection"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Triton.Web.View.Controls.BaseControl.PathType">
+            <summary>
+            Path Type of the control.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor(System.String)">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ConfigurableControl.#ctor(System.Web.UI.HtmlTextWriterTag)">
+            <summary>
+            Calls the base constructor to render the specified HtmlTextWriterTag tag.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Copy">
+            <summary>
+            Renders a piece of Copy from a matched node in the ContentXml file.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor(System.String)">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.XmlBasedControl.#ctor(System.Web.UI.HtmlTextWriterTag)">
+            <summary>
+            Calls the base constructor to render the specified HtmlTextWriterTag tag.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.XmlBasedControl.XmlNodeToRender">
+            <summary>
+            The xml node that contains all the information about the control.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderContents(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Finds the Copy in the xml file and renders it to the page.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Copy.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Copy.Name">
+            <summary>
+            The name of the Copy element from the xml the control is to process.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Css">
+            <summary>
+            Builds <c>link</c> tags for Css stylesheets.  Pulls all css from the page's 
+            ContentXml and renders them. 
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.CssBase.attributesToExclude">
+            <summary>
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net image control 
+            also contains the defaulted attributes
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.CssBase.RenderBeginTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="M:Triton.Web.View.Controls.CssBase.RenderEndTag(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Needed to override the span tag rendering of the web control, with nothing.
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Errors">
+            <summary> Creates markup for errors if they exists. wraps each error in a tag supplied by the control definition
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.Errors.minLevel">
+            <summary>
+            The minimum error level to display.
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.Errors.maxLevel">
+            <summary>
+            The maximum error level to display.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Errors.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Triton.Web.View.Controls.Errors"/> class.  Creates a default error control with standard initializers
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.ErrorList">
+            <summary>
+            Gets or sets ErrorList.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.Class">
+            <summary>
+            Gets or sets the name of the CSS class used for rendering
+            the errors.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.ErrorTag">
+            <summary>
+            Gets or sets the delimiter to be used to separate error messages.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.IncludeId">
+            <summary>
+            Gets or sets the flag indicating whether or not the error ID is
+            to be included with the error message.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.IncludeFieldName">
+            <summary>
+            Gets or sets the flag indicating whether or not the field name is
+            to be appended to the error message.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.MinLevel">
+            <summary>
+            Gets or sets the minimum error level to be displayed.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Errors.MaxLevel">
+            <summary>
+            Gets or sets the maximum error level to be displayed.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Img">
+            <summary>
+            Renders an image tag.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.ImgBase">
+            <summary>
+            Renders an image-based tag using a combination of the page's xml and tag properties from the page.
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.ImgBase.attributesToExclude">
+            <summary>
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net image control 
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgBase.#ctor(System.String)">
+            <summary>
+            Calls the base constructor to render the specified string tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgBase.#ctor(System.Web.UI.HtmlTextWriterTag)">
+            <summary>
+            Calls the base constructor to render the specified HtmlTextWriterTag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgBase.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Renders the controls attributes from the XmlNode.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.ImgBase.Name">
+            <summary>
+            The name attribute of the Image node in the page's content xml file to use.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Img.#ctor">
+            <summary>
+            Calls the base constructor to render Img tag on the page.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.ImgInput">
+            <summary>
+            Renders an input tag of type image drawing tag values from Content xml .
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.#ctor">
+            <summary>
+            Calls base to render the input tag.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.ImgInput.AddAttributesToRender(System.Web.UI.HtmlTextWriter)">
+            <summary>
+            Calls base to render the standard attributes then adds image input tag attributes.
+            </summary>
+        </member>
+        <member name="F:Triton.Web.View.Controls.Navigation.attributesToExclude">
+            <summary>
+            List of attribute names NOT to be copied from the 
+            definition in the XML file into the .net control 
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Navigation.#ctor">
+            <summary>
+            Public Default Constructor
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Navigation.OnLoad(System.EventArgs)">
+            <summary>
+            Using OnLoad because the XML file will not be availiable till this time.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.Name">
+            <summary>
+            If you have more then one Navigation node in your xml, use this to target it.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.NoLinkTag">
+            <summary>
+            Use this property to overwrite the default EM html tag of the items that have no link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Navigation.ActivePageTag">
+            <summary>
+            Use this property to overwrite the default SPAN html tag of the items for the page being viewed.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.Controls.Pagination">
+            <summary>
+            Paging control to use on search result thumbnails.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Pagination.#ctor">
+            <summary>
+            Default constructor takes zero arguments.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.Controls.Pagination.IncludeParameter(System.String)">
+            <summary>
+            Determines if the parameter is should be included in the rendered tag.
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.DisplayOptions">
+            <summary>
+            Display Options are set on the control by comma separated list and will render in the order
+            they are given.
+            Options are: Numbers,Next,Prev,First,Last
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.Title">
+            <summary>
+            The title tag to be rendered on all links
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.LinkClass">
+            <summary>
+            Class name to be rendered on the anchor items for styling.
+            Defaults to pageLink
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.NextRenderName">
+            <summary>
+            Text to render for the "next" link.
+            Defaults to "Next"
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.NextClass">
+            <summary>
+            The name of the class to render on the "next" link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PrevClass">
+            <summary>
+            The name of the class to render on the "prev" link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PrevRenderName">
+            <summary>
+            Text to render for the "prev" link.
+            Defaults to "Prev"
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.CurrentLinkClass">
+            <summary>
+            Class name to be rendered on the currently selected link
+            Defaults to currentPageLink
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.RequestItemName">
+            <summary>
+            Name of the item in the request that contains the paged search results.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.TransitionName">
+            <summary>
+            Transition event for each page link.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageParameterPrefix">
+            <summary>
+            Prefix added to pagesize and page for sorting a particulate item type.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageParameterName">
+            <summary>
+            Gets or sets the name of the request parameter for the page number.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageSizeParameterName">
+            <summary>
+            Gets or sets the name of the request parameter for the page size.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageNumberDisplaySize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.PageNumberDisplayStyle">
+            <summary>
+            Takes a string: "Center", "Right", or "Left" and denotes which side of the
+            page control the currently selected page is placed at.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.Page">
+            <summary>
+            The current WebPage.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.AdditionalParameters">
+            <summary>
+            Additional Parameters to append in search criteria
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.ResetUrlParameters">
+            <summary>
+            Boolean value that, if set to true, will set the baseUrl to "/"
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.RenderPageSizeSelection">
+            <summary>
+            Boolean value that determines if a page size control is rendered on the page.
+            The values for the control are listed in the page's content copy under
+            "PageSizeSelectorCopy".  Choices are defaulted to increment from 0 to 5.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.Controls.Pagination.ParametersToExclude">
+            <summary>
+            Comma seperated list of request Parameters to be removed from the url
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            You set the section name, but site is automaticaly set.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebMasterPage.LoadMasterPage(System.String,System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Specify the section name and site.
+            This must be called in the Page_PreInit override method at the child masterpage level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+            <param name="site"></param>
+        </member>
+        <member name="P:Triton.Web.View.WebMasterPage.MasterPageSection">
+            <summary>
+            Gets the masterpage section name, since the masterpage could be in a different section.
+            </summary>
+        </member>
+        <member name="T:Triton.Web.View.WebPage">
+            <summary>
+            WebPage is the base class for all pages using the Web infrastructure.
+            </summary>
+            <author>Scott Dyke</author>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.#ctor">
+            <summary>
+            WebPage object.
+            </summary>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.HasErrors">
+            <summary>
+            Indicates whether or not there are any (validation) errors returned
+            from the controller.
+            </summary>
+            <returns><c>True</c> if the page has errors to display, <c>false</c>
+            		if not.</returns>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.LoadControlXml(System.String)">
+            <summary>
+            Loads a control's content XML into the page's content XML.
+            </summary>
+            <param name="path">relative path to the file</param>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.LoadControlXml(System.String,System.String)">
+            <summary>
+            Loads a control's content XML into the page's content XML.
+            </summary>
+            <param name="path">section relative path to the xml file</param>
+            <param name="section">section to search fro xml file in</param>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.LoadControlXml(System.String,System.String,System.String)">
+            <summary>
+            Loads a control's content XML into the page's content XML.
+            </summary>
+            <param name="path">section relative path to the xml file</param>
+            <param name="section">section to search fro xml file in</param>
+            <param name="site">site of the xml file to look in</param>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.LoadControlXml(Triton.Controller.PageFinder.FileRecord)">
+            <summary>
+            Loads a control's content XML into the page's content XML.
+            </summary>
+            <param name="record">The record of the file that was found.</param>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.LoadMasterPage(System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Assumes the master page is in /PagesPath/Version/Site/Section/masterpages/ directory.
+            This must be called in the OnPreInit override method at the page level.
+            </summary>
+            <param name="masterPageName"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.LoadMasterPage(System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            You set the section name, but site is automaticaly set.
+            This must be called in the OnPreInit override method at the page level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.LoadMasterPage(System.String,System.String,System.String)">
+            <summary>
+            Sets the master page according to the file name (without the extension) argument.
+            Specify the section name and site.
+            This must be called in the OnPreInit override method at the page level.
+            </summary>
+            <param name="masterPageName"></param>
+            <param name="section"></param>
+            <param name="site"></param>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.GetCopyContent(System.String)">
+            <summary>
+            Reads the content XML and finds the copy for the supplied name. if the node is not found then search in the pages section.
+            </summary>
+            <param name="copyName">Copy XML node name</param>
+            <returns></returns>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.GetCopyContent(System.String,System.Boolean)">
+            <summary>
+            Reads the content XML and finds the copy for the supplied name. if the node is not found then search in the pages section.
+            </summary>
+            <param name="copyName">Copy XML node name</param>
+            <param name="returnEmptyString">Whether or not to return empty string or not found in xml text.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Triton.Web.View.WebPage.ParseCopy(System.String)">
+            <summary>
+            Performs any text replacement of items enclosed in square brackets with request parameters of the same name.
+            </summary>
+            <param name="contentCopy">string - Copy to parse</param>
+            <returns>parsed Copy</returns>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.Request">
+            <summary>
+            Gets the <b>MvcRequest</b> object for the requested page.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.Site">
+            <summary>
+            Gets the site the page is in.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.Section">
+            <summary>
+            Gets the section the page is in.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.Language">
+            <summary>
+            Gets the language for the content for the page.  Null if content
+            is not in a language sub-directory.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.PageName">
+            <summary>
+            Get the name of the page.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.Version">
+            <summary>
+            Gets the version for the site the page is for.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.State">
+            <summary>
+            Gets the <c>State</c> ID of the state the page represents
+            (in the state machine).
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.TransitionContext">
+            <summary>
+            Gets the <c>TransitionContext</c> the page is rendering for.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.MasterPageSection">
+            <summary>
+            Gets the masterpage section name, since the masterpage could be in a different section.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.SectionContentPath">
+            <summary>
+            Gets the path of the <b>parent</b> content directory of the section
+            the page is under.  This path is relative to the application root defined
+            by <c>rootPath</c> in web.config.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.GlobalImagePath">
+            <summary>
+            Gets the <b>parent</b> directory of the global images directory.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.ContentXml">
+            <summary>
+            Gets the <c>XmlDocument</c> that contains the content for the page.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.Errors">
+            <summary>
+            Gets an <c>ErrorList</c> of errors returned from the controller.
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.Controller">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Triton.Web.View.WebPage.SecureController">
+            <summary>
+            
+            </summary>
+        </member>
+    </members>
+</doc>

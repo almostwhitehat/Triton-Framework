@@ -1,0 +1,6 @@
+E:\TritonFramework\Bin\Debug\Triton.Extensions.NHibernate.dll
+E:\TritonFramework\Bin\Debug\Triton.Extensions.NHibernate.pdb
+E:\TritonFramework\Bin\Debug\Triton.Extensions.NHibernate.xml
+E:\TritonFramework\Extensions\NHibernate\obj\Debug\Extensions.NHibernate.csprojResolveAssemblyReference.cache
+E:\TritonFramework\Extensions\NHibernate\obj\Debug\Triton.Extensions.NHibernate.dll
+E:\TritonFramework\Extensions\NHibernate\obj\Debug\Triton.Extensions.NHibernate.pdb

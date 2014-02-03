@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Triton.Extensions.NHibernate</name>
+    </assembly>
+    <members>
+        <member name="M:Triton.NHibernate.Model.Dao.NHibernateBaseDao`1.Get(`0)">
+            <summary>
+            Get a collection of objects that match the specified example.
+            </summary>
+            <param name="example">Example of the type of object to retrieve.</param>
+            <returns>IList of matched objects</returns>
+        </member>
+        <member name="M:Triton.NHibernate.Model.Dao.NHibernateBaseDao`1.Get(System.Object)">
+            <summary>
+            Get the object by id.
+            </summary>
+            <param name="id">id of the object to retrieve.</param>
+            <returns>object of type T</returns>
+        </member>
+        <member name="M:Triton.NHibernate.Model.Dao.NHibernateBaseDao`1.Save(`0)">
+            <summary>
+            Save the object using SaveOrUpdate.
+            </summary>
+            <param name="obj">Object to save.</param>
+        </member>
+        <member name="M:Triton.NHibernate.Model.Dao.NHibernateBaseDao`1.Save(System.Collections.Generic.IList{`0})">
+            <summary>
+            Uses SaveOrUpdate to persist the objects to the database.
+            </summary>
+            <param name="objs">List of objects to persist.</param>
+        </member>
+        <member name="M:Triton.NHibernate.Model.Dao.NHibernateBaseDao`1.Delete(`0)">
+            <summary>
+            Delete the object.
+            </summary>
+            <param name="obj">object to delete.</param>
+        </member>
+        <member name="M:Triton.NHibernate.Model.NHibernateSessionProvider.#ctor">
+            <summary>
+            Initializes a new instance of the NHibernateSessionProvider class.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -4,6 +4,23 @@
         <name>Triton.Modules.Media</name>
     </assembly>
     <members>
+        <member name="P:Triton.Media.Logic.DeleteMediaAction.MediaItemNameIn">
+            <summary>
+            Gets or sets the name of the item in Request.Items containing
+            the Media to delete.
+            </summary>
+        </member>
+        <member name="P:Triton.Media.Logic.DeleteMediaAction.MediaRequestName">
+            <summary>
+            Derpicated. Use MediaItemNameIn instead.
+            </summary>
+        </member>
+        <member name="P:Triton.Media.Logic.DeleteMediaAction.DeleteFile">
+            <summary>
+            Gets or sets flag indicating whether or not the actions should
+            also delete the file referenced by the media record.
+            </summary>
+        </member>
         <member name="M:Triton.Media.Logic.UploadMediaAction.GetFileName(System.String)">
             <summary>
             Strips any directory info and leaves only the file name.

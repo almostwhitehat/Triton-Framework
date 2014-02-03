@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Triton.Extensions.Graphml</name>
+    </assembly>
+    <members>
+        <member name="T:Triton.Graphml.Model.Dao.GraphmlSmStateDao">
+            <summary>
+            <b>GraphmlSmStateDao</b> implements the <b>IStateMachineStatesDao</b> 
+            interface to load state/transition information from an GraphML file.
+            </summary>
+            <author>Matthew Cummings</author>
+            <created>02/27/08</created>
+        </member>
+        <member name="F:Triton.Graphml.Model.Dao.GraphmlSmStateDao.log">
+            <summary> 
+            private logger refference
+            </summary>
+        </member>
+        <member name="M:Triton.Graphml.Model.Dao.GraphmlSmStateDao.LoadStates">
+            <summary>
+            Loads the state/tranistion information for an XML config file.
+            </summary>
+            <remarks>
+            The path to the config file to load is specified in the application's config file
+            appSettings section, with the "statesConfigPath" setting.
+            </remarks>
+            <returns>A <b></b> object with the state/transition information loaded 
+            from the config file.</returns>
+        </member>
+        <member name="M:Triton.Graphml.Model.Dao.GraphmlSmStateDao.PreProcessGraphmlFile(System.String)">
+            <summary>
+            Preprocesses the given file for any information that needs to be gathered
+            before the states are created in ProcessGraphmlFile.
+            </summary>
+            <param name="filename">The path of the states graphml file to preprocess.</param>
+        </member>
+        <member name="M:Triton.Graphml.Model.Dao.GraphmlSmStateDao.CreatePageState(System.Int32@,System.String)">
+            <summary> this method creates a page state from the contents of the page state node in the graphml file.
+            </summary>
+            <param name="stateId">
+            The state id.
+            </param>
+            <param name="contents">
+            The contents.
+            </param>
+            <returns> the newly created page state
+            </returns>
+            <exception cref="T:System.ApplicationException"> thrown when the wethod cannot 
+            complete the task of creating a page state
+            </exception>
+        </member>
+        <member name="M:Triton.Graphml.Model.Dao.GraphmlSmStateDao.ProcessContent(System.String[])">
+            <summary>
+            </summary>
+            <param name="contents">
+            The contents.
+            </param>
+            <returns>
+            </returns>
+        </member>
+    </members>
+</doc>
