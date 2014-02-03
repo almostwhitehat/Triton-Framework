@@ -22,6 +22,7 @@ namespace Triton.Controller {
 //					"publisher" attribute of the ContentProvider registration in config file, rather
 //					than be hard-coded to "html".
 //  3/21/2011	SD	Moved ShouldBePublished from here to HtmlContentPublisher.
+//   9/3/2013	SD	Added check in RenderContent for EndState being PageState before casting.
 
 #endregion
 
@@ -86,7 +87,7 @@ public class HtmlContentProvider : ContentProvider
 				// ignore ThreadAbortException, caused by Transfer
 			} catch (Exception e) {
 				LogManager.GetCurrentClassLogger().Error(
-					errorMessage => errorMessage("Could not GetPublishedContent."), e);
+						errorMessage => errorMessage("Could not GetPublishedContent."), e);
 
 						//  rethrow the error so that the application error handler can handle it
 				throw new PublishException(context, pubRec,
@@ -107,48 +108,51 @@ public class HtmlContentProvider : ContentProvider
 		TransitionContext context)
 	{
 		string content = null;
-		PageFinder pageFinder = PageFinder.GetInstance();
-		PageState target = (PageState)context.EndState;
 
-		if (target == null) {
-			throw new ApplicationException(
-				string.Format("End state was not set, check the states configuration. Start state: {0}{1}. Start event: {2}.",
-						context.StartState.Id,
-						string.IsNullOrEmpty(context.StartState.Name) ? "" : " [" + context.StartState.Name + "]",
-						context.StartEvent));
-		}
+		if (context.EndState is PageState) {
+			PageFinder pageFinder = PageFinder.GetInstance();
+			PageState target = (PageState)context.EndState;
 
-				//  find the aspx file for the target page
-		PageFinder.FileRecord fileRec = pageFinder.FindPage(context.Request, target.Page, target.Section, target.Site);
-
-				//  find the xml file for the target page
-		PageFinder.FileRecord xmlRec = pageFinder.FindXml(context.Request, target.Page, target.Section, target.Site);
-
-				//  put the XML file info into the request so the page can get it
-		if (xmlRec != null) {
-			context.Request.Items[CoreItemNames.PAGE_XML_FILE_RECORD] = xmlRec;
-		}
-
-		if (fileRec == null || string.IsNullOrEmpty(fileRec.fullPath)) {
-			throw new FileNotFoundException("Could not find the page to Execute.");
-		}
-
-		try {
-			int version;
-			if (int.TryParse(fileRec.version, out version)) {
-				context.Version = version;
+			if (target == null) {
+				throw new ApplicationException(
+					string.Format("End state was not set, check the states configuration. Start state: {0}{1}. Start event: {2}.",
+							context.StartState.Id,
+							string.IsNullOrEmpty(context.StartState.Name) ? "" : " [" + context.StartState.Name + "]",
+							context.StartEvent));
 			}
 
-			context.Request.Version = fileRec.version;
+					//  find the aspx file for the target page
+		PageFinder.FileRecord fileRec = pageFinder.FindPage(context.Request, target.Page, target.Section, target.Site);
 
-			content = context.Request.Execute(fileRec.fullPath);
-			//context.Request.Transfer(fileRec.fullPath);
-		} catch (Exception e) {
-			LogManager.GetCurrentClassLogger().Error(
-					errorMessage => errorMessage("RenderContent: "), e);
+					//  find the xml file for the target page
+		PageFinder.FileRecord xmlRec = pageFinder.FindXml(context.Request, target.Page, target.Section, target.Site);
 
-					//rethrow the error so that the application error handler can handle it
-			throw;
+					//  put the XML file info into the request so the page can get it
+			if (xmlRec != null) {
+				context.Request.Items[CoreItemNames.PAGE_XML_FILE_RECORD] = xmlRec;
+			}
+
+			if (fileRec == null || string.IsNullOrEmpty(fileRec.fullPath)) {
+				throw new FileNotFoundException("Could not find the page to Execute.");
+			}
+
+			try {
+				int version;
+				if (int.TryParse(fileRec.version, out version)) {
+					context.Version = version;
+				}
+
+				context.Request.Version = fileRec.version;
+
+				content = context.Request.Execute(fileRec.fullPath);
+				//context.Request.Transfer(fileRec.fullPath);
+			} catch (Exception e) {
+				LogManager.GetCurrentClassLogger().Error(
+						errorMessage => errorMessage("RenderContent: "), e);
+
+						//rethrow the error so that the application error handler can handle it
+				throw;
+			}
 		}
 
 		return content;
