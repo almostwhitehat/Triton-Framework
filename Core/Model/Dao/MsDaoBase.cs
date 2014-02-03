@@ -21,14 +21,23 @@ namespace Triton.Model.Dao
 	{
 		protected string connectionType;
 
+
 		#region Dao Members
 
-		public abstract string Name { get; }
+		public abstract string Name
+		{
+			get;
+		}
 
 
 		public string ConnectionType
 		{
-			get { return this.connectionType; }
+			get {
+				return this.connectionType;
+			}
+			set {
+				this.connectionType = value;
+			}
 		}
 
 
@@ -41,7 +50,7 @@ namespace Triton.Model.Dao
 		{
 			// Get the connection string from web.config.
 			// If no connnection type is specified, use the default connection (*) of this Dao.
-			NameValueCollection daoConfig = (NameValueCollection) ConfigurationManager.GetSection("daoSettings/" + this.Name);
+			NameValueCollection daoConfig = (NameValueCollection)ConfigurationManager.GetSection("daoSettings/" + this.Name);
 
 			string connName;
 			try {
@@ -53,7 +62,7 @@ namespace Triton.Model.Dao
 
 			string connString;
 			if ((ConfigurationManager.ConnectionStrings != null) 
-				&& (ConfigurationManager.ConnectionStrings[connName] != null)) {
+					&& (ConfigurationManager.ConnectionStrings[connName] != null)) {
 
 				ConnectionStringSettings connSettings = ConfigurationManager.ConnectionStrings[connName];
 				connString = connSettings.ConnectionString;
