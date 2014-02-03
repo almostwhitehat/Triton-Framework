@@ -13,6 +13,12 @@ using Triton.CodeContracts;
 
 namespace Triton.Logic {
 
+#region History
+
+// History:
+//    12/3/13	SD	Added support for ObjectPropertyNameIn to be a path to a nested object property.
+
+#endregion
 
 /// <summary>
 /// Gets a property of an object in Request.Items and stores the property
@@ -84,7 +90,11 @@ public class GetObjectPropertyAsItemAction : IAction
 				obj = list.GetValue(0);
 			}
 
-			object propVal = ReflectionUtilities.GetPropertyValue(obj, ObjectPropertyNameIn);
+			string[] path = ObjectPropertyNameIn.Split('.');
+			for (int k = 0; k < path.Length && obj != null; k++) {
+				obj = ReflectionUtilities.GetPropertyValue(obj, path[k]);
+			}
+			object propVal = obj;
 
 			if (propVal != null) {
 				request.Items[ItemNameOut] = propVal;
