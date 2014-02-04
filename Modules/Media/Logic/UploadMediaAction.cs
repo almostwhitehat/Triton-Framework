@@ -29,6 +29,7 @@ namespace Triton.Media.Logic
 	// 9/7/2010		SD	Changed file/directory path concatinations to use Path.Combine rather than "+".
 	// 9/8/2011     MC  Added action option to include timestamp in filename when saved. defaulted to "yes"
 	//                  any other value will not prepend the timestamp.
+    // 2/4/2014     MM  Changed timestamp string format to use MM for month
 	#endregion
 
 	public class UploadMediaAction : IAction
@@ -114,7 +115,7 @@ namespace Triton.Media.Logic
 			string originalFileName = this.GetFileName(file.Name);
 			string fileName = originalFileName;
 			if (this.IncludeTimeStamp == "yes") {
-				fileName = DateTime.Now.ToString("yyyymmddHHmmssffff-") + originalFileName;
+				fileName = DateTime.Now.ToString("yyyyMMddHHmmssffff-") + originalFileName;
 			}
 
 			MediaType type;
