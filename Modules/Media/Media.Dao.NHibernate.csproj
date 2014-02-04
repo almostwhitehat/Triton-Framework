@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1A37A291-9777-402F-8E2C-B2582923325D}</ProjectGuid>
+    <ProjectGuid>{C875B66D-BB9D-4894-9028-F0B4D52EE30F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Triton.Membership</RootNamespace>
-    <AssemblyName>Triton.Module.Membership.Dao.NHibernate</AssemblyName>
+    <RootNamespace>Triton.Media</RootNamespace>
+    <AssemblyName>Triton.Modules.Media.Dao.NHibernate</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -43,13 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Dao\NhAccountDao.cs" />
-    <Compile Include="Model\Dao\NhAccountStatusDao.cs" />
-    <Compile Include="Model\Dao\NhAttributeTypeDao.cs" />
-    <Compile Include="Model\Dao\NhMemberContextDao.cs" />
-    <Compile Include="Model\Dao\NhNameSuffixDao.cs" />
-    <Compile Include="Model\Dao\NhRoleDao.cs" />
-    <Compile Include="Properties\Membership.Dao.NHibernate.AssemblyInfo.cs" />
+    <Compile Include="Model\Dao\NhMediaDao.cs" />
+    <Compile Include="Model\Dao\NhMediaTypeDao.cs" />
+    <Compile Include="Properties\Media.Dao.NHibernate.AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
@@ -60,24 +56,14 @@
       <Project>{bd329e03-0c13-4a35-8790-a593a693d8ae}</Project>
       <Name>Extensions.NHibernate</Name>
     </ProjectReference>
-    <ProjectReference Include="Membership.csproj">
-      <Project>{67405377-7460-401d-8697-c155f2f6a7b1}</Project>
-      <Name>Membership</Name>
+    <ProjectReference Include="Media.csproj">
+      <Project>{b2154fac-c480-4c75-b357-cad009aa488a}</Project>
+      <Name>Media</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Model\Dao\NHibernate\Account.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\AccountAddress.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\AccountContactInfo.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\AccountStatus.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\AddressType.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\AttributeType.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\ContactInfoType.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\MemberContext.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\NameSuffix.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\Person.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\Role.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\Username.hbm.xml" />
+    <Content Include="Model\Dao\NHibernate\Media.hbm.xml" />
+    <Content Include="Model\Dao\NHibernate\MediaType.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -67,25 +67,6 @@
             <param name="suffix"></param>
             <returns></returns>
         </member>
-        <member name="T:Triton.Media.Model.Dao.NhMediaDao">
-            <summary>
-            Media DAO Class
-            </summary>
-        </member>
-        <member name="M:Triton.Media.Model.Dao.NhMediaDao.Get(System.Int32)">
-            <summary>
-            summary
-            </summary>
-            <param name="id">integer</param>
-            <returns></returns>
-        </member>
-        <member name="M:Triton.Media.Model.Dao.NhMediaDao.Find(Triton.Media.Model.Dao.MediaFilter)">
-            <summary>
-            summary
-            </summary>
-            <param name="filter">byexample</param>
-            <returns></returns>
-        </member>
         <member name="T:Triton.Media.Model.Dao.Support.FilterExtensions">
             <summary>
             

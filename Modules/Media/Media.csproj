@@ -102,8 +102,6 @@
     <Compile Include="Model\Dao\IMediaDao.cs" />
     <Compile Include="Model\Dao\IMediaTypeDao.cs" />
     <Compile Include="Model\Dao\MediaFilter.cs" />
-    <Compile Include="Model\Dao\NhMediaDao.cs" />
-    <Compile Include="Model\Dao\NhMediaTypeDao.cs" />
     <Compile Include="Model\Dao\Support\FilterExtensions.cs" />
     <Compile Include="Model\FileRecord.cs" />
     <Compile Include="Model\Media.cs" />
@@ -112,10 +110,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Model\Media.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Model\Dao\NHibernate\Media.hbm.xml" />
-    <EmbeddedResource Include="Model\Dao\NHibernate\MediaType.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

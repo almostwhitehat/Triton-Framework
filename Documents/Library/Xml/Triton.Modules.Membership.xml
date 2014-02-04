@@ -263,10 +263,6 @@
             Defines filtering criteria for account attributes.
             </summary>
         </member>
-        <member name="T:Triton.Membership.Model.Dao.NhAccountStatusDao">
-            <summary>
-            </summary>
-        </member>
         <member name="T:Triton.Membership.Model.Role">
             <summary>
             

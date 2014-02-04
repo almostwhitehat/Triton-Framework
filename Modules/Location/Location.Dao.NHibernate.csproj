@@ -46,7 +46,7 @@
     <Compile Include="Model\Dao\NhCountryDao.cs" />
     <Compile Include="Model\Dao\NhPersistedAddressDao.cs" />
     <Compile Include="Model\Dao\NhStateDao.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Location.Dao.NHibernate.AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Model\Dao\NHibernate\City.hbm.xml" />
